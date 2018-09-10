@@ -1,0 +1,4 @@
+vendor/
+server
+Gopkg.lock
+Gopkg.toml

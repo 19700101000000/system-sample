@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./handler"
+	"github.com/19700101000000/system-sample/server/handler"
 	"log"
 	"net/http"
 )
@@ -10,5 +10,5 @@ func init() {
 	http.HandleFunc("/", handler.Root)
 }
 func main() {
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
