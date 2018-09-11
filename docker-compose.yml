@@ -1,0 +1,10 @@
+version: "3"
+
+services: 
+  server: 
+    build: server
+    working_dir: /go/src/github.com/19700101000000/system-sample/server
+    volumes: 
+      - ./server:/go/src/github.com/19700101000000/system-sample/server
+    ports:
+      - 80:8080
