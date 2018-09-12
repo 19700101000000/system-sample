@@ -3,8 +3,13 @@ version: "3"
 services: 
   server: 
     build: server
-    working_dir: /go/src/github.com/19700101000000/system-sample/server
     volumes: 
       - ./server:/go/src/github.com/19700101000000/system-sample/server
+  proxy:
+    image: nginx
+    volumes:
+      - ./proxy/conf.d:/etc/nginx/conf.d
     ports:
-      - 80:8080
+      -  80:80
+    links:
+      - server
