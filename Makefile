@@ -5,7 +5,12 @@ dep:
 build:
 	sudo docker-compose up -d --build
 
-init: dep build
+init: dep build initdb
+reset:
+	cd server && \
+	rm Gopkg.toml && \
+	rm Gopkg.lock && \
+	rm -rf vendor
 
 ps:
 	sudo docker-compose ps
@@ -23,3 +28,7 @@ logs:
 	sudo docker-compose logs
 
 stopup: stop up
+
+initdb:
+	cat db/create_db.sql | sudo docker exec -i system-sample_db_1 mysql -h 127.0.0.1 -uroot -proot
+	cat db/create_table.sql | sudo docker exec -i system-sample_db_1 mysql -h 127.0.0.1 -uroot -proot system_sample
