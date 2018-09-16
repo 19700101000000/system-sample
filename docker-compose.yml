@@ -1,10 +1,21 @@
 version: "3"
 
 services: 
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: server
+      MYSQL_PASSWORD: server
   server: 
     build: server
     volumes: 
       - ./server:/go/src/github.com/19700101000000/system-sample/server
+    links: 
+      - db
+    environment:
+      DB_HOST: db:3306
+      DB_PASS: server
   proxy:
     image: nginx
     volumes:
