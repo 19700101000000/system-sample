@@ -1,3 +1,6 @@
+DB_CONTAINER_NAME = system-sample_db_1
+DB_NAME = system_sample
+
 dep:
 	cd server/ && \
 	dep init
@@ -30,5 +33,5 @@ logs:
 stopup: stop up
 
 initdb:
-	cat db/create_db.sql | sudo docker exec -i system-sample_db_1 mysql -h 127.0.0.1 -uroot -proot
-	cat db/create_table.sql | sudo docker exec -i system-sample_db_1 mysql -h 127.0.0.1 -uroot -proot system_sample
+	cat db/create_db.sql | sudo docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot
+	cat db/create_table.sql | sudo docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot $(DB_NAME)
