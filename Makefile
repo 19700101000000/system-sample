@@ -1,6 +1,9 @@
 DB_CONTAINER_NAME = system-sample_db_1
 DB_NAME = system_sample
 
+depinstall: 
+	go get -u github.com/golang/dep/...
+
 dep:
 	cd server/ && \
 	dep init
@@ -35,3 +38,11 @@ stopup: stop up ps
 initdb:
 	cat db/create_db.sql | sudo docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot
 	cat db/create_table.sql | sudo docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot $(DB_NAME)
+
+macinit: dep macbuild macinitdb
+macbuild:
+	docker-compose up -d --build
+macinitdb:
+	cat db/create_db.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot
+	cat db/create_table.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot $(DB_NAME)
+
