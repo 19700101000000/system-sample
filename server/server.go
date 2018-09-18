@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/19700101000000/system-sample/server/handler"
+	"github.com/ShikinamiAsuka/system-sample/server/handler"
 	"github.com/labstack/echo"
 )
 
@@ -16,6 +16,7 @@ func newServer() *server {
 }
 func (s *server) serverInit() {
 	s.e.GET("/", handler.Index)
+	s.e.GET("/:name", handler.Index)
 }
 func (s *server) serverRun() {
 	s.e.Logger.Fatal(s.e.Start(":8080"))
