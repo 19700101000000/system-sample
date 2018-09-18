@@ -9,12 +9,17 @@ import (
 )
 
 func Index(c echo.Context) error {
-	name := echo.Context.Param(c, "name")
-	if name == "" {
-		name = "index"
-	}
+	return slimRender(c, "template/index.slim")
+}
 
-	tmpl, err := slim.ParseFile(fmt.Sprintf("template/%s.slim", name))
+func Static(c echo.Context) error {
+	name := echo.Context.Param(c, "name")
+	return slimRender(c, fmt.Sprintf("template/%s.slim", name))
+}
+
+/*slim's render*/
+func slimRender(c echo.Context, filepath string) error {
+	tmpl, err := slim.ParseFile(filepath)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
