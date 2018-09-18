@@ -30,7 +30,7 @@ rm:
 logs:
 	sudo docker-compose logs
 
-stopup: stop up
+stopup: stop up ps
 
 initdb:
 	cat db/create_db.sql | sudo docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot

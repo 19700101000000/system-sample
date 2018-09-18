@@ -1,20 +1,22 @@
 package handler
 
 import (
-	//"fmt"
-	"html/template"
-	"log"
+	"bytes"
+	"github.com/labstack/echo"
+	"github.com/mattn/go-slim"
 	"net/http"
 )
 
-func Root(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
+func Index(c echo.Context) error {
+	tmpl, err := slim.ParseFile("template/index.slim")
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
-	t := template.Must(template.ParseFiles("template/index.html"))
 
-	if err := t.ExecuteTemplate(w, "index.html", nil); err != nil {
-		log.Fatal(err)
+	var buf bytes.Buffer
+	if err = tmpl.Execute(&buf, slim.Values{}); err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
+
+	return c.HTML(http.StatusOK, buf.String())
 }
