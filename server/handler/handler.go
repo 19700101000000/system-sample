@@ -3,9 +3,10 @@ package handler
 import (
 	"bytes"
 	"fmt"
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/mattn/go-slim"
-	"net/http"
 )
 
 func Index(c echo.Context) error {
@@ -25,7 +26,7 @@ func slimRender(c echo.Context, filepath string) error {
 	}
 
 	var buf bytes.Buffer
-	if err = tmpl.Execute(&buf, slim.Values{}); err != nil {
+	if err = tmpl.Execute(&buf, slim.Values{"test10": make([]string, 10)}); err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 

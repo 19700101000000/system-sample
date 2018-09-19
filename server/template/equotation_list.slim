@@ -1,0 +1,26 @@
+doctype 5
+html lang="ja"
+  head
+    meta charset="utf-8"
+    title 見積もり
+  body
+    h1 見積もり
+    form action="#"
+      div
+        a href="#" すべて選択
+        a href="#" 削除
+        a href="#" 受注
+      table
+        tbody
+          tr
+            th チェック
+            th 担当者
+            th 顧客
+            th 内容
+          - for i in test10
+            tr
+              td
+                input type="checkbox"
+              td aaa
+              td bbb
+              td content
