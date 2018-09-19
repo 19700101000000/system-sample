@@ -1,7 +1,7 @@
 FROM golang
 MAINTAINER asuka
 
-WORKDIR /go/src/github.com/ShikinamiAsuka/system-sample/server
+WORKDIR /go/src/github.com/ShikinamiAsuka/ih13/server
 
 RUN go get -u github.com/golang/dep/...
 

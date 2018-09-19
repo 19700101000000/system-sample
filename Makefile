@@ -1,4 +1,4 @@
-DB_CONTAINER_NAME = system-sample_db_1
+DB_CONTAINER_NAME = ih13_db_1
 DB_NAME = system_sample
 
 depinstall: 

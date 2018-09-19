@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ShikinamiAsuka/system-sample/server/handler"
+	"github.com/ShikinamiAsuka/ih13/server/handler"
 	"github.com/labstack/echo"
 )
 

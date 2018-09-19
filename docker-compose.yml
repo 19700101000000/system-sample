@@ -10,7 +10,7 @@ services:
   server: 
     build: server
     volumes: 
-      - ./server:/go/src/github.com/ShikinamiAsuka/system-sample/server
+      - ./server:/go/src/github.com/ShikinamiAsuka/ih13/server
     links: 
       - db
     environment:
