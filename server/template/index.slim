@@ -5,3 +5,17 @@ html lang="ja"
     title index
   body
     p hello slim
+    div
+      form action=""
+        table
+          thead
+            tr
+              th name
+              th test
+              th test
+          tbody
+            - for n in names
+              tr
+                td = n
+                td test
+                td test

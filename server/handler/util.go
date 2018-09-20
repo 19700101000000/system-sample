@@ -2,9 +2,10 @@ package handler
 
 import (
 	"bytes"
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/mattn/go-slim"
-	"net/http"
 )
 
 /*render slim to html*/
@@ -15,7 +16,9 @@ func render(c echo.Context, fileName string) error {
 	}
 
 	var buf bytes.Buffer
-	if err = tmpl.Execute(&buf, slim.Values{}); err != nil {
+	if err = tmpl.Execute(&buf, slim.Values{
+		"names": []string{"a", "b", "c"},
+	}); err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
