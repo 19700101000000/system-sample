@@ -2,10 +2,10 @@ doctype 5
 html lang="ja"
   head
     meta charset="utf-8"
-    title 請求一覧
+    title 回収一覧
   body
 
-    h2 請求一覧
+    h2 回収一覧
 
     form action="#"
       table
@@ -17,56 +17,47 @@ html lang="ja"
               - for i in test10
                 option value="" 株式会社 車売りMATH
         tr
-          td 請求期限
+          td 回収期限
           td 
             input type="date" name="#"
             t から
             input type="date" name="#"
         tr
-          td 名変有無
-          td
-            select name="#"
-              option value="0" ---
-              option value="1" 完了済み
-              option value="2" 未完了
-        tr
-          td 担当
+          td 請求合計額
           td
             select name="#"
               option value="0" ---
               - for i in test10
-                option value="" 山田 忠太郎
+                option value="" ¥10,000以上
         tr
-          td 請求書発行
+          td 請求残額
           td
             select name="#"
               option value="0" ---
-              option value="1" 発行済み
-              option value="2" 未発行
+              option value="0" ¥0
+              - for i in test10
+                option value="" ¥10,000以上
       input type="submit" value="検索"
 
     table border="1"
       body
-       tr
-        th 顧客名
-        th 請求額
-        th 請求残額
-        th 請求期限日
-        th 担当
-        th 請求書発行有無
-        th 請求書発行ボタン
-        form action="#"
+        tr
+          th 顧客名
+          th 請求合計額
+          th 回収額
+          th 請求残額
+          th 請求日
+          th 回収日
+          form action="#"
         - for i in test10
           tr
             td 
               a href="#" 顧客名
-            td ¥5,000
             td ¥10,000
+            td ¥10,000
+            td ¥0
             td 2018年09月22日
-            td 山田 忠太郎
-            td 済
-            td
-              a href="#" 請求書再発行
+            td 2018年09月13日
 
     form action="#"
       input type="submit" value="<<"
