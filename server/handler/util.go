@@ -9,18 +9,19 @@ import (
 )
 
 /*render slim to html*/
-func render(c echo.Context, fileName string) error {
-	tmpl, err := slim.ParseFile(fileName)
+func render(c echo.Context, path string, v slim.Values) error {
+	// import template
+	tmpl, err := slim.ParseFile(path)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
+	// render slim
 	var buf bytes.Buffer
-	if err = tmpl.Execute(&buf, slim.Values{
-		"names": []string{"a", "b", "c"},
-	}); err != nil {
+	if err = tmpl.Execute(&buf, v); err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
+	// result
 	return c.HTML(http.StatusOK, buf.String())
 }
