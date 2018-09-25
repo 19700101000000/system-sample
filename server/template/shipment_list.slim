@@ -1,0 +1,81 @@
+doctype 5
+html lang="ja"
+  head
+    meta charset="utf-8"
+    title 出荷(落札)
+  body
+    h1 出荷(落札)
+    form action="#"
+    div
+    a 仕入日
+    input type="date" name=""
+    a 仕入先
+    select name="#"
+      option value="aaa" 
+        a aaa
+      option value="bbb"
+        a bbb
+      option value="ccc"
+        a ccc
+      option value="ddd"
+        a ddd
+      option value="eee"
+        a eee
+    a 名変期限
+    input type="date" name=""
+    /
+    a 担当者
+    select name="#"
+      option value="aaa" 
+        a aaa
+      option value="bbb"
+        a bbb
+      option value="ccc"
+        a ccc
+      option value="ddd"
+        a ddd
+      option value="eee"
+        a eee
+
+    /
+    input type="submit" text="検索"
+    
+
+
+    form action="#"
+      div
+        a href="#" すべて選択
+        a href="#" 全選択解除
+        a href="#" 削除
+        a href="#" 請求
+      table
+        tbody
+          tr
+            th チェック
+            th 編集
+            th 担当者
+            th 顧客
+            th 社名
+            th 年式
+            th 台数
+            th 外装色
+            th 内装色
+          - for i in test10
+            tr
+              td
+                input type="checkbox"
+              td
+                input type="submit" value="編集"
+              td aaa
+              td bbb
+              td ccc
+              td ddd
+              td eee
+              td fff
+              td ggg
+              /
+        a href="#" 1
+        a href="#" 2
+        a href="#" 3
+        a href="#" 4
+        a href="#" 5
