@@ -1,0 +1,68 @@
+doctype 5
+html lang="ja"
+  head
+    meta charset="utf-8"
+    title 回収一覧
+  body
+
+    h2 回収一覧
+
+    form action="#"
+      table
+        tr
+          td 顧客名
+          td
+            select name="#"
+              option value="0" ---
+              - for i in test10
+                option value="" 株式会社 車売りMATH
+        tr
+          td 回収期限
+          td 
+            input type="date" name="#"
+            t から
+            input type="date" name="#"
+        tr
+          td 請求合計額
+          td
+            select name="#"
+              option value="0" ---
+              - for i in test10
+                option value="" ¥10,000以上
+        tr
+          td 請求残額
+          td
+            select name="#"
+              option value="0" ---
+              option value="0" ¥0
+              - for i in test10
+                option value="" ¥10,000以上
+      input type="submit" value="検索"
+
+    table border="1"
+      body
+        tr
+          th 顧客名
+          th 請求合計額
+          th 回収額
+          th 請求残額
+          th 請求日
+          th 回収日
+          form action="#"
+        - for i in test10
+          tr
+            td 
+              a href="#" 顧客名
+            td ¥10,000
+            td ¥10,000
+            td ¥0
+            td 2018年09月22日
+            td 2018年09月13日
+
+    form action="#"
+      input type="submit" value="<<"
+      input type="submit" value="1"
+      input type="submit" value="2"
+      input type="submit" value="3"
+      input type="submit" value=">>"
+
