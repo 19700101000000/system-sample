@@ -1,0 +1,34 @@
+@charset "UTF-8";
+form{
+    background: #FBFAF3;
+    width: 1000px;
+    height: 100%;
+    margin:0 auto;
+}
+p{
+    width: 30%;
+    margin:0 auto;
+}
+table{
+    margin:0 auto;
+    width: 90%;
+}
+
+th{
+    width: 30%;
+    margin: 0 auto;
+    border:solid #4B2D16;
+    background: #8E5E4A;
+    color:#F8F5E3;
+    text-align: center;
+}
+td{
+    width: 30%;
+    margin: 0 auto;
+    border:solid #4B2D16;
+}
+input{
+    width: 25%;
+    margin:1%;
+    background: #F8F5E3;
+}

@@ -3,17 +3,21 @@ html lang="ja"
   head
     meta charset="utf-8"
     title 見積もり一覧
-  body
+    link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"
+    link rel="stylesheet" href="/css/format.css"
+    link rel="stylesheet" href="/css/button.css"
+    link rel="stylesheet" href="/css/equotation_format.css"
+body
     h1 見積もり一覧
     form action="#"
       p
-        a href="#" すべて選択
-        a href="#" 削除
-        a href="#" 受注
+        a class="btn btn-primary" href="#" 全て選択
+        a class="btn btn-primary" href="#" 削除
+        a class="btn btn-primary" href="#" 受注
       table
         tbody
           tr
-            th チェック
+            th class="th-checkbox" チェック
             th 担当者
             th 顧客
             th 内容
@@ -35,3 +39,4 @@ html lang="ja"
         a href="#" 8
         a href="#" 9
         a href="#" 10
+ 
