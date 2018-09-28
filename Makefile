@@ -13,7 +13,7 @@ reset:
 	cd server && \
 	rm Gopkg.toml && \
 	rm Gopkg.lock && \
-	rm -rf vendor
+	sudo rm -r vendor
 
 ps:
 	sudo docker-compose ps
