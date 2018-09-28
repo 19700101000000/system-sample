@@ -15,7 +15,7 @@ func newServer() *server {
 	}
 }
 func (s *server) serverInit() {
-	s.e.GET("/go", handler.Index)
+	s.e.GET("/", handler.Index)
 }
 func (s *server) serverRun() {
 	s.e.Logger.Fatal(s.e.Start(":8080"))
