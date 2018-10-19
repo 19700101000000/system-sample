@@ -30,8 +30,6 @@ rm:
 logs:
 	sudo docker-compose logs
 
-stopup: stop up ps
-
 restart: 
 	sudo docker-compose restart
 
