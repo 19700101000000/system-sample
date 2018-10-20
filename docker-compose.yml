@@ -8,9 +8,9 @@ services:
       MYSQL_USER: server
       MYSQL_PASSWORD: server
   vue:
-    build: vue
+    build: nuxt
     volumes:
-      - ./vue:/app
+      - ./nuxt:/app
   server: 
     build: server
     volumes: 
