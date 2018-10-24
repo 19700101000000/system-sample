@@ -1,10 +1,26 @@
-<template>
-  <section>
-    <h1 class="header">Nuxt TypeScript Starter</h1>
-    <div class="cards">
-      <Card v-for="person in people" :key="person.id" :person="person"></Card>
-    </div>
-  </section>
+<template lang="pug">
+  section
+    b-container
+      b-row.row
+        b-col
+          b-form(@submit="onSubmit")
+            b-input-group(size="lg")
+              b-form-input(
+                size="sm",
+                class="mr-sm-2",
+                type="text",
+                placeholder="キーワードを入力してください。",
+                @change="handleChange"
+                :value="query"
+              )
+              b-button(size="sm", class="my-2 my-sm-0", type="submit") 検索する
+        b-col
+      div.cards
+        book-list-item(
+          v-for='book in books',
+          :key='book.id',
+          :book='book',
+        )
 </template>
 
 <script lang="ts">
@@ -13,25 +29,33 @@ import {
   Vue
 } from "nuxt-property-decorator"
 import { State } from "vuex-class"
-import Card from "~/components/Card.vue"
+import BookListItem from "~/components/BookListItem.vue"
 
 @Component({
   components: {
-    Card
+    BookListItem
   }
 })
 export default class extends Vue {
-  @State people
+  @State books
+  @State query
+
+  handleChange(e): void {
+    this.$store.commit('setQuery', e);
+  }
+
+  onSubmit(e): void {
+    e.preventDefault();
+    this.$store.dispatch('search');
+  }
 }
 </script>
-<style scoped>
-.header {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana,
-    sans-serif;
-}
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-}
+<style lang="sass" scoped>
+.cards
+  display: flex
+  flex-wrap: wrap
+
+.row
+  padding: 8px 0
 </style>
