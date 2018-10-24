@@ -1,12 +1,7 @@
 <template lang="pug">
-b-card.md-2.card(title="ここにタイトルが入ります", :img-src='thumbnail', img-alt='Image', img-top='', tag='article', style='max-width: 20rem;')
-  p.card-text.
-    ここに説明が入ります
-    ここに説明が入ります
-    ここに説明が入ります
-    ここに説明が入ります
-    ここに説明が入ります
-  router-link(to="books/1")
+b-card.md-2.card(:title="title", :img-src='thumbnail', img-alt='Image', img-top='', tag='article', style='max-width: 20rem;')
+  p.card-text {{ description }}
+  router-link(:to="'books/' + id")
     b-button(variant='primary') 詳細を見る
 </template>
 <script lang="ts">
