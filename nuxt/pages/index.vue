@@ -2,14 +2,14 @@
   b-container
     b-row
       b-col
-        carousel
+        ad-carousel
     b-row
       b-col
-        p foo
-        carousel
+        ad-carousel
+        rank-table
       b-col
-        carousel
-        p bar
+        ad-carousel
+        rank-table
 </template>
 
 <script lang="ts">
@@ -17,11 +17,13 @@ import {
   Component,
   Vue
 } from "nuxt-property-decorator"
-import Carousel from "~/components/Carousel.vue"
+import AdCarousel from "~/components/AdCarousel.vue"
+import RankTable from "~/components/RankTable.vue"
 
 @Component({
   components: {
-    Carousel
+    AdCarousel,
+    RankTable
   }
 })
 export default class extends Vue {
