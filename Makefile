@@ -30,6 +30,9 @@ stop:
 rm:
 	sudo docker-compose rm
 
+restart:
+	sudo docker-compose restart
+
 logs:
 	sudo docker-compose logs
 
@@ -42,6 +45,8 @@ initdb:
 macinit: dep macbuild macinitdb
 macbuild:
 	docker-compose up -d --build
+macrestart:
+	docker-compose restart
 macinitdb:
 	cat db/create_db.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot
 	cat db/create_table.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot $(DB_NAME)
