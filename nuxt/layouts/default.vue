@@ -1,7 +1,15 @@
-<template>
-  <div>
-    <nuxt/>
-  </div>
+<template lang="pug">
+div
+  b-navbar(toggleable="md" type="dark" variant="info")
+    b-navbar-toggle(target="nav_collapse")
+    b-navber-brand(fref="#") IH-SYSTEM
+    b-collapse#nav_collapse(is-nav)
+      b-navbar-nav
+        b-nav-item(href="#") 買注文
+        b-nav-item(href="#") 売注文
+      b-navbar-nav.ml-auto
+        b-nav-item(href="#" right) ログイン
+  nuxt
 </template>
 
 <style>
