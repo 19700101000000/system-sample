@@ -7,6 +7,10 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: server
       MYSQL_PASSWORD: server
+  nuxt:
+    build: nuxt
+    volumes:
+      - ./nuxt:/app
   server: 
     build: server
     volumes: 
@@ -24,3 +28,4 @@ services:
       -  80:80
     links:
       - server
+      - nuxt
