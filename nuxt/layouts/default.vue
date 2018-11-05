@@ -2,7 +2,7 @@
 div
   b-navbar(toggleable="md" type="dark" variant="info")
     b-navbar-toggle(target="nav_collapse")
-    b-navber-brand(fref="#") IH-SYSTEM
+    b-navbar-brand(fref="#") IH-SYSTEM
     b-collapse#nav_collapse(is-nav)
       b-navbar-nav
         b-nav-item(href="#") 買注文
