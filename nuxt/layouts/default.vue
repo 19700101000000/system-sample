@@ -5,12 +5,26 @@ div
     b-navbar-brand(fref="#") IH-SYSTEM
     b-collapse#nav_collapse(is-nav)
       b-navbar-nav
-        b-nav-item(href="#") 買注文
-        b-nav-item(href="#") 売注文
+        b-nav-item(href="/buy") 買注文
+        b-nav-item(href="/sell") 売注文
       b-navbar-nav.ml-auto
-        b-nav-item(href="#" right) ログイン
+        b-nav-item(href="#" v-if="$store.state.auth.user" @click="$store.dispatch('logout')" right) ログアウト
+        b-nav-item(href="#" v-else @click="login('foo', 'bar')" right) ログイン
   nuxt
 </template>
+
+<script>
+export default {
+  methods: {
+    async login() {
+      await this.$store.dispatch('login', {
+        username: 'foo',
+        password: 'bar'
+      })
+    }
+  }
+}
+</script>
 
 <style>
 html {
