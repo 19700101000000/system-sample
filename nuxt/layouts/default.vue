@@ -8,9 +8,10 @@ div
         b-nav-item(href="/buy") 買注文
         b-nav-item(href="/sell") 売注文
       b-navbar-nav.ml-auto
-        b-nav-item(href="#" v-if="$store.state.auth.user" @click="$store.dispatch('logout')" right) ログアウト
+        b-nav-item(href="#" v-if="$store.state.auth" @click="$store.dispatch('logout')" right) ログアウト
         b-nav-item(href="#" v-else @click="login('foo', 'bar')" right) ログイン
-  nuxt
+  b-container
+    nuxt
 </template>
 
 <script>

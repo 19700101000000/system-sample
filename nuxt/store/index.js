@@ -10,14 +10,12 @@ var cookieparser = require('cookieparser')
 const store = () => new Vuex.Store({
 
   state: {
-    auth: {
-      user: null
-    }
+    auth: null
   },
 
   mutations: {
-    SET_USER: function (state, user) {
-      state.auth.user = user
+    update: function (state, auth) {
+      state.auth = auth
     }
   },
 
@@ -26,12 +24,13 @@ const store = () => new Vuex.Store({
       let auth = null
       if (req.headers.cookie) {
         var parsed = cookieparser.parse(req.headers.cookie)
-        auth = JSON.parse(parsed.auth || {
-          user: null
-        })
+        if (!parsed.auth) {
+          return
+        }
+        auth = JSON.parse(parsed.auth)
       }
 
-      commit('SET_USER', auth.user)
+      commit('update', auth)
     },
     // TODO create login and logout methods
     async login({ commit }, { username, password }) {
@@ -48,10 +47,10 @@ const store = () => new Vuex.Store({
       } catch(error) {
         console.log(error.message)
       }
-      commit('SET_USER', username)
       const auth = {
         user: username
       }
+      commit('update', auth)
       Cookie.set('auth', auth)
     },
     async logout({ commit }) {
@@ -61,11 +60,8 @@ const store = () => new Vuex.Store({
       } catch(error) {
         console.log(error.message)
       }
-      commit('SET_USER', null)
-      const auth = {
-        user: null
-      }
-      Cookie.set('auth', auth)
+      commit('update', null)
+      Cookie.set('auth', null)
     }
   }
 })
