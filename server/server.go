@@ -14,10 +14,10 @@ func newServer() *server {
 		e: echo.New(),
 	}
 }
+
+// set routing this
 func (s *server) serverInit() {
-	s.e.GET("/", handler.Index)
-	s.e.GET("/:name", handler.Static)
-	s.e.Static("/css", "static/css")
+	s.e.POST("/auth", handler.Auth)
 }
 func (s *server) serverRun() {
 	s.e.Logger.Fatal(s.e.Start(":8080"))

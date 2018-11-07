@@ -9,8 +9,27 @@ import (
 	"github.com/mattn/go-slim"
 )
 
-func Index(c echo.Context) error {
-	return slimRender(c, "template/index.slim")
+type authData struct {
+	Username    string `json:"username"`
+	AccessToken string `json:"accessToken"`
+}
+type auth struct {
+	Success bool     `json:"success"`
+	Auth    authData `json:"auth"`
+}
+
+func Auth(c echo.Context) error {
+
+	data := authData{
+		Username:    "foo",
+		AccessToken: "bar",
+	}
+	result := &auth{
+		Success: true,
+		Auth:    data,
+	}
+
+	return c.JSON(http.StatusOK, result)
 }
 
 func Static(c echo.Context) error {

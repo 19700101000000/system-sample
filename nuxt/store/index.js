@@ -32,36 +32,30 @@ const store = () => new Vuex.Store({
 
       commit('update', auth)
     },
-    // TODO create login and logout methods
-    async login({ commit }, { username, password }) {
-      // const params = new URLSearchParams()
-      // params.append('username', username)
-      // params.append('password', password)
 
+    async login({ commit }, { username, password }) {
       try {
-        const { data } = await axios.post('/api/login', {
+        const { data } = await axios.post('/api/auth', {
           username: username,
           password: password
         })
-        console.log(data)
+        if(!data.success) {
+          return
+        }
+        commit('update', data.auth)
+        Cookie.set('auth', data.auth)
+
       } catch(error) {
         console.log(error.message)
+        return
       }
-      const auth = {
-        user: username
-      }
-      commit('update', auth)
-      Cookie.set('auth', auth)
+      window.location.href = '/'
     },
+
     async logout({ commit }) {
-      try {
-        const { data } = await axios.post('/api/logout')
-        console.log(data)
-      } catch(error) {
-        console.log(error.message)
-      }
       commit('update', null)
       Cookie.set('auth', null)
+      window.location.href = '/'
     }
   }
 })
