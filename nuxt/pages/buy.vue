@@ -7,7 +7,7 @@ div
 export default {
   fetch({ store, redirect }) {
     if (!store.state.auth) {
-      return redirect('/')
+      return redirect('/login')
     }
   }
 }
