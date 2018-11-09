@@ -35,5 +35,5 @@ export default {
 }
 </script>
 
-<stype lang="sass" scope>
-</stype>
+<style lang="sass" scope>
+</style>
