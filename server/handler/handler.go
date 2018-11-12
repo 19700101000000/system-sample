@@ -9,22 +9,13 @@ import (
 	"github.com/mattn/go-slim"
 )
 
-type authData struct {
-	Username    string `json:"username"`
-	AccessToken string `json:"accessToken"`
-}
-type auth struct {
-	Success bool     `json:"success"`
-	Auth    authData `json:"auth"`
-}
-
 func Auth(c echo.Context) error {
 
-	data := authData{
+	data := AuthData{
 		Username:    "foo",
 		AccessToken: "bar",
 	}
-	result := &auth{
+	result := &AuthResponse{
 		Success: true,
 		Auth:    data,
 	}
