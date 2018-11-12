@@ -1,3 +1,5 @@
-DROP DATABASE IF EXISTS `system_sample`;
+/* データベース削除 */
+DROP DATABASE IF EXISTS `ih2018_db`;
 
-CREATE DATABASE `system_sample`;
+/* データベース生成 */
+CREATE DATABASE `ih2018_db` CHARACTER SET utf8;
