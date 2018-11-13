@@ -33,7 +33,20 @@ export default {
     return{
       client_name  :null,
       employee_name:null,
-    }
+
+      client_name_options: [
+        { value: null, text: '顧客を選択してください' },
+        { value: 'a', text: '高田１世' },
+        { value: 'b', text: '高田2世' },
+        { value: 'c', text: '高田3世' },
+      ],
+      employee_name_options: [
+        { value: null, text: '担当者名を選択してください' },
+        { value: 'a', text: 'ぶちお' },
+        { value: 'b', text: 'ぶちこ' },
+        { value: 'c', text: 'プー太郎' },
+      ]
+     }
   }
 }
 </script>
