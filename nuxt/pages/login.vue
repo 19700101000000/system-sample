@@ -11,7 +11,9 @@ div
     b-col(sm="6")
       b-form-input#password(type="password" v-model="password" placeholder="YOUR PASSWORD")
   b-row.my-1(align-h="center")
-    b-col(sm="8")
+    b-col(sm="4")
+      b-button(variant="outline-danger" block) CANCEL
+    b-col(sm="4")
       b-button(variant="outline-success" @click="login" block) LOGIN
 
 </template>
