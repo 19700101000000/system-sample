@@ -2,34 +2,38 @@
 div
   b-row.my-1
     b-col
-      b-button(variant="outline-primary" block) 新規見積
+      b-button(href="/order_info/new" variant="outline-primary" block) 新規見積
   b-row.my-1
     b-col
-      b-tabs
-        b-tab(title="見積一覧" active)
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/order_info" variant="outline-info") 見積
+      b-card(no-body)
+        b-tabs(card)
+          b-tab(title="見積一覧" active)
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/order_info" variant="outline-info") 見積
 
-        b-tab(title="受注一覧")
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/order_info" variant="outline-info") 受注
+          b-tab(title="受注一覧")
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/order_info" variant="outline-info") 受注
 
-        b-tab(title="仕入一覧")
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/purchase_info" variant="outline-info") 仕入
+          b-tab(title="仕入一覧")
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/purchase_info" variant="outline-info") 仕入
 
-        b-tab(title="出荷一覧")
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/shipment_info" variant="outline-info") 出荷
+          b-tab(title="出荷一覧")
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/shipment_info" variant="outline-info") 出荷
 
-        b-tab(title="請求一覧")
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/invoice_info" variant="outline-info") 請求
+          b-tab(title="請求一覧")
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/invoice_info" variant="outline-info") 請求
 
-        b-tab(title="回収一覧")
-          buy-list.my-1(:fields="fields" :items="items")
-          b-button(href="/recovery_info" variant="outline-info") 回収
+          b-tab(title="回収一覧")
+            buy-list.my-1(:fields="fields" :items="items")
+            b-button(href="/recovery_info" variant="outline-info") 回収
 </template>
+
+<style lang="sass" scope>
+</style>
 
 <script>
 import BuyList from '~/components/List'

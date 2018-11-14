@@ -60,6 +60,9 @@ div
 
 <script>
 export default {
+  validate({params}) {
+    return /^\d+$|^new$/.test(params.id)
+  },
   fetch({store, redirect}) {
     if (!store.state.auth) {
       return redirect('/login')
@@ -67,6 +70,7 @@ export default {
   },
   data () {
     return {
+      id: '',
       client: null,
       employee: null,
       purchase_date: '1970-01-01',
@@ -92,6 +96,9 @@ export default {
         { value: 2, text: 'cccオークション' },
       ],
     }
+  },
+  mounted() {
+    this.id = this.$route.params.id
   }
 }
 </script>

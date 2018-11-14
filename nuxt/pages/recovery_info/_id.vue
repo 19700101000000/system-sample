@@ -23,6 +23,9 @@ div
 
 <script>
 export default {
+  validate({params}) {
+    return /^\d+$|^new$/.test(params.id)
+  },
   fetch({store, redirect}) {
     if (!store.state.auth) {
       return redirect('/login')
@@ -31,6 +34,7 @@ export default {
 
   data(){
     return{
+      id: '',
       client_name  :null,
       employee_name:null,
 
@@ -46,7 +50,10 @@ export default {
         { value: 'b', text: 'ぶちこ' },
         { value: 'c', text: 'プー太郎' },
       ]
-     }
+    }
+  },
+  mounted() {
+    this.id = this.$route.params.id
   }
 }
 </script>
