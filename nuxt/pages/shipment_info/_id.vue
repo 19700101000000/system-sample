@@ -2,7 +2,7 @@
 div
   b-row.my-1
     b-col(sm="2")
-      h1 受注
+      h1 出荷
     b-col(sm="10")
       p No.99999999
 
