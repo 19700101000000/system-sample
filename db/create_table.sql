@@ -147,7 +147,6 @@ CREATE TABLE `buy_orders`(
  `car_interior_color` VARCHAR(20),
  `car_model_no` VARCHAR(20),
  `insert_date` TIMESTAMP,
- `delivery_flag` BOOLEAN,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`client_id`) REFERENCES `client`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
