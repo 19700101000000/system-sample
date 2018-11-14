@@ -1,20 +1,23 @@
 <template lang="pug">
 div
   b-row.my-1
-    b-col(sm="2")
-      h1 出荷
-    b-col(sm="10")
-      p No.99999999
+    b-col
+      b-card(title="出荷")
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p NO
+          b-col(sm="11")
+            p {{id}}
 
-  b-row.my-1(align-h="center")
-    b-col.text-left(sm="1")
-      label(for="client_name") 顧客
-    b-col(sm="4")
-      b-form-select#client_name(type="text" v-model="client_name" :options="client_name_options")
-    b-col.text-center(sm="1")
-      label(for="employee_name") 担当者
-    b-col(sm="4")
-      b-form-select#employee_name(type="text" v-model="employee_name" :options="employee_name_options")
+        b-row.my-1(align-h="center")
+          b-col.text-right(sm="1")
+            label(for="client_name") 顧客
+          b-col(sm="5")
+            b-form-select#client_name(type="text" v-model="client_name" :options="client_name_options")
+          b-col.text-right(sm="1")
+            label(for="employee_name") 担当者
+          b-col(sm="5")
+            b-form-select#employee_name(type="text" v-model="employee_name" :options="employee_name_options")
 
   b-row.my-1(align-h="center")
     b-col(sm="2")
@@ -40,12 +43,12 @@ export default {
 
       client_name_options: [
         { value: null, text: '顧客を選択してください' },
-        { value: 'a', text: '高田１世' },
+        { value: 'a', text: '高田1世' },
         { value: 'b', text: '高田2世' },
         { value: 'c', text: '高田3世' },
       ],
       employee_name_options: [
-        { value: null, text: '担当者名を選択してください' },
+        { value: null, text: '担当者を選択してください' },
         { value: 'a', text: 'ぶちお' },
         { value: 'b', text: 'ぶちこ' },
         { value: 'c', text: 'プー太郎' },

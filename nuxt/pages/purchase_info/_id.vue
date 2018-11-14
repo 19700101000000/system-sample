@@ -1,55 +1,66 @@
 <template lang="pug">
 div
   b-row.my-1
-    b-col(sm="2")
-      h1 仕入
-    b-col(sm="10")
-      p ID:999,999,999
+    b-col
+      b-card(title="仕入")
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p NO
+          b-col(sm="11")
+            p {{id}}
 
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 顧客
-    b-col(sm="4")
-      b-form-select(v-model="client" :options="client_options")
-    b-col(sm="1")
-      p 担当者
-    b-col(sm="4")
-      b-form-select(v-model="employee" :options="employee_options")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 仕入日
-    b-col(sm="9")
-      b-form-input(type="date" v-model="purchase_date")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 仕入先
-    b-col(sm="9")
-      b-form-select(v-model="supplier" :options="supplier_options")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 出品番号
-    b-col(sm="9")
-      b-form-input(type="text" v-model="listing_no")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 名変期限
-    b-col(sm="9")
-      b-form-input(type="date" v-model="car_name_deadline")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 仕入原価
-    b-col(sm="9")
-      b-form-input(type="number" v-model="purchase_cost")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 手数料
-    b-col(sm="9")
-      b-form-input(type="number" v-model="fee")
-  b-row.my-1(align-h="center")
-    b-col(sm="1")
-      p 車
-    b-col(sm="9")
-      b-button(variant="outline-primary" v-b-modal.car-modal block) 車詳細
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 顧客
+          b-col(sm="5")
+            b-form-select(v-model="client" :options="client_options")
+          b-col.text-right(sm="1")
+            p 担当者
+          b-col(sm="5")
+            b-form-select(v-model="employee" :options="employee_options")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 仕入日
+          b-col(sm="11")
+            b-form-input(type="date" v-model="purchase_date")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 仕入先
+          b-col(sm="11")
+            b-form-select(v-model="supplier" :options="supplier_options")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 出品番号
+          b-col(sm="11")
+            b-form-input(type="text" v-model="listing_no")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 名変期限
+          b-col(sm="11")
+            b-form-input(type="date" v-model="car_name_deadline")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 仕入原価
+          b-col(sm="11")
+            b-form-input(type="number" v-model="purchase_cost")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 手数料
+          b-col(sm="11")
+            b-form-input(type="number" v-model="fee")
+
+        b-row.my-1
+          b-col.text-right(sm="1")
+            p 車
+          b-col(sm="11")
+            b-button(variant="outline-primary" v-b-modal.car-modal block) 車詳細
+
   b-row.my-1(align-h="center")
     b-col(sm="2")
       b-button(variant="outline-success" block) 登録
