@@ -1,7 +1,7 @@
 
 /*社員テーブル*/
 CREATE TABLE `employee`(
- `id` CHAR(10), 
+ `id` CHAR(7), 
  `password` VARCHAR(255), 
  `name` VARCHAR(50), 
  `sex` BOOLEAN, 
@@ -90,7 +90,7 @@ CREATE TABLE `car_information_repair`(
 
 /*金融機関テーブル*/
 CREATE TABLE `financial_institution`(
- `id` CHAR(15), 
+ `id` CHAR(4), 
  `name` VARCHAR(50),
  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -98,7 +98,7 @@ CREATE TABLE `financial_institution`(
 /*金融機関支店テーブル*/
 CREATE TABLE `financial_institution_branch`(
  `id` INT AUTO_INCREMENT, 
- `financial_institution_id` CHAR(15),
+ `financial_institution_id` CHAR(4),
  `branch_id` CHAR(3), 
  `name` VARCHAR(50), 
  PRIMARY KEY(`id`),
@@ -146,6 +146,8 @@ CREATE TABLE `buy_orders`(
  `car_exterior_color` VARCHAR(20),
  `car_interior_color` VARCHAR(20),
  `car_model_no` VARCHAR(20),
+ `insert_date` TIMESTAMP,
+ `delivery_flag` BOOLEAN,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`client_id`) REFERENCES `client`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -173,6 +175,7 @@ CREATE TABLE `buy_purchase`(
  `payment_flag` BOOLEAN, 
  `quantity` INT, 
  `car_information_id` INT, 
+ `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`buy_orders_id`) REFERENCES `buy_orders`(`id`),
  FOREIGN KEY(`suppliers_id`) REFERENCES `suppliers`(`id`),
@@ -190,6 +193,7 @@ CREATE TABLE `buy_claim`(
  `other_banks_ticket` CHAR(10),
  `payment_classification` CHAR(1),
  `edi_information` CHAR(20),
+ `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`buy_purchase_id`) REFERENCES `buy_purchase`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -200,6 +204,7 @@ CREATE TABLE `buy_recovery`(
  `buy_claim_id` INT, 
  `recovery_price` VARCHAR(15), 
  `recovery_date` DATE, 
+ `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`buy_claim_id`) REFERENCES `buy_claim`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -208,7 +213,7 @@ CREATE TABLE `buy_recovery`(
 CREATE TABLE `log_change`(
  `data_type` INT,
  `data_id` INT,
- `employee_id` CHAR(10),
+ `employee_id` CHAR(7),
  `data_comment` TEXT,
  PRIMARY KEY(`data_type`,`data_id`),
  FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
