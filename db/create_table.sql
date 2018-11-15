@@ -1,3 +1,4 @@
+use `ih2018_db`;
 
 /*社員テーブル*/
 CREATE TABLE `employee`(
@@ -172,8 +173,8 @@ CREATE TABLE `buy_purchase`(
  `purchase_availability` BOOLEAN, 
  `document_flag` BOOLEAN, 
  `payment_flag` BOOLEAN, 
- `delivery_date`	DATE
- `delivery_flag`	BOOLEAN
+ `delivery_date`	DATE,
+ `delivery_flag`	BOOLEAN,
  `car_information_id` INT, 
  `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
@@ -188,8 +189,8 @@ CREATE TABLE `buy_claim`(
  `buy_purchase_id` INT, 
  `deadline` DATE, 
  `billed` BOOLEAN,
- `from_date` CHAR(6),
- `to_date` CHAR(6),
+ `from_date` DATE,
+ `to_date` DATE,
  `other_banks_ticket` CHAR(10),
  `payment_classification` CHAR(1),
  `edi_information` CHAR(20),
@@ -211,10 +212,11 @@ CREATE TABLE `buy_recovery`(
 
 /*変更ログテーブル*/
 CREATE TABLE `log_change`(
+ `id` INT AUTO_INCREMENT,
  `data_type` INT,
  `data_id` INT,
  `employee_id` CHAR(7),
  `data_comment` TEXT,
- PRIMARY KEY(`data_type`,`data_id`),
+ PRIMARY KEY(`id`,`data_type`,`data_id`),
  FOREIGN KEY(`employee_id`) REFERENCES `employee`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
