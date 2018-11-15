@@ -27,7 +27,7 @@ CREATE TABLE `car_information`(
  `drivesystem` BOOLEAN, 
  `doors` INT, 
  `shape` CHAR(2), 
- `carbody_no` VARCHAR(20), 
+ `carbody_no` VARCHAR(50), 
  `loadingcapacity` CHAR(6), 
  `mileage` CHAR(6), 
  `exteriorcolor` VARCHAR(10), 
@@ -172,7 +172,8 @@ CREATE TABLE `buy_purchase`(
  `purchase_availability` BOOLEAN, 
  `document_flag` BOOLEAN, 
  `payment_flag` BOOLEAN, 
- `quantity` INT, 
+ `delivery_date`	DATE
+ `delivery_flag`	BOOLEAN
  `car_information_id` INT, 
  `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
