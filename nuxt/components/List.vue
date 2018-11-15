@@ -2,6 +2,15 @@
 div
   b-row.my-1
     b-col
+      b-form-radio-group(
+        v-model="radio_checked"
+        buttons
+        button-variant="outline-primary"
+        :options="info.radios"
+      )
+
+  b-row.my-1
+    b-col
       b-form-input(type="text" v-model="filter" placeholder="検索")
   b-row.my-1
     b-col
@@ -9,6 +18,7 @@ div
         striped
         hover
         fixed
+        outlined
         :filter="filter"
         :fields="fields"
         :items="items"
@@ -17,7 +27,7 @@ div
         @filtered="onFiltered"
       )
         template(slot="id" slot-scope="data")
-          a(:href="baseUrl + data.value") {{ data.value }}
+          a(:href="info.base_url + data.value") {{ data.value }}
         template(slot="client" slot-scope="data")
           a(:href="'#' + data.value.id") {{ data.value.name }}
         template(slot="employee" slot-scope="data")
@@ -31,14 +41,19 @@ div
         v-model="current_page"
       )
 </template>
+
+<style lang="sass" scope>
+</style>
+
 <script>
 export default {
-  props: ['baseUrl', 'fields', 'items'],
+  props: ['info', 'fields', 'items'],
   data () {
     return {
+      radio_checked: 0,
       current_page: 1,
       filter: '',
-      per_page: 5,
+      per_page: 10,
       total_rows: this.items.length
     }
   },
@@ -50,6 +65,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scope>
-</style>
