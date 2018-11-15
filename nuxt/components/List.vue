@@ -17,7 +17,7 @@ div
         @filtered="onFiltered"
       )
         template(slot="id" slot-scope="data")
-          a(:href="'#' + data.value") {{ data.value }}
+          a(:href="baseUrl + data.value") {{ data.value }}
         template(slot="client" slot-scope="data")
           a(:href="'#' + data.value.id") {{ data.value.name }}
         template(slot="employee" slot-scope="data")
@@ -33,7 +33,7 @@ div
 </template>
 <script>
 export default {
-  props: ['fields', 'items'],
+  props: ['baseUrl', 'fields', 'items'],
   data () {
     return {
       current_page: 1,

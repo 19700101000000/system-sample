@@ -10,9 +10,13 @@ import (
 )
 
 func Auth(c echo.Context) error {
+	login := new(LoginRequest)
+	if err := c.Bind(login); err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
 
 	data := AuthData{
-		Username:    "foo",
+		Username:    login.Username,
 		AccessToken: "bar",
 	}
 	result := &AuthResponse{

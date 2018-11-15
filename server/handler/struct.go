@@ -8,3 +8,7 @@ type AuthResponse struct {
 	Success bool     `json:"success"`
 	Auth    AuthData `json:"auth"`
 }
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
