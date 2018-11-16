@@ -9,42 +9,42 @@ div
         b-tabs(card)
           b-tab(title="見積一覧" active)
             buy-list.my-1(
-              base-url="/order_info/"
+              :info="estimate_info"
               :fields="estimate_fields"
               :items="estimate_items"
             )
 
           b-tab(title="受注一覧")
             buy-list.my-1(
-              base-url="/order_info/"
+              :info="order_info"
               :fields="order_fields"
               :items="order_items"
             )
 
           b-tab(title="仕入一覧")
             buy-list.my-1(
-              base-url="/purchase_info/"
+              :info="purchase_info"
               :fields="purchase_fields"
               :items="purchase_items"
             )
 
           b-tab(title="出荷一覧")
             buy-list.my-1(
-              base-url="/shipment_info/"
+              :info="shipment_info"
               :fields="shipment_fields"
               :items="shipment_items"
             )
 
           b-tab(title="請求一覧")
             buy-list.my-1(
-              base-url="/invoice_info/"
+              :info="invoice_info"
               :fields="invoice_fields"
               :items="invoice_items"
             )
 
           b-tab(title="回収一覧")
             buy-list.my-1(
-              base-url="/recovery_info/"
+              :info="recovery_info"
               :fields="recovery_fields"
               :items="recovery_items"
             )
@@ -66,6 +66,45 @@ export default {
   },
   data () {
     return {
+      estimate_info: {
+        base_url: '/order_info/',
+        radios: [
+          {text: '見積中', value: 0},
+          {text: '受注済', value: 1},
+        ],
+      },
+      order_info: {
+        base_url: '/order_info/',
+        radios: [
+          {text: '受注中', value: 0},
+          {text: '仕入済', value: 1},
+        ],
+      },
+      purchase_info: {
+        base_url: '/purchase_info/',
+        radios: [
+          {text: '仕入中', value: 0},
+          {text: '出荷済', value: 1},
+        ],
+      },
+      shipment_info: {
+        base_url: '/shipment_info/',
+        radios: [
+          {text: '出荷中', value: 0},
+          {text: '請求済', value: 1},
+        ],
+      },
+      invoice_info: {
+        base_url: '/invoice_info/',
+        radios: [
+          {text: '請求中', value: 0},
+          {text: '回収済', value: 1},
+        ],
+      },
+      recovery_info: {
+        base_url: '/recovery_info/',
+        radios: [],
+      },
       estimate_fields: [
         {key: 'id', label: '見積', sortable: true},
         {key: 'client', label: '顧客', sortable: true},
@@ -104,6 +143,46 @@ export default {
       ],
       estimate_items: [
         {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
         {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
       ],
       order_items: [
