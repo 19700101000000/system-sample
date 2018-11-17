@@ -1,5 +1,6 @@
 <template lang="pug">
 div
+  info-header(:info="info_header")
   b-row.my-1
     b-col
       b-card(title="請求")
@@ -25,6 +26,7 @@ div
 </template>
 
 <script>
+import InfoHeader from '~/components/InfoHeader'
 export default {
   validate({params}) {
     return /^\d+$|^new$/.test(params.id)
@@ -34,9 +36,17 @@ export default {
       return redirect('/login')
     }
   },
-
+  components: {
+    InfoHeader
+  },
   data(){
     return{
+      info_header: {
+        next: {
+          text: '回収',
+          url: '',
+        }
+      },
       id: '',
       client_name  :null,
       employee_name:null,
@@ -57,6 +67,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id
+    this.info_header.next.url = '/recovery_info/' + this.id
   }
 }
 </script>
