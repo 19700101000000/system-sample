@@ -46,7 +46,7 @@ div
             buy-list.my-1(
               :info="recovery_info"
               :fields="recovery_fields"
-              :items="recovery_items"
+              striped outline :items="recovery_items"
             )
 </template>
 
@@ -54,7 +54,9 @@ div
 </style>
 
 <script>
+import axios from 'axios'
 import BuyList from '~/components/List'
+
 export default {
   fetch({ store, redirect }) {
     if (!store.state.auth) {
@@ -202,8 +204,8 @@ export default {
         {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
       ],
       recovery_items: [
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
+        // {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
+        // {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
       ],
     }
   }

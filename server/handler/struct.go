@@ -12,12 +12,3 @@ type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
-
-type DisplayOrdersTable struct {
-	BuyOrdersId  string `json:"ordersid"`
-	ClientId     string `json:"clientid"`
-	ClientName   string `json:"clientname"`
-	EmployeeId   string `json:"employeeid"`
-	EmployeeName string `json:"employeename"`
-	InsertDate   string `json:"insertdate"`
-}
