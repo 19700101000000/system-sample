@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id
-    this.info_header.next.url = '/invoice_info/' + this.id
+    this.info_header.next.url = `/invoice_info/new?shipment_id=${this.id}`
   }
 }
 </script>
