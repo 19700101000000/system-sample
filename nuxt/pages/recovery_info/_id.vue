@@ -1,5 +1,6 @@
 <template lang="pug">
 div
+  info-header(:info="{}")
   b-row.my-1
     b-col
       b-card(title="回収")
@@ -25,6 +26,7 @@ div
 </template>
 
 <script>
+import InfoHeader from '~/components/InfoHeader'
 export default {
   validate({params}) {
     return /^\d+$|^new$/.test(params.id)
@@ -34,7 +36,9 @@ export default {
       return redirect('/login')
     }
   },
-
+  components: {
+    InfoHeader
+  },
   data(){
     return{
       id: '',
