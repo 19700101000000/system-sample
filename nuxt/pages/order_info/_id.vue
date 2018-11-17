@@ -177,7 +177,8 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id
-    this.info_header.next.url = '/purchase_info/' + this.id
+    this.info_header.next.url = `/purchase_info/new?order_id=${this.id}`
+    // this.$route.query.order_id
   }
 }
 </script>
