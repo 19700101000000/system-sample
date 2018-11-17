@@ -147,6 +147,7 @@ CREATE TABLE `buy_orders`(
  `car_exterior_color` VARCHAR(20),
  `car_interior_color` VARCHAR(20),
  `car_model_no` VARCHAR(20),
+ `employee_id` CHAR(10),
  `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`client_id`) REFERENCES `client`(`id`)

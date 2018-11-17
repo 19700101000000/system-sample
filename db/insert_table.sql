@@ -245,7 +245,8 @@ INSERT INTO `buy_orders`(
     `car_budget`,
     `car_exterior_color`,
     `car_interior_color`,
-    `car_model_no`
+    `car_model_no`,
+    `employee_id`
 ) VALUES (
     '1',
     '1',
@@ -256,7 +257,8 @@ INSERT INTO `buy_orders`(
     '100000',
     '0',
     '12',
-    'DAA-ZWR80G'
+    'DAA-ZWR80G',
+    'SL18A01'
 ),(
     '2',
     '1',
@@ -267,7 +269,8 @@ INSERT INTO `buy_orders`(
     '300000',
     '1',
     '11',
-    'DBA-ZWR81G'
+    'DBA-ZWR81G',
+    'SL18A01'
 ),(
     '3',
     '1',
@@ -278,7 +281,8 @@ INSERT INTO `buy_orders`(
     '350000',
     '2',
     '2',
-    'AAA-ZQR80B'
+    'AAA-ZQR80B',
+    'SL18A01'
 ),(
     '1',
     '2',
@@ -289,7 +293,8 @@ INSERT INTO `buy_orders`(
     '200000',
     '5',
     '6',
-    'DBA-ZNM80G'
+    'DBA-ZNM80G',
+    'SL18A01'
 ),(
     '2',
     '2',
@@ -300,7 +305,8 @@ INSERT INTO `buy_orders`(
     '250000',
     '9',
     '10',
-    'LAA-ZLP81G'
+    'LAA-ZLP81G',
+    'SL18A01'
 );
 
 /*買注文仕入テーブル*/
@@ -373,7 +379,7 @@ INSERT INTO `buy_purchase`(
 ),(
     '4', 
     '2018-11-03', 
-    '1', 
+    '2', 
     '400,000', 
     '365,043', 
     NULL, 
@@ -395,7 +401,7 @@ INSERT INTO `buy_purchase`(
 ),(
     '5', 
     '2018-11-03', 
-    '1', 
+    '3', 
     '188,000', 
     '21,340', 
     NULL, 
