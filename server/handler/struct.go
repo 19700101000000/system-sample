@@ -13,6 +13,11 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type DisplayTable struct {
-	Orderid string `json:"id"`
+type DisplayOrdersTable struct {
+	BuyOrdersId  string `json:"ordersid"`
+	ClientId     string `json:"clientid"`
+	ClientName   string `json:"clientname"`
+	EmployeeId   string `json:"employeeid"`
+	EmployeeName string `json:"employeename"`
+	InsertDate   string `json:"insertdate"`
 }
