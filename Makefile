@@ -51,6 +51,7 @@ macbuild:
 macrestart:
 	docker-compose restart
 macinitdb:
-	cat db/create_db.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot
-	cat db/create_table.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -uroot -proot $(DB_NAME)
+	cat db/create_db.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -u${DB_USER} -p${DB_PASS}
+	cat db/create_table.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -u${DB_USER} -p${DB_PASS} $(DB_NAME)
+	cat db/insert_table.sql | docker exec -i $(DB_CONTAINER_NAME) mysql -h 127.0.0.1 -u${DB_USER} -p${DB_PASS} $(DB_NAME)
 
