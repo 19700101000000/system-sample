@@ -16,23 +16,36 @@ func DisplayOrdersTable(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	var responseJson []struct {
-		Id   int64
-		Text string
-	}
+	listDatas := []ListData{}
+	// var listDatas []struct {
+	// 	Id      int64 `json:"id"`
+	// 	Clients []struct {
+	// 		Id string `json:"id"`
+	// 		Name string `json:"name"`
+	// 	}
+	// 	Employee []struct {oneData []struct{}} `json:"employee"`
+	// 	Date string `json:"date"`
+	// }
 
 	for i := int64(0); i < num; i++ {
-		responseJson = append(
-			responseJson,
+
+		// User1 := User{{ID: "", Name: ""}}
+
+		listDatas = append(
+			listDatas,
 			struct {
-				Id   int64
-				Text string
+				ID       int64  `json:"id"`
+				Client   User   `json:"client"`
+				Employee User   `json:"employee"`
+				Date     string `json:"date"`
 			}{
-				Id:   i,
-				Text: string('a' + i%26),
+				ID:       i,
+				Client:   User{ID: "クライアントID", Name: "クライアント氏名"},
+				Employee: User{ID: "", Name: ""},
+				Date:     "2018年11月19日",
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, responseJson)
+	return c.JSON(http.StatusOK, listDatas)
 }

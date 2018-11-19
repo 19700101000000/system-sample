@@ -12,3 +12,14 @@ type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+type User struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+type ListData struct {
+	ID       int64  `json:"id"`
+	Client   User   `json:"client"`
+	Employee User   `json:"employee"`
+	Date     string `json:"date"`
+}

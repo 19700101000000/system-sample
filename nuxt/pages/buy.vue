@@ -46,7 +46,8 @@ div
             buy-list.my-1(
               :info="recovery_info"
               :fields="recovery_fields"
-              striped outline :items="recovery_items"
+              :items="recovery_items"
+              @click="getItems"
             )
 </template>
 
@@ -143,50 +144,7 @@ export default {
         {key: 'employee', label: '担当者', sortable: true},
         {key: 'date', label: '作成日', sortable: true},
       ],
-      estimate_items: [
-        {id: 'ここ!!', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'END' }, date: '2018-11-22'},
-      ],
+      estimate_items: [],
       order_items: [
         {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
         {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
@@ -203,11 +161,21 @@ export default {
         {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
         {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
       ],
-      recovery_items: [
-        // {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        // {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-      ],
+      recovery_items: [],
     }
+  },
+  methods: {
+    getItems: async function() {
+      try {
+        const { data } = await axios.get(`/api/display/5`)
+        this.recovery_items = data
+      } catch(error) {
+        console.log(error.message)
+      }
+    }
+  },
+  mounted() {
+    this.getItems()
   }
 }
 </script>
