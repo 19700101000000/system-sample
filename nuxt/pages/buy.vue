@@ -12,6 +12,7 @@ div
               :info="estimate_info"
               :fields="estimate_fields"
               :items="estimate_items"
+              @click="getItems"
             )
 
           b-tab(title="受注一覧")
@@ -19,6 +20,7 @@ div
               :info="order_info"
               :fields="order_fields"
               :items="order_items"
+              @click="getItems"
             )
 
           b-tab(title="仕入一覧")
@@ -26,6 +28,7 @@ div
               :info="purchase_info"
               :fields="purchase_fields"
               :items="purchase_items"
+              @click="getItems"
             )
 
           b-tab(title="出荷一覧")
@@ -33,6 +36,7 @@ div
               :info="shipment_info"
               :fields="shipment_fields"
               :items="shipment_items"
+              @click="getItems"
             )
 
           b-tab(title="請求一覧")
@@ -40,6 +44,7 @@ div
               :info="invoice_info"
               :fields="invoice_fields"
               :items="invoice_items"
+              @click="getItems"
             )
 
           b-tab(title="回収一覧")
@@ -48,6 +53,7 @@ div
               :fields="recovery_fields"
               :items="recovery_items"
               @click="getItems"
+              :value="5"
             )
 </template>
 
@@ -167,7 +173,7 @@ export default {
   methods: {
     getItems: async function() {
       try {
-        const { data } = await axios.get(`/api/display/5`)
+        const { data } = await axios.get(`/api/display/${this.value}`)
         this.recovery_items = data
       } catch(error) {
         console.log(error.message)

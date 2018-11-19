@@ -17,19 +17,8 @@ func DisplayOrdersTable(c echo.Context) error {
 	}
 
 	listDatas := []ListData{}
-	// var listDatas []struct {
-	// 	Id      int64 `json:"id"`
-	// 	Clients []struct {
-	// 		Id string `json:"id"`
-	// 		Name string `json:"name"`
-	// 	}
-	// 	Employee []struct {oneData []struct{}} `json:"employee"`
-	// 	Date string `json:"date"`
-	// }
 
 	for i := int64(0); i < num; i++ {
-
-		// User1 := User{{ID: "", Name: ""}}
 
 		listDatas = append(
 			listDatas,
@@ -41,7 +30,7 @@ func DisplayOrdersTable(c echo.Context) error {
 			}{
 				ID:       i,
 				Client:   User{ID: "クライアントID", Name: "クライアント氏名"},
-				Employee: User{ID: "", Name: ""},
+				Employee: User{ID: "社員ID", Name: "社員氏名"},
 				Date:     "2018年11月19日",
 			},
 		)
