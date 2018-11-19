@@ -29,8 +29,8 @@ func DisplayOrdersTable(c echo.Context) error {
 				Date     string `json:"date"`
 			}{
 				ID:       i,
-				Client:   User{ID: "クライアントID", Name: "クライアント氏名"},
-				Employee: User{ID: "社員ID", Name: "社員氏名"},
+				Client:   User{ID: "999999", Name: "クライアント氏名"},
+				Employee: User{ID: "99999", Name: "社員氏名"},
 				Date:     "2018年11月19日",
 			},
 		)

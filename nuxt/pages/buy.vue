@@ -12,7 +12,6 @@ div
               :info="estimate_info"
               :fields="estimate_fields"
               :items="estimate_items"
-              @click="getItems"
             )
 
           b-tab(title="受注一覧")
@@ -20,7 +19,6 @@ div
               :info="order_info"
               :fields="order_fields"
               :items="order_items"
-              @click="getItems"
             )
 
           b-tab(title="仕入一覧")
@@ -28,7 +26,6 @@ div
               :info="purchase_info"
               :fields="purchase_fields"
               :items="purchase_items"
-              @click="getItems"
             )
 
           b-tab(title="出荷一覧")
@@ -36,7 +33,6 @@ div
               :info="shipment_info"
               :fields="shipment_fields"
               :items="shipment_items"
-              @click="getItems"
             )
 
           b-tab(title="請求一覧")
@@ -44,7 +40,6 @@ div
               :info="invoice_info"
               :fields="invoice_fields"
               :items="invoice_items"
-              @click="getItems"
             )
 
           b-tab(title="回収一覧")
@@ -52,8 +47,7 @@ div
               :info="recovery_info"
               :fields="recovery_fields"
               :items="recovery_items"
-              @click="getItems"
-              :value="5"
+              @click="getItems(5)"
             )
 </template>
 
@@ -151,30 +145,18 @@ export default {
         {key: 'date', label: '作成日', sortable: true},
       ],
       estimate_items: [],
-      order_items: [
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-      ],
-      purchase_items: [
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-      ],
-      shipment_items: [
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-      ],
-      invoice_items: [
-        {id: '999999999', employee: { id: '111111111', name: 'aaa' }, client: { id: '333333333', name:  'AAA' }, date: '2018-11-11'},
-        {id: '888888888', employee: { id: '222222222', name: 'bbb' }, client: { id: '444444444', name:  'BBB' }, date: '2018-11-22'},
-      ],
+      order_items: [],
+      purchase_items: [],
+      shipment_items: [],
+      invoice_items: [],
       recovery_items: [],
     }
   },
   methods: {
-    getItems: async function() {
+    getItems: async function(index) {
       try {
-        const { data } = await axios.get(`/api/display/5`)
-        this.recovery_items = data
+        const { data } = await axios.get(`/api/display/${this.index}`)
+        this.estimate_items = data
       } catch(error) {
         console.log(error.message)
       }
