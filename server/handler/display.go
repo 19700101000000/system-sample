@@ -18,7 +18,7 @@ func DisplayOrdersTable(c echo.Context) error {
 
 	listDatas := []ListData{}
 
-	for i := int64(0); i < num; i++ {
+	for i := int64(0); i < 5; i++ {
 
 		listDatas = append(
 			listDatas,
@@ -28,7 +28,7 @@ func DisplayOrdersTable(c echo.Context) error {
 				Employee User   `json:"employee"`
 				Date     string `json:"date"`
 			}{
-				ID:       i,
+				ID:       num,
 				Client:   User{ID: "999999", Name: "クライアント氏名"},
 				Employee: User{ID: "99999", Name: "社員氏名"},
 				Date:     "2018年11月19日",
