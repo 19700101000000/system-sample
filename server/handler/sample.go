@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 	"net/http"
 	"strconv"
@@ -33,4 +35,13 @@ func Sample(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, responseJson)
+}
+
+func SampleDB(c echo.Context) error {
+	db, err := sql.Open("mysql", "root:root@DB_HOST/ih2018_db")
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "fail db connection")
+	}
+	defer db.Close()
+	return c.String(http.StatusOK, "success db connection")
 }
