@@ -173,7 +173,7 @@ export default {
   methods: {
     getItems: async function() {
       try {
-        const { data } = await axios.get(`/api/display/${this.value}`)
+        const { data } = await axios.get(`/api/display/5`)
         this.recovery_items = data
       } catch(error) {
         console.log(error.message)
