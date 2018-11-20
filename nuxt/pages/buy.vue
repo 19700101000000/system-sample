@@ -2,6 +2,8 @@
 div
   b-row.my-1
     b-col
+      b-button(@click="sample" block) sample
+    b-col
       b-button(href="/order_info/new" variant="outline-primary" block) 新規見積
   b-row.my-1
     b-col
@@ -9,6 +11,7 @@ div
         b-tabs(card)
           b-tab(title="見積一覧" @click="getItems(0)" active)
             buy-list.my-1(
+              ref="checked_list"
               :info="estimate_info"
               :fields="estimate_fields"
               :items="estimate_items"
@@ -17,6 +20,7 @@ div
 
           b-tab(title="受注一覧" @click="getItems(1)")
             buy-list.my-1(
+              ref="checked_list"
               :info="order_info"
               :fields="order_fields"
               :items="order_items"
@@ -25,6 +29,7 @@ div
 
           b-tab(title="仕入一覧" @click="getItems(2)")
             buy-list.my-1(
+              ref="checked_list"
               :info="purchase_info"
               :fields="purchase_fields"
               :items="purchase_items"
@@ -33,6 +38,7 @@ div
 
           b-tab(title="出荷一覧" @click="getItems(3)")
             buy-list.my-1(
+              ref="checked_list"
               :info="shipment_info"
               :fields="shipment_fields"
               :items="shipment_items"
@@ -41,6 +47,7 @@ div
 
           b-tab(title="請求一覧" @click="getItems(4)")
             buy-list.my-1(
+              ref="checked_list"
               :info="invoice_info"
               :fields="invoice_fields"
               :items="invoice_items"
@@ -166,7 +173,9 @@ export default {
   methods: {
     getItems: async function(id) {
       try {
-        const { data } = await axios.get(`/api/display/${id}`)
+        let flag = 0
+        flag = this.$refs.checked_list.$data.radio_checked
+        const { data } = await axios.get(`/api/display/${id}?listflag=${flag}`)
         switch(id) {
         case this.estimate_id:
           this.estimate_items = data
@@ -190,10 +199,15 @@ export default {
       } catch(error) {
         console.log(error.message)
       }
+      console.log("foo")
+    },
+    sample() {
+      alert(this.$refs.estimate_list.$data.radio_checked)
     }
   },
   mounted() {
     this.getItems(this.estimate_id)
+    console.log("bar")
   }
 }
 </script>

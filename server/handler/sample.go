@@ -2,10 +2,11 @@ package handler
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/labstack/echo"
 	"net/http"
 	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/labstack/echo"
 )
 
 func Sample(c echo.Context) error {

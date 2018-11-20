@@ -23,3 +23,7 @@ type ListData struct {
 	Employee User   `json:"employee"`
 	Date     string `json:"date"`
 }
+type ListRequest struct {
+	ListType int64 `json:"listtype"`
+	ListFlag int64 `json:"listflag"`
+}
