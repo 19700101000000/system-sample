@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/ShikinamiAsuka/ih13/server/sql"
+	"github.com/labstack/echo"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 )
@@ -39,10 +42,12 @@ func Sample(c echo.Context) error {
 }
 
 func SampleDB(c echo.Context) error {
-	db, err := sql.Open("mysql", "root:root@DB_HOST/ih2018_db")
+	db, err := sql.NewDB()
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "fail db connection")
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
 	defer db.Close()
-	return c.String(http.StatusOK, "success db connection")
+
+	employees := sql.SelectEmployees(db)
+	return c.JSON(http.StatusOK, employees)
 }

@@ -7,6 +7,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: server
       MYSQL_PASSWORD: server
+    volumes:
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
   nuxt:
     build: nuxt
     volumes:
