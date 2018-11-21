@@ -20,7 +20,7 @@ type EmployeeUser struct {
 	Employee_id   string `json:"id"`
 	Employee_name string `json:"name"`
 }
-type Buy_order struct {
+type BuyOrderListItem struct {
 	Buy_orders_id int64     `json:"id"`
 	Client_id     string    `json:"client_id"`
 	Client_name   string    `json:"client_name"`

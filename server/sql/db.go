@@ -22,8 +22,8 @@ func SelectEmployees(db *gorm.DB) []Employee {
 }
 
 //受注・見積りリスト
-func SelectOrderList(db *gorm.DB) []Buy_order {
-	orderlist := []Buy_order{}
+func SelectOrderList(db *gorm.DB) []BuyOrderListItem {
+	orderlist := []BuyOrderListItem{}
 
 	query := db.Table("buy_orders bo").
 		Select("bo.id AS buy_orders_id,bo.client_id,c.name AS client_name,bo.employee_id,e.name AS employee_name,bo.insert_date AS insert_date,WEEKDAY(bo.insert_date) AS weekday").
@@ -35,7 +35,7 @@ func SelectOrderList(db *gorm.DB) []Buy_order {
 	}
 
 	for rows.Next() {
-		bOrder := Buy_order{}
+		bOrder := BuyOrderListItem{}
 		err := query.ScanRows(rows, &bOrder)
 		if err != nil {
 			log.Fatal(err)
@@ -46,8 +46,8 @@ func SelectOrderList(db *gorm.DB) []Buy_order {
 }
 
 //仕入リスト
-func SelectPurchaseList(db *gorm.DB) []Buy_order {
-	purchaseList := []Buy_order{}
+func SelectPurchaseList(db *gorm.DB) []BuyOrderListItem {
+	purchaseList := []BuyOrderListItem{}
 
 	query := db.Table("buy_orders bo").
 		Select("bo.id AS buy_orders_id,bo.client_id,c.name AS client_name,bo.employee_id,e.name AS employee_name,bo.insert_date AS insert_date,WEEKDAY(bo.insert_date) AS weekday").
@@ -59,7 +59,7 @@ func SelectPurchaseList(db *gorm.DB) []Buy_order {
 	}
 
 	for rows.Next() {
-		bOrder := Buy_order{}
+		bOrder := BuyOrderListItem{}
 		err := query.ScanRows(rows, &bOrder)
 		if err != nil {
 			log.Fatal(err)

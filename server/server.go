@@ -18,11 +18,15 @@ func newServer() *server {
 // set routing this
 func (s *server) serverInit() {
 	s.e.POST("/auth", handler.Auth)
+
 	s.e.POST("/display/:listtype", handler.DisplayOrdersTable)
 	s.e.POST("/display/db", handler.DisplayOrdersTable)
+
 	s.e.POST("/item/clients", handler.ItemClients)
 	s.e.POST("/item/employees", handler.ItemEmployees)
 	s.e.POST("/item/colors", handler.ItemColors)
+
+	s.e.POST("/update/order", handler.UpdateOrder)
 
 	s.e.GET("/display/:listtype", handler.DisplayOrdersTable)
 	s.e.GET("/display/db", handler.DisplayOrdersTable)

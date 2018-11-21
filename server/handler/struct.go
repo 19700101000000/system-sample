@@ -29,3 +29,11 @@ type ListRequest struct {
 	ListType int64 `json:"listtype"`
 	ListFlag int64 `json:"listflag"`
 }
+type Color struct {
+	Value int    `json:"value"`
+	Text  string `json:"text"`
+}
+
+type UpdateResult struct {
+	Result bool `json:"result"`
+}

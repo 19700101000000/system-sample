@@ -28,10 +28,7 @@ func ItemEmployees(c echo.Context) error {
 	return c.JSON(http.StatusOK, employees)
 }
 func ItemColors(c echo.Context) error {
-	colors := []struct {
-		Value int    `json:"value"`
-		Text  string `json:"text"`
-	}{
+	colors := []Color{
 		{Value: 0, Text: "赤"},
 		{Value: 1, Text: "橙"},
 		{Value: 2, Text: "黄"},
