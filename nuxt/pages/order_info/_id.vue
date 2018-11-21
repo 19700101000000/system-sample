@@ -67,7 +67,7 @@ div
   b-row.my-1
     b-col(sm="12")
       b-progress(:value="page_items.progress.value" :max="page_items.progress.max" animated v-if="page_items.progress.show")
-      b-alert(variant="danger" dismissible :show="page_items.danger_alert.show" @dismissed="page_items.danger_alert.show = false") {{ page_items.danger_alert.msg }}
+      b-alert(variant="danger" dismissible :show="page_items.danger_alert.show" @dismissed="dismissed") {{ page_items.danger_alert.msg }}
   b-row.my-1(align-h="center")
     b-col(sm="2")
       b-button(variant="outline-success" block @click="onClick" v-if="page_items.update_button.show") {{ page_items.update_button.msg }}
@@ -99,7 +99,7 @@ export default {
         progress: {
           show: false,
           value: 0,
-          max: 3,
+          max: 5,
         },
         update_button: {
           show: true,
@@ -169,9 +169,26 @@ export default {
       this.page_items.update_button.show = false
       this.page_items.progress.show = true
       /* 画面更新待ちに使用 */
-      this.$nextTick(function() {
-        this.page_items.progress.value = 1
+      this.$nextTick(async function() {
+        this.page_items.progress.value = this.page_items.progress.max - 1
+
+        try {
+          const { data } = await axios.post('/api/update/order')
+          if (data.result) { /* success */
+            this.page_items.danger_alert.show = true
+          } else { /* fail */
+          }
+        } catch(error) {
+          console.log(error.message)
+        }
+        this.page_items.progress.value = this.page_items.progress.max
+        this.page_items.progress.show = false
       })
+    },
+    dismissed() {
+      this.page_items.danger_alert.show = false
+      this.page_items.update_button.show = true
+      this.page_items.progress.value = 0
     },
     getEmployees: async function() {
       try {
