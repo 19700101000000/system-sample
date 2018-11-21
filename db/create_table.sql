@@ -4,7 +4,7 @@ use `ih2018_db`;
 CREATE TABLE `employee`(
  `id` CHAR(7), 
  `password` VARCHAR(255), 
- `name` VARCHAR(50), 
+ `name` VARCHAR(100), 
  `sex` BOOLEAN, 
  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -12,12 +12,12 @@ CREATE TABLE `employee`(
 /*車テーブル*/ 
 CREATE TABLE `car_information`(
  `id` INT AUTO_INCREMENT, 
- `name` VARCHAR(15), 
+ `name` VARCHAR(70), 
  `type` INT, 
  `formula_year` CHAR(2), 
  `displacement` CHAR(4), 
  `model_year` CHAR(2), 
- `grade` VARCHAR(20), 
+ `grade` VARCHAR(70), 
  `fuel` BOOLEAN, 
  `dealer` BOOLEAN, 
  `parallel` BOOLEAN, 
@@ -28,12 +28,12 @@ CREATE TABLE `car_information`(
  `drivesystem` BOOLEAN, 
  `doors` INT, 
  `shape` CHAR(2), 
- `carbody_no` VARCHAR(50), 
+ `carbody_no` VARCHAR(100), 
  `loadingcapacity` CHAR(6), 
  `mileage` CHAR(6), 
- `exteriorcolor` VARCHAR(10), 
+ `exteriorcolor` VARCHAR(100), 
  `exteriorcolor_no` VARCHAR(10), 
- `interiorcolor` VARCHAR(10), 
+ `interiorcolor` VARCHAR(100), 
  `interiorcolor_no` VARCHAR(10), 
  `newcar_warrantycard` BOOLEAN, 
  `instructionmanual` BOOLEAN, 
@@ -61,9 +61,9 @@ CREATE TABLE `car_information`(
  `8number_type` INT, 
  `nox_deadline` DATE, 
  `inspectiondeadline` DATE, 
- `registration_no_plate` VARCHAR(8), 
+ `registration_no_plate` VARCHAR(100), 
  `registration_no_classification` CHAR(3), 
- `registration_no_kana` CHAR(1), 
+ `registration_no_kana` CHAR(8), 
  `registration_no_serial` CHAR(4), 
  `name_change_date` DATE, 
  `car_history` INT, 
@@ -75,7 +75,7 @@ CREATE TABLE `car_information`(
 /*車修理場所名テーブル*/ 
 CREATE TABLE `car_information_repair_type`(
  `id` INT AUTO_INCREMENT, 
- `name` VARCHAR(30), 
+ `name` VARCHAR(100), 
  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -92,7 +92,7 @@ CREATE TABLE `car_information_repair`(
 /*金融機関テーブル*/
 CREATE TABLE `financial_institution`(
  `id` CHAR(4), 
- `name` VARCHAR(50),
+ `name` VARCHAR(100),
  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -101,7 +101,7 @@ CREATE TABLE `financial_institution_branch`(
  `id` INT AUTO_INCREMENT, 
  `financial_institution_id` CHAR(4),
  `branch_id` CHAR(3), 
- `name` VARCHAR(50), 
+ `name` VARCHAR(100), 
  PRIMARY KEY(`id`),
  FOREIGN KEY(`financial_institution_id`) REFERENCES `financial_institution`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -110,7 +110,7 @@ CREATE TABLE `financial_institution_branch`(
 CREATE TABLE `suppliers`(
  `id` INT AUTO_INCREMENT, 
  `financial_institution_branch_id` INT,
- `name` VARCHAR(50), 
+ `name` VARCHAR(100), 
  `address` VARCHAR(70), 
  `tel` VARCHAR(20), 
  `account_deposittype` CHAR(1), 
@@ -123,7 +123,7 @@ CREATE TABLE `suppliers`(
 /*顧客テーブル*/ 
 CREATE TABLE `client`(
  `id` INT AUTO_INCREMENT, 
- `name` VARCHAR(50), 
+ `name` VARCHAR(100), 
  `tel` VARCHAR(20), 
  `address` VARCHAR(70), 
  `financial_institution_branch_id` INT, 
@@ -147,6 +147,7 @@ CREATE TABLE `buy_orders`(
  `car_exterior_color` VARCHAR(20),
  `car_interior_color` VARCHAR(20),
  `car_model_no` VARCHAR(20),
+ `employee_id` CHAR(10),
  `insert_date` TIMESTAMP,
  PRIMARY KEY(`id`),
  FOREIGN KEY(`client_id`) REFERENCES `client`(`id`)
