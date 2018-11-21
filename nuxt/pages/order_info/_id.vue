@@ -64,9 +64,13 @@ div
           b-col
             b-form-checkbox-group#car_interior_color(v-model="car_interior_color" :options="car_interior_color_options")
 
+  b-row.my-1
+    b-col(sm="12")
+      b-progress(:value="page_items.progress.value" :max="page_items.progress.max" animated v-if="page_items.progress.show")
+      b-alert(variant="danger" dismissible :show="page_items.danger_alert.show" @dismissed="page_items.danger_alert.show = false") {{ page_items.danger_alert.msg }}
   b-row.my-1(align-h="center")
     b-col(sm="2")
-      b-button(variant="outline-success" block) 登録
+      b-button(variant="outline-success" block @click="onClick" v-if="page_items.update_button.show") {{ page_items.update_button.msg }}
 
 </template>
 
@@ -92,6 +96,19 @@ export default {
     return {
       page_items: {
         title: '受注',
+        progress: {
+          show: false,
+          value: 0,
+          max: 3,
+        },
+        update_button: {
+          show: true,
+          msg: '登録',
+        },
+        danger_alert: {
+          show: false,
+          msg: '登録に失敗しました',
+        }
       },
       info_header: {
         next: {
@@ -111,6 +128,8 @@ export default {
       car_model_jpc_year: null,
       car_exterior_color: [],
       car_interior_color: [],
+      estimate_flag: true,
+      new_order: true,
 
       client_name_options: [
         { value: null, text: '顧客を選択してください' },
@@ -141,39 +160,19 @@ export default {
         { value: 'b', text: '320' },
         { value: 'c', text: '408' },
       ],
-      car_exterior_color_options: [
-        {value: 0,  text: '赤'},
-        {value: 1,  text: '橙'},
-        {value: 2,  text: '黄'},
-        {value: 3,  text: '黄緑'},
-        {value: 4,  text: '緑'},
-        {value: 5,  text: '水色'},
-        {value: 6,  text: '青'},
-        {value: 7,  text: '紫'},
-        {value: 8,  text: '白'},
-        {value: 9,  text: '黒'},
-        {value: 10, text: 'シルバー'},
-        {value: 11, text: 'ゴールド'},
-        {value: 12, text: 'その他'},
-      ],
-      car_interior_color_options: [
-        {value: '0',  text: '赤'},
-        {value: '1',  text: '橙'},
-        {value: '2',  text: '黄'},
-        {value: '3',  text: '黄緑'},
-        {value: '4',  text: '緑'},
-        {value: '5',  text: '水色'},
-        {value: '6',  text: '青'},
-        {value: '7',  text: '紫'},
-        {value: '8',  text: '白'},
-        {value: '9',  text: '黒'},
-        {value: '10', text: 'シルバー'},
-        {value: '11', text: 'ゴールド'},
-        {value: '12', text: 'その他'},
-      ]
+      car_exterior_color_options: [],
+      car_interior_color_options: []
     }
   },
   methods: {
+    onClick() {
+      this.page_items.update_button.show = false
+      this.page_items.progress.show = true
+      /* 画面更新待ちに使用 */
+      this.$nextTick(function() {
+        this.page_items.progress.value = 1
+      })
+    },
     getEmployees: async function() {
       try {
         const { data } = await axios.post('/api/item/employees')
@@ -190,24 +189,41 @@ export default {
         console.log(error.message)
       }
     },
+    getColors: async function() {
+      try {
+        const { data } = await axios.post('/api/item/colors')
+        this.car_exterior_color_options = data
+        this.car_interior_color_options = data
+      } catch(error) {
+        console.log(error.message)
+      }
+    },
   },
   mounted() {
+    this.getEmployees()
+    this.getClients()
+    this.getColors()
+
     this.id = this.$route.params.id
     if(this.id === 'new' && this.$route.query.estimate_id) {
       /* new 受注 */
       this.page_items.title = '新規受注'
       this.info_header.next = null
+      this.estimate_flag = false
+      this.new_order = true
+      this.id = this.$route.query.estimate_id
     } else if(this.id === 'new') {
       /* new 見積 */
       this.page_items.title = '新規見積'
       this.info_header.next = null
+      this.estimate_flag = true
+      this.new_order = true
     } else {
       this.info_header.next.url = `/purchase_info/new?order_id=${this.id}`
       // this.$route.query.order_id
+      this.new_order = false
+      this.page_items.update_button.msg = '更新'
     }
-    this.getEmployees()
-    this.getClients()
-    console.log('estimate: ' + this.$route.query.estimate_id)
   }
 }
 </script>
