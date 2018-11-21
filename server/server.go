@@ -20,6 +20,7 @@ func (s *server) serverInit() {
 	s.e.POST("/auth", handler.Auth)
 	s.e.POST("/item/clients", handler.ItemClients)
 	s.e.POST("/item/employees", handler.ItemEmployees)
+	s.e.POST("/item/colors", handler.ItemColors)
 
 	s.e.GET("/sample/:num", handler.Sample)
 	s.e.GET("/sample/db", handler.SampleDB)
