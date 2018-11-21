@@ -19,6 +19,16 @@ div
             label(for="employee_name") 担当者
           b-col(sm="5")
             b-form-select#employee_name(type="text" v-model="employee_name" :options="employee_name_options")
+        b-row.my-1
+          b-col.text-right(sm="1")
+            label(for="car_model") 車種
+          b-col(sm="11")
+            b-form-select#car_model(type="text" v-model="car_model" :options="car_model_options")
+        b-row.my-1
+          b-col.text-right(sm="1")
+            label(for="vehicle_number") 車体番号
+          b-col(sm="11")
+            b-form-select#vehicle_number(type="text" v-model="vehicle_number" :options="vehicle_number_options")
 
   b-row.my-1(align-h="center")
     b-col(sm="2")
@@ -50,6 +60,8 @@ export default {
       id: '',
       client_name  :null,
       employee_name:null,
+      car_model:null,
+      vehicle_number:null,
 
       client_name_options: [
         { value: null, text: '顧客を選択してください' },

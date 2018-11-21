@@ -66,7 +66,48 @@ div
     b-col(sm="2")
       b-button(variant="outline-success" block) 登録
 
-  b-modal#car-modal ここに車の詳細を記載する
+  b-modal#car-modal(size="lg")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        p 車種
+      b-col(sm="11")
+        b-form-select(v-model="car_name" :options="car_name_options")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        p 年式
+      b-col(sm="11")
+        b-form-select(v-model="formula_year" :options="formula_year_options")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        p 型式
+      b-col(sm="11")
+        b-form-input(type="text" v-model="car_model")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        label(for="fuel") 燃料
+      b-col
+        b-form-radio-group#fuel(v-model="fuel" :options="fuel_options")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        p 乗車定員
+      b-col(sm="11")
+        b-form-input(type="number" v-model="ridingcapacity")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        p ドア数
+      b-col(sm="11")
+        b-form-input(type="number" v-model="doors")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        label(for="drivesystem") 駆動方式
+      b-col
+        b-form-radio-group#fuel(v-model="drivesystem" :options="drivesystem_options")
+    b-row.my-1
+      b-col.text-right(sm="1")
+        label(for="equipment") 装備品
+      b-col
+        b-form-checkbox-group#equipment(v-model="equipment" :options="equipment_options")
+
 
 </template>
 
@@ -101,6 +142,14 @@ export default {
       car_name_deadline: '1970-01-01',
       purchase_cost: 0,
       fee: 100,
+      car_name: null,
+      formula_year:null,
+      car_model: '',
+      fuel:null,
+      ridingcapacity:0,
+      doors:0,
+      drivesystem: null,
+      equipment:[],
 
       client_options: [
         { value: null, text: 'aaa' },
@@ -116,6 +165,42 @@ export default {
         { value: null, text: '仕入先を選択してください' },
         { value: 1, text: 'bbbオークション' },
         { value: 2, text: 'cccオークション' },
+      ],
+      car_name_options: [
+        { value: null, text: '車種を選択してください' },
+        { value: 1, text: 'bbbオークション' },
+        { value: 2, text: 'cccオークション' },
+      ],
+      formula_year_options: [
+        { value: null, text: '年式を選択してください' },
+        { value: 1, text: '1997' },
+        { value: 2, text: '1998' },
+      ],
+      fuel_options: [
+        {value: '0',  text: 'G'},
+        {value: '1',  text: 'D'},
+      ],
+      drivesystem_options: [
+        {value: '0',  text: 'G'},
+        {value: '1',  text: 'D'},
+      ],
+      equipment_options: [
+        {value: '0',  text: 'パワステ(PS)'},
+        {value: '1',  text: 'パワーウィンドウ(PW)'},
+        {value: '2',  text: 'ABS'},
+        {value: '3',  text: 'アルミホイール(AW)'},
+        {value: '4',  text: 'カセット'},
+        {value: '5',  text: 'CD'},
+        {value: '6',  text: 'MD'},
+        {value: '7',  text: 'TV'},
+        {value: '8',  text: 'ナビ'},
+        {value: '9',  text: 'エアバック(シングル)'},
+        {value: '10',  text: 'エアバック(W)'},
+        {value: '11',  text: 'TVリモコン'},
+        {value: '12',  text: 'ナビリモコン'},
+        {value: '13',  text: 'エアリモコン'},
+        {value: '14',  text: 'オーディオリモコン'},
+        {value: '15',  text: 'エアコン'},
       ],
     }
   },
