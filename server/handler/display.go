@@ -45,7 +45,14 @@ func DisplayOrdersTable(c echo.Context) error {
 
 	listDatas := []ListData{}
 
-	for i := int64(0); i < 5; i++ {
+	db, err := sql.NewDB()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	defer db.Close()
+	listDbDatas := sql.SelectOrderList(db)
+
+	for i := int64(0); i < 4; i++ {
 
 		listDatas = append(
 			listDatas,
@@ -56,7 +63,7 @@ func DisplayOrdersTable(c echo.Context) error {
 				Date     string `json:"date"`
 			}{
 				ID:       1,
-				Client:   User{ID: "999999", Name: test},
+				Client:   User{ID: "999999", Name: ""},
 				Employee: User{ID: "99999", Name: "社員氏名"},
 				Date:     "2018年11月19日",
 			},

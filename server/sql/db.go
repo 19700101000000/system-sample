@@ -33,28 +33,13 @@ func SelectOrderList(db *gorm.DB) []Buy_order {
 		log.Fatal(err)
 	}
 
-	var Buy_order struct {
-		Buy_order
-		Buy_orders_id *string `json:"id"`
-		Client_id     string  `json:"clientid"`
-		Client_name   string  `json:"clientname"`
-		Employee_id   string  `json:"employeeid"`
-		Employee_name string  `json:"employeename"`
-		Insert_date   string  `json:"date"`
-	}
-
-	var orderList []string
 	for rows.Next() {
-		err := query.ScanRows(rows, &Buy_order)
+		bOrder := Buy_order{}
+		err := query.ScanRows(rows, &bOrder)
 		if err != nil {
 			log.Fatal(err)
 		}
-		orderList = append(orderList, *Buy_order.Buy_orders_id)
-		orderList = append(orderList, Buy_order.Client_id)
-		orderList = append(orderList, Buy_order.Client_name)
-		orderList = append(orderList, Buy_order.Employee_id)
-		orderList = append(orderList, Buy_order.Employee_name)
-		orderList = append(orderList, Buy_order.Insert_date)
+		orderlist = append(orderlist, bOrder)
 	}
 
 	/*テーブルが複数形出ない場合に宣言*/
