@@ -18,3 +18,12 @@ func SelectEmployees(db *gorm.DB) []Employee {
 
 	return employees
 }
+
+func SelectClients(db *gorm.DB) []Client {
+	clients := []Client{}
+
+	db.SingularTable(true)
+	db.Find(&clients)
+
+	return clients
+}

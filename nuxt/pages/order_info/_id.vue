@@ -3,7 +3,7 @@ div
   info-header(:info="info_header")
   b-row.my-1
     b-col
-      b-card.my-1(title="受注")
+      b-card.my-1(:title="page_items.title")
         b-row.my-1
           b-col.text-right(sm="1")
             p NO
@@ -75,6 +75,7 @@ div
 
 <script>
 import InfoHeader from '~/components/InfoHeader'
+import axios from 'axios'
 export default {
   validate({params}) {
     return /^\d+$|^new$/.test(params.id)
@@ -89,6 +90,9 @@ export default {
   },
   data() {
     return {
+      page_items: {
+        title: '受注',
+      },
       info_header: {
         next: {
           url: '',
@@ -110,15 +114,9 @@ export default {
 
       client_name_options: [
         { value: null, text: '顧客を選択してください' },
-        { value: 'a', text: '高田1世' },
-        { value: 'b', text: '高田2世' },
-        { value: 'c', text: '高田3世' },
       ],
       employee_name_options: [
         { value: null, text: '担当者を選択してください' },
-        { value: 'a', text: 'ぶちお' },
-        { value: 'b', text: 'ぶちこ' },
-        { value: 'c', text: 'プー太郎' },
       ],
       manufacturer_options: [
         { value: null, text: 'メーカを選択してください' },
@@ -144,19 +142,19 @@ export default {
         { value: 'c', text: '408' },
       ],
       car_exterior_color_options: [
-        {value: '0',  text: '赤'},
-        {value: '1',  text: '橙'},
-        {value: '2',  text: '黄'},
-        {value: '3',  text: '黄緑'},
-        {value: '4',  text: '緑'},
-        {value: '5',  text: '水色'},
-        {value: '6',  text: '青'},
-        {value: '7',  text: '紫'},
-        {value: '8',  text: '白'},
-        {value: '9',  text: '黒'},
-        {value: '10', text: 'シルバー'},
-        {value: '11', text: 'ゴールド'},
-        {value: '12', text: 'その他'},
+        {value: 0,  text: '赤'},
+        {value: 1,  text: '橙'},
+        {value: 2,  text: '黄'},
+        {value: 3,  text: '黄緑'},
+        {value: 4,  text: '緑'},
+        {value: 5,  text: '水色'},
+        {value: 6,  text: '青'},
+        {value: 7,  text: '紫'},
+        {value: 8,  text: '白'},
+        {value: 9,  text: '黒'},
+        {value: 10, text: 'シルバー'},
+        {value: 11, text: 'ゴールド'},
+        {value: 12, text: 'その他'},
       ],
       car_interior_color_options: [
         {value: '0',  text: '赤'},
@@ -175,10 +173,41 @@ export default {
       ]
     }
   },
+  methods: {
+    getEmployees: async function() {
+      try {
+        const { data } = await axios.post('/api/item/employees')
+        this.employee_name_options = this.employee_name_options.concat(data)
+      } catch(error) {
+        console.log(error.message)
+      }
+    },
+    getClients: async function() {
+      try {
+        const { data } = await axios.post('/api/item/clients')
+        this.client_name_options = this.client_name_options.concat(data)
+      } catch(error) {
+        console.log(error.message)
+      }
+    },
+  },
   mounted() {
     this.id = this.$route.params.id
-    this.info_header.next.url = `/purchase_info/new?order_id=${this.id}`
-    // this.$route.query.order_id
+    if(this.id === 'new' && this.$route.query.estimate_id) {
+      /* new 受注 */
+      this.page_items.title = '新規受注'
+      this.info_header.next = null
+    } else if(this.id === 'new') {
+      /* new 見積 */
+      this.page_items.title = '新規見積'
+      this.info_header.next = null
+    } else {
+      this.info_header.next.url = `/purchase_info/new?order_id=${this.id}`
+      // this.$route.query.order_id
+    }
+    this.getEmployees()
+    this.getClients()
+    console.log('estimate: ' + this.$route.query.estimate_id)
   }
 }
 </script>
