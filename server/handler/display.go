@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/ShikinamiAsuka/ih13/server/sql"
 	"github.com/labstack/echo"
 )
 
@@ -63,4 +64,15 @@ func DisplayOrdersTable(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, listDatas)
+}
+
+func ListDB(c echo.Context) error {
+	db, err := sql.NewDB()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	defer db.Close()
+
+	list := sql.SelectOrderList(db)
+	return c.JSON(http.StatusOK, list)
 }

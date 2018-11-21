@@ -1,14 +1,10 @@
 package handler
 
 import (
-	"database/sql"
 	"net/http"
 	"strconv"
 
 	"github.com/ShikinamiAsuka/ih13/server/sql"
-	"github.com/labstack/echo"
-
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 )
 
