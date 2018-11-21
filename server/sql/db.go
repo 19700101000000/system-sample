@@ -48,3 +48,11 @@ func SelectOrderList(db *gorm.DB) []Buy_order {
 
 	return orderlist
 }
+func SelectClients(db *gorm.DB) []Client {
+	clients := []Client{}
+
+	db.SingularTable(true)
+	db.Find(&clients)
+
+	return clients
+}
