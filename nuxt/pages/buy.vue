@@ -176,6 +176,7 @@ export default {
         let flag = 0
         flag = this.$refs.checked_list.$data.radio_checked
         const { data } = await axios.get(`/api/display/${id}?listflag=${flag}`)
+        let itms = []
         switch(id) {
         case this.estimate_id:
           this.estimate_items = data

@@ -21,65 +21,100 @@ func DisplayOrdersTable(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	var test = ""
-	switch num {
-	case 0:
-		test = "見積もり"
-		break
-	case 1:
-		test = "受注"
-		break
-	case 2:
-		test = "仕入"
-		break
-	case 3:
-		test = "出荷"
-		break
-	case 4:
-		test = "請求"
-		break
-	case 5:
-		test = "回収"
-		break
-	}
-
-	listDatas := []ListData{}
-
-	db, err := sql.NewDB()
-	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
-	}
-	defer db.Close()
-	listDbDatas := sql.SelectOrderList(db)
-
-	for i := int64(0); i < 4; i++ {
-
-		listDatas = append(
-			listDatas,
-			struct {
-				ID       int64  `json:"id"`
-				Client   User   `json:"client"`
-				Employee User   `json:"employee"`
-				Date     string `json:"date"`
-			}{
-				ID:       1,
-				Client:   User{ID: "999999", Name: ""},
-				Employee: User{ID: "99999", Name: "社員氏名"},
-				Date:     "2018年11月19日",
-			},
-		)
-	}
-
-	return c.JSON(http.StatusOK, listDatas)
-}
-
-func ListDB(c echo.Context) error {
 	db, err := sql.NewDB()
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 	defer db.Close()
 
-	list := sql.SelectOrderList(db)
-	return c.JSON(http.StatusOK, list)
+	if num == 0 || num == 1 {
+		//見積もり
+		listDbDatas := sql.SelectOrderList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	} else if num == 2 {
+		//仕入
+		listDbDatas := sql.SelectPurchaseList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	} else if num == 3 {
+		//出荷
+		listDbDatas := sql.SelectOrderList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	} else if num == 4 {
+		//請求
+		listDbDatas := sql.SelectOrderList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	} else if num == 5 {
+		//回収
+		listDbDatas := sql.SelectOrderList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	} else {
+		listDbDatas := sql.SelectOrderList(db)
+		result := []BuyOrderList{}
+		for _, data := range listDbDatas {
+			d := BuyOrderList{}
+			d.Id = data.Buy_orders_id
+			d.Client.Id = data.Client_id
+			d.Client.Name = data.Client_name
+			d.Employee.Id = data.Employee_id
+			d.Employee.Name = data.Employee_name
+			d.Date = data.Insert_date
+			result = append(result, d)
+		}
+		return c.JSON(http.StatusOK, result)
+	}
 }

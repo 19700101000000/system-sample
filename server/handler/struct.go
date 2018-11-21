@@ -1,5 +1,7 @@
 package handler
 
+import "time"
+
 type AuthData struct {
 	Username    string `json:"username"`
 	AccessToken string `json:"accessToken"`
@@ -14,14 +16,14 @@ type LoginRequest struct {
 }
 
 type User struct {
-	ID   string `json:"id"`
+	Id   string `json:"id"`
 	Name string `json:"name"`
 }
-type ListData struct {
-	ID       int64  `json:"id"`
-	Client   User   `json:"client"`
-	Employee User   `json:"employee"`
-	Date     string `json:"date"`
+type BuyOrderList struct {
+	Id       int64     `json:"id"`
+	Employee User      `json:"employee"`
+	Client   User      `json:"client"`
+	Date     time.Time `json:"date"`
 }
 type ListRequest struct {
 	ListType int64 `json:"listtype"`
