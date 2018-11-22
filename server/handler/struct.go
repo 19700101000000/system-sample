@@ -41,12 +41,14 @@ type BuyClaimList struct {
 	Employee User      `json:"employee"`
 	Client   User      `json:"client"`
 	Date     time.Time `json:"date"`
+	Deadline time.Time `json:"deadline"`
 }
 type BuyRecoveryList struct {
-	Id       int64     `json:"id"`
-	Employee User      `json:"employee"`
-	Client   User      `json:"client"`
-	Date     time.Time `json:"date"`
+	Id            int64     `json:"id"`
+	Employee      User      `json:"employee"`
+	Client        User      `json:"client"`
+	Date          time.Time `json:"date"`
+	Recovery_date time.Time `json:"recoverydate"`
 }
 
 type ListRequest struct {

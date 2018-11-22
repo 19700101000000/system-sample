@@ -58,37 +58,39 @@ func DisplayOrdersTable(c echo.Context) error {
 			d.Employee.Id = data.Employee_id
 			d.Employee.Name = data.Employee_name
 			d.Date = data.Date
-			d.Delivery_date = data.Delivery_date
+			d.Delivery_date = data.Shipmentdate
 			result = append(result, d)
 		}
 		return c.JSON(http.StatusOK, result)
 	} else if num == 4 {
 		//請求
-		listDbDatas := sql.SelectOrderList(db)
-		result := []BuyOrderList{}
+		listDbDatas := sql.SelectClaimList(db)
+		result := []BuyClaimList{}
 		for _, data := range listDbDatas {
-			d := BuyOrderList{}
-			d.Id = data.Buy_orders_id
+			d := BuyClaimList{}
+			d.Id = data.Buy_claim_id
 			d.Client.Id = data.Client_id
 			d.Client.Name = data.Client_name
 			d.Employee.Id = data.Employee_id
 			d.Employee.Name = data.Employee_name
-			d.Date = data.Insert_date
+			d.Date = data.Date
+			d.Deadline = data.Deadline
 			result = append(result, d)
 		}
 		return c.JSON(http.StatusOK, result)
 	} else if num == 5 {
 		//回収
-		listDbDatas := sql.SelectOrderList(db)
-		result := []BuyOrderList{}
+		listDbDatas := sql.SelectRecoveryList(db)
+		result := []BuyRecoveryList{}
 		for _, data := range listDbDatas {
-			d := BuyOrderList{}
-			d.Id = data.Buy_orders_id
+			d := BuyRecoveryList{}
+			d.Id = data.Buy_recovery_id
 			d.Client.Id = data.Client_id
 			d.Client.Name = data.Client_name
 			d.Employee.Id = data.Employee_id
 			d.Employee.Name = data.Employee_name
 			d.Date = data.Insert_date
+			d.Recovery_date = data.Recovery_date
 			result = append(result, d)
 		}
 		return c.JSON(http.StatusOK, result)

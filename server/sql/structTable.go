@@ -40,7 +40,7 @@ type BuyPurchaseListItem struct {
 	Employee_id     string    `json:"employee_id"`
 	Employee_name   string    `json:"employee_name"`
 	Date            time.Time `json:"date"`
-	Delivery_date   time.Time `json:"date"`
+	Shipmentdate    time.Time `json:"shipmentdate"`
 }
 type BuyClaimListItem struct {
 	Buy_claim_id  int64     `json:"id"`
@@ -48,7 +48,8 @@ type BuyClaimListItem struct {
 	Client_name   string    `json:"client_name"`
 	Employee_id   string    `json:"employee_id"`
 	Employee_name string    `json:"employee_name"`
-	Insert_date   time.Time `json:"date"`
+	Deadline      time.Time `json:"deadline"`
+	Date          time.Time `json:"date"`
 }
 type BuyRecoveryListItem struct {
 	Buy_recovery_id int64     `json:"id"`
@@ -56,5 +57,6 @@ type BuyRecoveryListItem struct {
 	Client_name     string    `json:"client_name"`
 	Employee_id     string    `json:"employee_id"`
 	Employee_name   string    `json:"employee_name"`
+	Recovery_date   time.Time `json:"recovery_date"`
 	Insert_date     time.Time `json:"date"`
 }

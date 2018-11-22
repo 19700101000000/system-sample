@@ -147,12 +147,14 @@ export default {
       ],
       invoice_fields: [
         {key: 'id', label: '請求', sortable: true},
+        {key: 'deadline', label: '請求期限', sortable: true},
         {key: 'client', label: '顧客', sortable: true},
         {key: 'employee', label: '担当者', sortable: true},
         {key: 'date', label: '作成日', sortable: true},
       ],
       recovery_fields: [
         {key: 'id', label: '回収', sortable: true},
+        {key: 'recoverydate', label: '回収日', sortable: true},
         {key: 'client', label: '顧客', sortable: true},
         {key: 'employee', label: '担当者', sortable: true},
         {key: 'date', label: '作成日', sortable: true},

@@ -33,7 +33,6 @@ func SelectOrderList(db *gorm.DB) []BuyOrderListItem {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	for rows.Next() {
 		bOrder := BuyOrderListItem{}
 		err := query.ScanRows(rows, &bOrder)
@@ -57,7 +56,6 @@ func SelectPurchaseList(db *gorm.DB) []BuyPurchaseListItem {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	for rows.Next() {
 		bPurchase := BuyPurchaseListItem{}
 		err := query.ScanRows(rows, &bPurchase)
@@ -67,6 +65,52 @@ func SelectPurchaseList(db *gorm.DB) []BuyPurchaseListItem {
 		purchaseList = append(purchaseList, bPurchase)
 	}
 	return purchaseList
+}
+
+//請求リスト
+func SelectClaimList(db *gorm.DB) []BuyClaimListItem {
+	claimList := []BuyClaimListItem{}
+
+	query := db.Table("buy_claim bc").
+		Select("bc.id AS buy_claim_id,bo.client_id,c.name AS client_name,bo.employee_id,e.name AS employee_name,bo.insert_date AS date,bc.deadline AS deadline,WEEKDAY(bo.insert_date) AS weekday").
+		Joins("INNER JOIN buy_purchase bp ON bc.buy_purchase_id=bp.id INNER JOIN buy_orders bo ON bp.buy_orders_id=bo.id INNER JOIN client c ON bo.client_id=c.id INNER JOIN employee e ON bo.employee_id=e.id").
+		Where("bc.billed = ?", 0)
+	rows, err := query.Rows()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		bClaim := BuyClaimListItem{}
+		err := query.ScanRows(rows, &bClaim)
+		if err != nil {
+			log.Fatal(err)
+		}
+		claimList = append(claimList, bClaim)
+	}
+	return claimList
+}
+
+//回収リスト
+func SelectRecoveryList(db *gorm.DB) []BuyRecoveryListItem {
+	recoveryList := []BuyRecoveryListItem{}
+
+	query := db.Table("buy_recovery br").
+		Select("br.id AS buy_recovery_id,bo.client_id,c.name AS client_name,bo.employee_id,e.name AS employee_name,bo.insert_date AS date,br.recovery_date AS recovery_date,WEEKDAY(bo.insert_date) AS weekday").
+		Joins("INNER JOIN buy_claim bc ON br.buy_claim_id = bc.id INNER JOIN buy_purchase bp ON bc.buy_purchase_id=bp.id INNER JOIN buy_orders bo ON bp.buy_orders_id=bo.id INNER JOIN client c ON bo.client_id=c.id INNER JOIN employee e ON bo.employee_id=e.id").
+		Where("")
+	rows, err := query.Rows()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		bRecovery := BuyRecoveryListItem{}
+		err := query.ScanRows(rows, &bRecovery)
+		if err != nil {
+			log.Fatal(err)
+		}
+		recoveryList = append(recoveryList, bRecovery)
+	}
+	return recoveryList
 }
 
 func SelectClients(db *gorm.DB) []Client {
