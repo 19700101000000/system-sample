@@ -58,6 +58,7 @@ func DisplayOrdersTable(c echo.Context) error {
 			d.Employee.Id = data.Employee_id
 			d.Employee.Name = data.Employee_name
 			d.Date = data.Date
+			d.Delivery_date = data.Delivery_date
 			result = append(result, d)
 		}
 		return c.JSON(http.StatusOK, result)

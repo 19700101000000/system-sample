@@ -138,7 +138,7 @@ export default {
       ],
       shipment_fields: [
         {key: 'id', label: '出荷', sortable: true},
-        {key: 'shipmentdate', label: '出荷日', sortable: true},
+        {key: 'shipmentdate', label: '出荷予定日', sortable: true},
         {key: 'manufacturer', label: 'メーカー名', sortable: true},
         {key: 'carname', label: '車種', sortable: true},
         {key: 'client', label: '顧客', sortable: true},

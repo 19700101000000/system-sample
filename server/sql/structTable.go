@@ -40,6 +40,7 @@ type BuyPurchaseListItem struct {
 	Employee_id     string    `json:"employee_id"`
 	Employee_name   string    `json:"employee_name"`
 	Date            time.Time `json:"date"`
+	Delivery_date   time.Time `json:"date"`
 }
 type BuyClaimListItem struct {
 	Buy_claim_id  int64     `json:"id"`
