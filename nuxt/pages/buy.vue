@@ -15,7 +15,6 @@ div
               :info="estimate_info"
               :fields="estimate_fields"
               :items="estimate_items"
-              @click="getItems(0)"
             )
 
           b-tab(title="受注一覧" @click="getItems(1)")
@@ -24,7 +23,6 @@ div
               :info="order_info"
               :fields="order_fields"
               :items="order_items"
-              @click="getItems(1)"
             )
 
           b-tab(title="仕入一覧" @click="getItems(2)")
@@ -33,7 +31,6 @@ div
               :info="purchase_info"
               :fields="purchase_fields"
               :items="purchase_items"
-              @click="getItems(2)"
             )
 
           b-tab(title="出荷一覧" @click="getItems(3)")
@@ -42,7 +39,6 @@ div
               :info="shipment_info"
               :fields="shipment_fields"
               :items="shipment_items"
-              @click="getItems(3)"
             )
 
           b-tab(title="請求一覧" @click="getItems(4)")
@@ -51,7 +47,6 @@ div
               :info="invoice_info"
               :fields="invoice_fields"
               :items="invoice_items"
-              @click="getItems(4)"
             )
 
           b-tab(title="回収一覧" @click="getItems(5)")
@@ -133,12 +128,19 @@ export default {
       ],
       purchase_fields: [
         {key: 'id', label: '仕入', sortable: true},
+        {key: 'manufacturer', label: 'メーカー名', sortable: true},
+        {key: 'carname', label: '車種', sortable: true},
+        {key: 'carmodelyear', label: '年式', sortable: true},
+        {key: 'budget', label: '予算', sortable: true},
         {key: 'client', label: '顧客', sortable: true},
         {key: 'employee', label: '担当者', sortable: true},
         {key: 'date', label: '作成日', sortable: true},
       ],
       shipment_fields: [
         {key: 'id', label: '出荷', sortable: true},
+        {key: 'shipmentdate', label: '出荷日', sortable: true},
+        {key: 'manufacturer', label: 'メーカー名', sortable: true},
+        {key: 'carname', label: '車種', sortable: true},
         {key: 'client', label: '顧客', sortable: true},
         {key: 'employee', label: '担当者', sortable: true},
         {key: 'date', label: '作成日', sortable: true},

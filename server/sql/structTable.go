@@ -20,6 +20,7 @@ type EmployeeUser struct {
 	Employee_id   string `json:"id"`
 	Employee_name string `json:"name"`
 }
+
 type BuyOrderListItem struct {
 	Buy_orders_id int64     `json:"id"`
 	Client_id     string    `json:"client_id"`
@@ -27,4 +28,32 @@ type BuyOrderListItem struct {
 	Employee_id   string    `json:"employee_id"`
 	Employee_name string    `json:"employee_name"`
 	Insert_date   time.Time `json:"date"`
+}
+type BuyPurchaseListItem struct {
+	Buy_purchase_id int64     `json:"id"`
+	Manufacturer    string    `json:"manufacturer"`
+	Carname         string    `json:"carname"`
+	Carmodelyear    string    `json:"carmodelyear"`
+	Budget          string    `json:"budget"`
+	Client_id       string    `json:"client_id"`
+	Client_name     string    `json:"client_name"`
+	Employee_id     string    `json:"employee_id"`
+	Employee_name   string    `json:"employee_name"`
+	Date            time.Time `json:"date"`
+}
+type BuyClaimListItem struct {
+	Buy_claim_id  int64     `json:"id"`
+	Client_id     string    `json:"client_id"`
+	Client_name   string    `json:"client_name"`
+	Employee_id   string    `json:"employee_id"`
+	Employee_name string    `json:"employee_name"`
+	Insert_date   time.Time `json:"date"`
+}
+type BuyRecoveryListItem struct {
+	Buy_recovery_id int64     `json:"id"`
+	Client_id       string    `json:"client_id"`
+	Client_name     string    `json:"client_name"`
+	Employee_id     string    `json:"employee_id"`
+	Employee_name   string    `json:"employee_name"`
+	Insert_date     time.Time `json:"date"`
 }

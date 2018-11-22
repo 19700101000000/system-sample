@@ -25,6 +25,29 @@ type BuyOrderList struct {
 	Client   User      `json:"client"`
 	Date     time.Time `json:"date"`
 }
+type BuyPurchaseList struct {
+	Id           int64     `json:"id"`
+	Manufacturer string    `json:"manufacturer"`
+	Carname      string    `json:"carname"`
+	Carmodelyear string    `json:"carmodelyear"`
+	Budget       string    `json:"budget"`
+	Employee     User      `json:"employee"`
+	Client       User      `json:"client"`
+	Date         time.Time `json:"date"`
+}
+type BuyClaimList struct {
+	Id       int64     `json:"id"`
+	Employee User      `json:"employee"`
+	Client   User      `json:"client"`
+	Date     time.Time `json:"date"`
+}
+type BuyRecoveryList struct {
+	Id       int64     `json:"id"`
+	Employee User      `json:"employee"`
+	Client   User      `json:"client"`
+	Date     time.Time `json:"date"`
+}
+
 type ListRequest struct {
 	ListType int64 `json:"listtype"`
 	ListFlag int64 `json:"listflag"`
