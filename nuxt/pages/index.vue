@@ -5,10 +5,8 @@
         ad-carousel
     b-row
       b-col
-        ad-carousel
         rank-table
       b-col
-        ad-carousel
         rank-table
 </template>
 
