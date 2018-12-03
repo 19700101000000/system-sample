@@ -9,7 +9,7 @@
           b-nav-item(href="#") Hot
           b-nav-item(href="#") Pickup
         b-navbar-nav.ml-auto
-          b-nav-item(v-if="false" href="#" right) Signin
+          b-nav-item(v-if="true" href="/signin" right) Signin
           b-nav-item-dropdown(v-else text="User" right)
             b-dropdown-item(href="/user/1") Profile
             b-dropdown-item(href="#") Signout
