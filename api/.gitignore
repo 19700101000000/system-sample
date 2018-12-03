@@ -1,4 +1,5 @@
 vendor/
-server
+env/*.go
+api
 Gopkg.lock
 Gopkg.toml
