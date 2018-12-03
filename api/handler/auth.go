@@ -14,11 +14,14 @@ var (
 	// TODO: randomize it
 	oauthStateString  = "pseudo-random"
 	googleOauthConfig = &oauth2.Config{
-		RedirectURL:  "http://localhost/api/auth/callback",
+		RedirectURL:  "http://localhost/api/auth/google/callback",
 		ClientID:     env.GoogleClientID,
 		ClientSecret: env.GoogleClientSecret,
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
+		Scopes: []string{
+			"https://www.googleapis.com/auth/userinfo.email",
+			"https://www.googleapis.com/auth/userinfo.profile",
+		},
+		Endpoint: google.Endpoint,
 	}
 )
 
