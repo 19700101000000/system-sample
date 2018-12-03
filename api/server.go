@@ -16,6 +16,8 @@ func newServer() *server {
 }
 func (s *server) serverInit() {
 	s.router.GET("/", handler.Index)
+	s.router.GET("/auth/login", handler.AuthLogin)
+	s.router.GET("/auth/callback", handler.AuthCallback)
 }
 func (s *server) serverRun() {
 	s.router.Run(":8080")
