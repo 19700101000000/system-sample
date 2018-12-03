@@ -9,14 +9,14 @@ services:
       MYSQL_PASSWORD: server
     volumes:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
-  vue:
+  nuxt:
     build: nuxt
     volumes:
       - ./nuxt:/app
-  server: 
-    build: server
+  api: 
+    build: api
     volumes: 
-      - ./server:/go/src/github.com/19700101000000/system-sample/server
+      - ./api:/go/src/github.com/19700101000000/system-sample/api
     links: 
       - db
     environment:
@@ -29,5 +29,5 @@ services:
     ports:
       -  80:80
     links:
-      - server
-      - vue
+      - api
+      - nuxt

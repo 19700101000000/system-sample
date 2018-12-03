@@ -2,7 +2,7 @@ DB_CONTAINER_NAME = system-sample_db_1
 DB_NAME = system_sample
 
 dep:
-	cd server/ && \
+	cd api/ && \
 	dep init
 
 build:
@@ -10,7 +10,7 @@ build:
 
 init: dep build initdb
 reset:
-	cd server && \
+	cd api && \
 	rm Gopkg.toml && \
 	rm Gopkg.lock && \
 	sudo rm -r vendor
