@@ -4,6 +4,7 @@ CREATE TABLE `user` (
     `name`      VARCHAR(32) UNIQUE NOT NULL,
     `show_name` VARCHAR(32) NOT NULL DEFAULT '',
     `password`  CHAR(64)    NOT NULL,
+    `creator`   BOOLEAN     NOT NULL DEFAULT FALSE,
     `alive`     BOOLEAN     NOT NULL DEFAULT TRUE,
 
     PRIMARY KEY(`id`)
