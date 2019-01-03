@@ -1,72 +1,83 @@
 package handler
 
 import (
+	"crypto/sha256"
 	"fmt"
-	"github.com/19700101000000/system-sample/api/env"
+	"github.com/19700101000000/system-sample/api/ark"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-	"io/ioutil"
 	"net/http"
+	"time"
 )
 
-var (
-	// TODO: randomize it
-	oauthStateString  = "pseudo-random"
-	googleOauthConfig = &oauth2.Config{
-		RedirectURL:  "http://localhost/api/auth/google/callback",
-		ClientID:     env.GoogleClientID,
-		ClientSecret: env.GoogleClientSecret,
-		Scopes: []string{
-			"https://www.googleapis.com/auth/userinfo.email",
-			"https://www.googleapis.com/auth/userinfo.profile",
-		},
-		Endpoint: google.Endpoint,
+func AuthCheck(c *gin.Context) {
+	resData := map[string]interface{}{
+		"status": "failed",
+		"name":   nil,
 	}
-)
-
-func AuthLogin(c *gin.Context) {
-	url := googleOauthConfig.AuthCodeURL(oauthStateString)
-	c.Redirect(http.StatusTemporaryRedirect, url)
-}
-func AuthCallback(c *gin.Context) {
-	v := struct {
-		State string `form:"state"`
-		Code  string `form:"code"`
-	}{}
-	c.Bind(&v)
-
-	content, err := getUserInfo(v.State, v.Code)
+	name, err := c.Cookie("name")
 	if err != nil {
-		fmt.Println(err.Error())
-		c.Redirect(http.StatusTemporaryRedirect, "/")
+		c.JSON(http.StatusOK, gin.H(resData))
+		return
+	}
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H(resData))
+		return
+	}
+	if UserList[name] != token {
+		c.JSON(http.StatusOK, gin.H(resData))
+		return
+	}
+	resData["status"] = "ok"
+	resData["name"] = name
+	c.JSON(http.StatusOK, gin.H(resData))
+}
+
+func AuthSignout(c *gin.Context) {
+	resData := map[string]interface{}{
+		"status": "ok",
+	}
+	name, _ := c.Cookie("name")
+	token, _ := c.Cookie("token")
+	if v, ok := UserList[name]; ok && v == token {
+		delete(UserList, name)
+	}
+	c.JSON(http.StatusOK, gin.H(resData))
+}
+
+func AuthSignin(c *gin.Context) {
+	var reqData struct {
+		Name string `json:"name"`
+		Pass string `json:"pass"`
+	}
+	resData := map[string]interface{}{
+		"status": "failed",
+	}
+	/* parse request data */
+	err := c.Bind(&reqData)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H(resData))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"content": string(content),
-	})
-}
-func getUserInfo(state, code string) ([]byte, error) {
-	if state != oauthStateString {
-		return nil, fmt.Errorf("invalid oauth state")
+	/* db connection */
+	result := make(chan *string)
+	ark := ark.Auth{
+		Name:   reqData.Name,
+		Pass:   reqData.Pass,
+		Result: result,
 	}
+	SqlContactStream <- ark
+	name := <-result
 
-	token, err := googleOauthConfig.Exchange(oauth2.NoContext, code)
-	if err != nil {
-		return nil, fmt.Errorf("code exchange failed: %s", err.Error())
+	if name != nil {
+		resData["status"] = "ok"
+		token := fmt.Sprintf("%x", sha256.Sum256([]byte(*name+time.Now().String())))
+		setCookie(c, "name", *name)
+		setCookie(c, "token", token)
+		UserList[*name] = token
+	} else {
+		resData["status"] = "no-user"
 	}
-
-	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
-	if err != nil {
-		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
-	}
-
-	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed reading response body: %s", err.Error())
-	}
-
-	return contents, nil
+	c.JSON(http.StatusOK, gin.H(resData))
 }

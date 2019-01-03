@@ -21,6 +21,8 @@ services:
       - db
     environment:
       DB_HOST: db:3306
+      DB_NAME: system_sample
+      DB_USER: server
       DB_PASS: server
   proxy:
     image: nginx

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/labstack/echo"
 	"github.com/mattn/go-slim"
 )
@@ -24,4 +25,9 @@ func render(c echo.Context, path string, v slim.Values) error {
 
 	// result
 	return c.HTML(http.StatusOK, buf.String())
+}
+
+/* set cookie */
+func setCookie(c *gin.Context, name, value string) {
+	c.SetCookie(name, value, 86400, "/", "localhost", false, true)
 }
