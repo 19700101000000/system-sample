@@ -8,17 +8,15 @@ import (
 
 type server struct {
 	router *gin.Engine
-	db     *db.DB
 }
 
 func newServer() *server {
 	return &server{
 		router: gin.Default(),
-		db:     db.NewDB(),
 	}
 }
 func (s *server) serverInit() {
-	handler.SqlContactStream = s.db.Stream
+	db.InitDB()
 	handler.UserList = make(map[string]string)
 
 	s.router.GET("/", handler.Index)
@@ -32,7 +30,6 @@ func (s *server) serverInit() {
 	// s.router.GET("/auth/google/callback", handler.AuthGoogleCallback)
 }
 func (s *server) serverRun() {
-	defer s.db.Sql.Close()
-	go s.db.Monitor()
+	defer db.CloseDB()
 	s.router.Run(":8080")
 }

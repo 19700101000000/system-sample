@@ -3,7 +3,7 @@ package handler
 import (
 	"crypto/sha256"
 	"fmt"
-	"github.com/19700101000000/system-sample/api/ark"
+	"github.com/19700101000000/system-sample/api/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -61,14 +61,7 @@ func AuthSignin(c *gin.Context) {
 	}
 
 	/* db connection */
-	result := make(chan *string)
-	ark := ark.Auth{
-		Name:   reqData.Name,
-		Pass:   reqData.Pass,
-		Result: result,
-	}
-	SqlContactStream <- ark
-	name := <-result
+	name := db.Auth(reqData.Name, reqData.Pass)
 
 	if name != nil {
 		resData["status"] = "ok"
