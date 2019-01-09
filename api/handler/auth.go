@@ -14,17 +14,8 @@ func AuthCheck(c *gin.Context) {
 		"status": "failed",
 		"name":   nil,
 	}
-	name, err := c.Cookie("name")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H(resData))
-		return
-	}
-	token, err := c.Cookie("token")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H(resData))
-		return
-	}
-	if UserList[name] != token {
+	name, ok := getAuth(c)
+	if !ok {
 		c.JSON(http.StatusOK, gin.H(resData))
 		return
 	}

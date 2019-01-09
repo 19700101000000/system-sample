@@ -25,6 +25,9 @@ func (s *server) serverInit() {
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
 
+	s.router.Static("/images", "./public/images")
+	s.router.POST("/upload/image", handler.UploadImage)
+
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)
 	// s.router.GET("/auth/google/callback", handler.AuthGoogleCallback)

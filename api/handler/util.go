@@ -27,6 +27,23 @@ func render(c echo.Context, path string, v slim.Values) error {
 	return c.HTML(http.StatusOK, buf.String())
 }
 
+/* check auth */
+func getAuth(c *gin.Context) (string, bool) {
+
+	name, err := c.Cookie("name")
+	if err != nil {
+		return "", false
+	}
+	token, err := c.Cookie("token")
+	if err != nil {
+		return "", false
+	}
+	if UserList[name] != token {
+		return "", false
+	}
+	return name, true
+}
+
 /* set cookie */
 func setCookie(c *gin.Context, name, value string) {
 	c.SetCookie(name, value, 86400, "/", "localhost", false, true)

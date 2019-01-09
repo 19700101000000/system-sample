@@ -1,3 +1,4 @@
+public/
 vendor/
 env/*.go
 api
