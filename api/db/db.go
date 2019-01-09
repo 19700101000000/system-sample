@@ -48,3 +48,23 @@ func Auth(name, pass string) *string {
 	}
 	return &result
 }
+
+func Categories() map[string]interface{} {
+	result := make(map[string]interface{})
+
+	rows, err := db.Query("SELECT `id`, `name` FROM `gallery_category`")
+	if err != nil {
+		fmt.Printf("error by db.GetCategories:: %v\n", err)
+		return result
+	}
+
+	for rows.Next() {
+		var id, name string
+		if err := rows.Scan(&id, &name); err != nil {
+			fmt.Printf("error by db.GetCategories:: %v\n", err)
+			continue
+		}
+		result[id] = name
+	}
+	return result
+}

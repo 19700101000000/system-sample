@@ -76,3 +76,9 @@ CREATE TABLE `gallery_comment` (
     FOREIGN KEY(`commenter`)            REFERENCES `user`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/* Create gallery_category */
+CREATE TABLE `gallery_category` (
+    `id`    INTEGER PRIMARY KEY AUTO_INCREMENT,
+    `name`  VARCHAR(128) UNIQUE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

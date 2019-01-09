@@ -4,3 +4,11 @@ INSERT INTO `user`(`name`, `password`) VALUES
     ('foo', 'foo'),
     ('bar', 'bar');
 
+/* Insert category */
+INSERT INTO `gallery_category`(`name`) VALUES
+    ('Real'),
+    ('Comic'),
+    ('Gothic'),
+    ('Fantasy'),
+    ('Science fiction'),
+    ('Mechanic');

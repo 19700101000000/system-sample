@@ -19,12 +19,15 @@ func (s *server) serverInit() {
 	db.InitDB()
 	handler.UserList = make(map[string]string)
 
-	s.router.GET("/", handler.Index)
+	// s.router.GET("/", handler.Index)
+	s.router.GET("/get/categories", handler.GetCategories)
 
+	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
 
+	/* images */
 	s.router.Static("/images", "./public/images")
 	s.router.POST("/upload/image", handler.UploadImage)
 
