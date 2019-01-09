@@ -24,8 +24,11 @@ func UploadImage(c *gin.Context) {
 	// TODO resiging image
 	contentType := file.Header["Content-Type"][0]
 	nowTime := time.Now().String()
-	fmt.Println(contentType)
-	fmt.Println(nowTime)
+
+	if contentType != "image/jpeg" && contentType != "image/png" {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
 
 	// filename := filepath.Base(file.Filename)
 	filename := fmt.Sprintf("%x%x", sha256.Sum256([]byte(name)), sha256.Sum256([]byte(nowTime)))

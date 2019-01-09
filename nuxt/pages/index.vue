@@ -11,7 +11,7 @@
         h4.card-title Upload image
         p.card-text.text-danger.text-center(v-if="errorMsg != ''") {{ errorMsg }}
         b-form.text-center(@submit="onSubmit" @reset="onReset")
-          b-form-file(v-if="imagePath == ''" v-model="imageFile" :state="Boolean(imageFile)" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage")
+          b-form-file(v-if="imagePath == ''" v-model="imageFile" :state="imagePath !== ''" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage")
           div.mt-2
             b-button(type="submit" variant="outline-success" :disabled="imagePath == ''") Send
             b-button.ml-2(type="reset" variant="outline-danger" :disabled="imagePath == ''") Reset
