@@ -77,8 +77,17 @@ CREATE TABLE `gallery_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* Create gallery_category */
-CREATE TABLE `gallery_category` (
+CREATE TABLE `category` (
     `id`    INTEGER PRIMARY KEY AUTO_INCREMENT,
     `name`  VARCHAR(128) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `gallery_join_category` (
+    `creator`   INTEGER,
+    `gallery`   INTEGER,
+    `category`  INTEGER,
+    PRIMARY KEY(`creator`, `gallery`, `category`),
+
+    FOREIGN KEY(`creator`, `gallery`)   REFERENCES `gallery`(`user`, `id`),
+    FOREIGN KEY(`category`)             REFERENCES `category`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -5,7 +5,7 @@ INSERT INTO `user`(`name`, `password`) VALUES
     ('bar', 'bar');
 
 /* Insert category */
-INSERT INTO `gallery_category`(`name`) VALUES
+INSERT INTO `category`(`name`) VALUES
     ('Real'),
     ('Comic'),
     ('Gothic'),
