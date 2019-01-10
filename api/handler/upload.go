@@ -3,6 +3,7 @@ package handler
 import (
 	"crypto/sha256"
 	"fmt"
+	"github.com/19700101000000/system-sample/api/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	// "path/filepath"
@@ -20,6 +21,7 @@ func UploadImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "bad request")
 		return
 	}
+	categories := c.PostFormArray("categories")
 
 	// TODO resiging image
 	contentType := file.Header["Content-Type"][0]
@@ -34,6 +36,11 @@ func UploadImage(c *gin.Context) {
 	filename := fmt.Sprintf("%x%x", sha256.Sum256([]byte(name)), sha256.Sum256([]byte(nowTime)))
 	if err := c.SaveUploadedFile(file, fmt.Sprintf("./public/images/%s", filename)); err != nil {
 		fmt.Printf("error uploadImage: %v\n", err)
+	}
+	ok = db.InsertGallery(UserList[name].ID, filename, categories)
+	if !ok {
+		c.String(http.StatusBadRequest, "bad request")
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{})
 }

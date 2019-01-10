@@ -17,7 +17,7 @@ func newServer() *server {
 }
 func (s *server) serverInit() {
 	db.InitDB()
-	handler.UserList = make(map[string]string)
+	handler.UserList = make(map[string]handler.UserInfo)
 
 	// s.router.GET("/", handler.Index)
 	s.router.GET("/get/categories", handler.GetCategories)

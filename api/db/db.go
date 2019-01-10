@@ -34,37 +34,39 @@ func SqlConnection() (*sql.DB, error) {
 	return sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPass, dbHost, dbName))
 }
 
-func Auth(name, pass string) *string {
-	var result string
-
+func Auth(user, pass string) (id int, name string, ok bool) {
 	err := db.QueryRow(
-		"SELECT `name` FROM `user` WHERE `name` = ? AND `password` = ? AND alive = 1",
-		name,
+		"SELECT `id`, `name` FROM `user` WHERE `name` = ? AND `password` = ? AND alive = 1",
+		user,
 		fmt.Sprintf("%x", sha256.Sum256([]byte(pass))),
-	).Scan(&result)
+	).Scan(&id, &name)
 	if err != nil {
 		fmt.Printf("error by db.Auth:: %v\n", err)
-		return nil
+		ok = false
+		return
 	}
-	return &result
+	ok = true
+	return
 }
 
 func Categories() map[string]interface{} {
 	result := make(map[string]interface{})
 
-	rows, err := db.Query("SELECT `id`, `name` FROM `gallery_category`")
+	rows, err := db.Query("SELECT `id`, `name` FROM `category`")
 	if err != nil {
 		fmt.Printf("error by db.GetCategories:: %v\n", err)
 		return result
 	}
 
+	options := make([]OptionCategory, 0)
 	for rows.Next() {
 		var id, name string
 		if err := rows.Scan(&id, &name); err != nil {
 			fmt.Printf("error by db.GetCategories:: %v\n", err)
 			continue
 		}
-		result[id] = name
+		options = append(options, OptionCategory{Text: name, Value: id})
 	}
+	result["options"] = options
 	return result
 }

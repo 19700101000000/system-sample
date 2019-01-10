@@ -30,7 +30,7 @@ func AuthSignout(c *gin.Context) {
 	}
 	name, _ := c.Cookie("name")
 	token, _ := c.Cookie("token")
-	if v, ok := UserList[name]; ok && v == token {
+	if v, ok := UserList[name]; ok && v.Token == token {
 		delete(UserList, name)
 	}
 	c.JSON(http.StatusOK, gin.H(resData))
@@ -52,14 +52,18 @@ func AuthSignin(c *gin.Context) {
 	}
 
 	/* db connection */
-	name := db.Auth(reqData.Name, reqData.Pass)
+	id, name, ok := db.Auth(reqData.Name, reqData.Pass)
 
-	if name != nil {
+	if ok {
 		resData["status"] = "ok"
-		token := fmt.Sprintf("%x", sha256.Sum256([]byte(*name+time.Now().String())))
-		setCookie(c, "name", *name)
+		token := fmt.Sprintf("%x", sha256.Sum256([]byte(name+time.Now().String())))
+		setCookie(c, "name", name)
 		setCookie(c, "token", token)
-		UserList[*name] = token
+		UserList[name] = UserInfo{
+			ID:    id,
+			Name:  name,
+			Token: token,
+		}
 	} else {
 		resData["status"] = "no-user"
 	}

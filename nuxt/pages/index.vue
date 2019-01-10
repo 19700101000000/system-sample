@@ -9,10 +9,21 @@
         b-card-img(:src="imagePath" top fluid)
       b-card-body
         h4.card-title Upload image
-        p.card-text.text-danger.text-center(v-if="errorMsg != ''") {{ errorMsg }}
-        b-form.text-center(@submit="onSubmit" @reset="onReset")
-          b-form-file(v-if="imagePath == ''" v-model="imageFile" :state="imagePath !== ''" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage")
-          div.mt-2
+        p.card-text.text-danger(v-if="errorMsg != ''") {{ errorMsg }}
+        b-form(@submit="onSubmit" @reset="onReset")
+          b-form-group(
+            horizontal
+            label="Image:"
+            label-class="text-sm-right"
+            :label-cols="2")
+            b-form-file.pt-2(v-model="imageFile" :state="imagePath !== ''" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage")
+          b-form-group(
+            horizontal
+            label="Categories:"
+            label-class="text-sm-right"
+            :label-cols="2")
+            b-form-checkbox-group.pt-2(v-model="selectedCategories" name="categories" :options="optCategories")
+          div.mt-2.text-center
             b-button(type="submit" variant="outline-success" :disabled="imagePath == ''") Send
             b-button.ml-2(type="reset" variant="outline-danger" :disabled="imagePath == ''") Reset
     b-row
@@ -42,6 +53,9 @@ export default class extends Vue {
   public imagePath = "";
   public errorMsg = "";
 
+  public selectedCategories: string[] = [];
+  public optCategories = {};
+
   public onSubmit(e: Event) {
     e.preventDefault();
     if (this.imageFile == "") {
@@ -51,6 +65,9 @@ export default class extends Vue {
     const url = "/api/upload/image";
     let params = new FormData();
     params.append("image", this.imageFile);
+    for (var category of this.selectedCategories) {
+      params.append("categories", category);
+    }
     axios.post(url, params).then((result) => {
 
     }).catch(() => {
@@ -83,6 +100,17 @@ export default class extends Vue {
     } else {
       this.imagePath = "";
     }
+  }
+  public mounted() {
+    this.getOptions();
+  }
+  private getOptions() {
+    axios.get("/api/get/categories")
+    .then((result) => {
+      if (result.data) {
+        this.optCategories = result.data.options;
+      }
+    });
   }
 }
 </script>

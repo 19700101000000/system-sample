@@ -38,7 +38,7 @@ func getAuth(c *gin.Context) (string, bool) {
 	if err != nil {
 		return "", false
 	}
-	if UserList[name] != token {
+	if v, ok := UserList[name]; !ok || v.Token != token {
 		return "", false
 	}
 	return name, true
