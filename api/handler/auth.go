@@ -3,7 +3,7 @@ package handler
 import (
 	"crypto/sha256"
 	"fmt"
-	"github.com/19700101000000/system-sample/api/ark"
+	"github.com/19700101000000/system-sample/api/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -14,17 +14,8 @@ func AuthCheck(c *gin.Context) {
 		"status": "failed",
 		"name":   nil,
 	}
-	name, err := c.Cookie("name")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H(resData))
-		return
-	}
-	token, err := c.Cookie("token")
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H(resData))
-		return
-	}
-	if UserList[name] != token {
+	name, ok := getAuth(c)
+	if !ok {
 		c.JSON(http.StatusOK, gin.H(resData))
 		return
 	}
@@ -39,7 +30,7 @@ func AuthSignout(c *gin.Context) {
 	}
 	name, _ := c.Cookie("name")
 	token, _ := c.Cookie("token")
-	if v, ok := UserList[name]; ok && v == token {
+	if v, ok := UserList[name]; ok && v.Token == token {
 		delete(UserList, name)
 	}
 	c.JSON(http.StatusOK, gin.H(resData))
@@ -61,21 +52,18 @@ func AuthSignin(c *gin.Context) {
 	}
 
 	/* db connection */
-	result := make(chan *string)
-	ark := ark.Auth{
-		Name:   reqData.Name,
-		Pass:   reqData.Pass,
-		Result: result,
-	}
-	SqlContactStream <- ark
-	name := <-result
+	id, name, ok := db.Auth(reqData.Name, reqData.Pass)
 
-	if name != nil {
+	if ok {
 		resData["status"] = "ok"
-		token := fmt.Sprintf("%x", sha256.Sum256([]byte(*name+time.Now().String())))
-		setCookie(c, "name", *name)
+		token := fmt.Sprintf("%x", sha256.Sum256([]byte(name+time.Now().String())))
+		setCookie(c, "name", name)
 		setCookie(c, "token", token)
-		UserList[*name] = token
+		UserList[name] = UserInfo{
+			ID:    id,
+			Name:  name,
+			Token: token,
+		}
 	} else {
 		resData["status"] = "no-user"
 	}

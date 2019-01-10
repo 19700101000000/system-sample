@@ -4,24 +4,23 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"fmt"
-	arks "github.com/19700101000000/system-sample/api/ark"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 )
 
-type DB struct {
-	Sql    *sql.DB
-	Stream chan interface{}
-}
+var db *sql.DB
 
-func NewDB() *DB {
-	db, err := SqlConnection()
+func InitDB() {
+	DB, err := SqlConnection()
 	if err != nil {
 		panic("DB connecion failed")
 	}
-	return &DB{
-		Sql:    db,
-		Stream: make(chan interface{}),
+	db = DB
+}
+
+func CloseDB() {
+	if db != nil {
+		db.Close()
 	}
 }
 
@@ -34,32 +33,40 @@ func SqlConnection() (*sql.DB, error) {
 	/* connection db */
 	return sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPass, dbHost, dbName))
 }
-func (db *DB) Monitor() {
-	for {
-		select {
-		case ark := <-db.Stream:
-			db.separateArk(ark)
-		}
+
+func Auth(user, pass string) (id int, name string, ok bool) {
+	err := db.QueryRow(
+		"SELECT `id`, `name` FROM `user` WHERE `name` = ? AND `password` = ? AND alive = 1",
+		user,
+		fmt.Sprintf("%x", sha256.Sum256([]byte(pass))),
+	).Scan(&id, &name)
+	if err != nil {
+		fmt.Printf("error by db.Auth:: %v\n", err)
+		ok = false
+		return
 	}
-	close(db.Stream)
+	ok = true
+	return
 }
 
-func (db *DB) separateArk(ark interface{}) {
-	switch v := ark.(type) {
-	case arks.Auth:
-		db.typeArkAuth(v)
-	}
-}
-func (db *DB) typeArkAuth(ark arks.Auth) {
-	defer close(ark.Result)
-	var name *string
-	err := db.Sql.QueryRow(
-		"SELECT `name` FROM `user` WHERE `name` = ? AND `password` = ? AND alive = 1",
-		ark.Name,
-		fmt.Sprintf("%x", sha256.Sum256([]byte(ark.Pass))),
-	).Scan(&name)
+func Categories() map[string]interface{} {
+	result := make(map[string]interface{})
+
+	rows, err := db.Query("SELECT `id`, `name` FROM `category`")
 	if err != nil {
-		fmt.Printf("error by typeArkAuth:: %v\n", err)
+		fmt.Printf("error by db.GetCategories:: %v\n", err)
+		return result
 	}
-	ark.Result <- name
+
+	options := make([]OptionCategory, 0)
+	for rows.Next() {
+		var id, name string
+		if err := rows.Scan(&id, &name); err != nil {
+			fmt.Printf("error by db.GetCategories:: %v\n", err)
+			continue
+		}
+		options = append(options, OptionCategory{Text: name, Value: id})
+	}
+	result["options"] = options
+	return result
 }

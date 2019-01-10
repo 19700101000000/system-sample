@@ -6,7 +6,7 @@
       b-collapse#nav_collapse(is-nav)
 
         b-navbar-nav.ml-auto(v-if="isSignin")
-          b-nav-item-dropdown(:text="userName" right)
+          b-nav-item-dropdown(:text="$store.state.name" right)
             b-dropdown-item(href="/user/1") Profile
             b-dropdown-item(v-on:click="signout") Signout
 
@@ -25,8 +25,9 @@ import axios from "axios"
 
 @Component
 export default class extends Vue {
-  public userName = "user";
-  public isSignin: boolean = false;
+  public get isSignin(): boolean {
+    return this.$store.state.name !== ""? true : false;
+  }
 
   public signout(): void {
     let url = "/api/auth/signout";
@@ -38,16 +39,23 @@ export default class extends Vue {
       }
     });
   }
-  public mounted() {
-    let url = "/api/auth/check";
-    axios.get(url)
-    .then((result) => {
-      let status = result.data.status;
-      if (status === "ok") {
-        this.isSignin = true
-        this.userName = result.data.name;
+  
+  public async mounted() {
+    const url = "/api/auth/check";
+    axios.get(url).then(({ data }) => {
+      if (data.status === "ok") {
+        this.$store.commit("setName", data.name);
       }
     });
+    // let url = "/api/auth/check";
+    // axios.get(url)
+    // .then((result) => {
+    //   let status = result.data.status;
+    //   if (status === "ok") {
+    //     this.isSignin = true
+    //     this.userName = result.data.name;
+    //   }
+    // });
   }
 }
 </script>

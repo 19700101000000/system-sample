@@ -8,31 +8,34 @@ import (
 
 type server struct {
 	router *gin.Engine
-	db     *db.DB
 }
 
 func newServer() *server {
 	return &server{
 		router: gin.Default(),
-		db:     db.NewDB(),
 	}
 }
 func (s *server) serverInit() {
-	handler.SqlContactStream = s.db.Stream
-	handler.UserList = make(map[string]string)
+	db.InitDB()
+	handler.UserList = make(map[string]handler.UserInfo)
 
-	s.router.GET("/", handler.Index)
+	// s.router.GET("/", handler.Index)
+	s.router.GET("/get/categories", handler.GetCategories)
 
+	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
+
+	/* images */
+	s.router.Static("/images", "./public/images")
+	s.router.POST("/upload/image", handler.UploadImage)
 
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)
 	// s.router.GET("/auth/google/callback", handler.AuthGoogleCallback)
 }
 func (s *server) serverRun() {
-	defer s.db.Sql.Close()
-	go s.db.Monitor()
+	defer db.CloseDB()
 	s.router.Run(":8080")
 }
