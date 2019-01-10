@@ -42,5 +42,7 @@ func UploadImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "bad request")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"status": "ok",
+	})
 }

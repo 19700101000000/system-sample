@@ -16,16 +16,20 @@
             label="Image:"
             label-class="text-sm-right"
             :label-cols="2")
-            b-form-file.pt-2(v-model="imageFile" :state="imagePath !== ''" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage")
+            b-form-file.pt-2(v-if="viewInputImage" v-model="imageFile" :state="imagePath !== ''" placeholder="Choose an image..." accept=".jpg, jpeg, .png" @change="selectImage" :disabled="submitting")
           b-form-group(
             horizontal
             label="Categories:"
             label-class="text-sm-right"
             :label-cols="2")
-            b-form-checkbox-group.pt-2(v-model="selectedCategories" name="categories" :options="optCategories")
-          div.mt-2.text-center
-            b-button(type="submit" variant="outline-success" :disabled="imagePath == ''") Send
-            b-button.ml-2(type="reset" variant="outline-danger" :disabled="imagePath == ''") Reset
+            b-form-checkbox-group.pt-2(v-model="selectedCategories" name="categories" :options="optCategories" :disabled="submitting")
+
+          div.mt-2(v-if="submitting")
+            b-progress.mb-2(:max="1" height="1.5rem")
+              b-progress-bar(:value="1" animated striped label="now sending...")
+          div.mt-2.text-center(v-else)
+            b-button(type="submit" variant="outline-success" :disabled="imagePath == '' || submitting") Send
+            b-button.ml-2(type="reset" variant="outline-danger" :disabled="imagePath == '' || submitting") Reset
     b-row
       b-col
         rank-table
@@ -53,31 +57,49 @@ export default class extends Vue {
   public imagePath = "";
   public errorMsg = "";
 
+  public viewInputImage = true;
+  public submitting = false;
+
   public selectedCategories: string[] = [];
   public optCategories = {};
 
   public onSubmit(e: Event) {
     e.preventDefault();
-    if (this.imageFile == "") {
-      this.errorMsg = "Please selected image."
-      return;
-    }
-    const url = "/api/upload/image";
-    let params = new FormData();
-    params.append("image", this.imageFile);
-    for (var category of this.selectedCategories) {
-      params.append("categories", category);
-    }
-    axios.post(url, params).then((result) => {
-
-    }).catch(() => {
-      this.errorMsg = "Failed connection.";
-    });
+    this.submitting = true;
+    window.setTimeout(() => {
+      if (this.imageFile == "") {
+        this.errorMsg = "Please selected image."
+        return;
+      }
+      const url = "/api/upload/image";
+      let params = new FormData();
+      params.append("image", this.imageFile);
+      for (var category of this.selectedCategories) {
+        params.append("categories", category);
+      }
+      axios.post(url, params).then((result) => {
+        if (result.data.status === "ok") {
+          this.reset();
+        }
+        this.submitting = false;
+      }).catch(() => {
+        this.errorMsg = "Failed connection.";
+        this.submitting = false;
+      });
+    }, 1000);
   }
   public onReset(e: Event) {
+    this.reset();
+  }
+  private reset() {
     this.imageFile = "";
     this.imagePath = "";
     this.errorMsg = "";
+    this.selectedCategories = [];
+    this.viewInputImage = false;
+    this.$nextTick(() => {
+      this.viewInputImage = true;
+    });
   }
   public selectImage(e: Event) {
     if (e.target instanceof HTMLInputElement && e.target.files && e.target.files[0]) {
