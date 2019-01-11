@@ -2,6 +2,7 @@
   b-container
     form-image
     card-image(v-for="value in values" :value="value")
+    p.text-center.mt-2(v-if="values.length === 0") Images is not uploaded yet.
 </template>
 
 <script lang="ts">
