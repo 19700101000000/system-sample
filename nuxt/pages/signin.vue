@@ -53,7 +53,7 @@ import {
 } from "nuxt-property-decorator"
 import axios from "axios"
 
-@Component
+@Component({})
 export default class extends Vue {
   public name: string = "";
   public pass: string = "";
