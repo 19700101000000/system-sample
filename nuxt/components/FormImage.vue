@@ -37,7 +37,7 @@ import {
 import axios from "axios"
 
 @Component({})
-export default class UploadImage extends Vue {
+export default class FormImage extends Vue {
   public imageFile = "";
   public imagePath = "";
   public errorMsg = "";
