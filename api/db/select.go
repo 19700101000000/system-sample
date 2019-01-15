@@ -45,7 +45,7 @@ func Categories() (result map[string]interface{}) {
 func Galleries() (result map[string]interface{}) {
 	result = make(map[string]interface{})
 
-	rows, err := db.Query("SELECT `u`.`name` AS `user`, `g`.`image` AS `image`, `g`.`timestamp` AS `datetime` FROM `gallery` `g` INNER JOIN `user` `u` ON `g`.`user` = `u`.`id` ORDER BY `datetime` DESC")
+	rows, err := db.Query("SELECT `u`.`name` AS `user`, `g`.`id` AS `number`, `s`.`rate` AS `rate`, `c`.`param` AS `param`, `g`.`image` AS `image`, `g`.`timestamp` AS `datetime` FROM `gallery` `g` INNER JOIN `user` `u` ON `g`.`user` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, COUNT(*) AS `param` FROM `monitor` GROUP BY `target`) `c` ON `u`.`id` = `c`.`target` LEFT OUTER JOIN (SELECT `target`, SUM(`rate`) AS `rate` FROM `monitor` GROUP BY `target`) `s` ON `u`.`id` = `s`.`target` ORDER BY `datetime` DESC")
 	if err != nil {
 		fmt.Printf("error by db.Galleries:: %v\n", err)
 		return
@@ -54,7 +54,7 @@ func Galleries() (result map[string]interface{}) {
 	galleries := make([]Gallery, 0)
 	for rows.Next() {
 		gallery := Gallery{}
-		if err := rows.Scan(&gallery.Username, &gallery.Imagepath, &gallery.Datetime); err != nil {
+		if err := rows.Scan(&gallery.Username, &gallery.Number, &gallery.EvalSum, &gallery.EvalParam, &gallery.Imagepath, &gallery.Datetime); err != nil {
 			fmt.Printf("error by db.Galleries:: %v\n", err)
 			continue
 		}

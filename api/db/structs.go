@@ -7,6 +7,9 @@ type OptionCategory struct {
 
 type Gallery struct {
 	Username  string `json:"username"`
+	Number    int    `json:"number"`
+	EvalSum   *int   `json:"evalsum"`
+	EvalParam *int   `json:"evalparam"`
 	Imagepath string `json:"imagepath"`
 	Datetime  string `json:"datetime"`
 }
