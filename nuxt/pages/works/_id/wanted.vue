@@ -3,7 +3,7 @@ b-container
   b-row
     b-col(sm="4")
       user-nav.mt-2
-    b-col(sm="8")
+    b-col(sm="8") wanted
 </template>
 
 <script lang="ts">
