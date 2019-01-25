@@ -17,3 +17,11 @@ INSERT INTO `category`(`name`) VALUES
     ('Fantasy'),
     ('Science fiction'),
     ('Mechanic');
+
+/* Insert works */
+INSERT INTO `work_wanted`(`user`, `title`, `description`, `price`) VALUES
+    (1, 'aaaaa', 'zzzzzzzzzz', 10000);
+
+INSERT INTO `work_request`(`user`, `wanted`, `requester`, `title`, `description`, `price`) VALUES
+    (1, 1, 2, 'foo', 'foooooo', 12000);
+
