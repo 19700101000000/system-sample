@@ -63,10 +63,10 @@ export default class extends Vue {
 
   /* computeds */
   public get isName(): boolean {
-    return this.name.length > 0? true : false;
+    return this.name.length > 0;
   }
   public get isPass(): boolean {
-    return this.pass.length > 0? true : false;
+    return this.pass.length > 0;
   }
   /* methods */
   public onSubmit(): void {

@@ -10,6 +10,8 @@ type Gallery struct {
 	Number    int    `json:"number"`
 	EvalSum   *int   `json:"evalsum"`
 	EvalParam *int   `json:"evalparam"`
+	Favorite  *int   `json:"favorite"`
+	Comment   *int   `json:"comment"`
 	Imagepath string `json:"imagepath"`
 	Datetime  string `json:"datetime"`
 }
