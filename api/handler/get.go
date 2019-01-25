@@ -13,3 +13,7 @@ func GetCategories(c *gin.Context) {
 func GetGalleries(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.Galleries()))
 }
+
+func GetUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"))))
+}

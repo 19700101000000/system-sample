@@ -15,3 +15,9 @@ type Gallery struct {
 	Imagepath string `json:"imagepath"`
 	Datetime  string `json:"datetime"`
 }
+
+type StructUser struct {
+	Name     string `json:"name"`
+	ShowName string `json:"showname"`
+	Alive    bool   `json:"alive"`
+}

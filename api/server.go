@@ -22,6 +22,7 @@ func (s *server) serverInit() {
 	// s.router.GET("/", handler.Index)
 	s.router.GET("/get/categories", handler.GetCategories)
 	s.router.GET("/get/galleries", handler.GetGalleries)
+	s.router.GET("/get/user/:name", handler.GetUser)
 
 	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)

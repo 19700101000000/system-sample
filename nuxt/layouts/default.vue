@@ -7,7 +7,7 @@
 
         b-navbar-nav.ml-auto(v-if="isSignin")
           b-nav-item-dropdown(:text="$store.state.name" right)
-            b-dropdown-item(href="/user/1") Profile
+            b-dropdown-item(:href="'/user/' + $store.state.name") Profile
             b-dropdown-item(v-on:click="signout") Signout
 
         b-navbar-nav.ml-auto(v-else)

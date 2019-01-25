@@ -20,6 +20,21 @@ func Auth(user, pass string) (id int, name string, ok bool) {
 	return
 }
 
+func User(name string) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	user := StructUser{}
+
+	err := db.QueryRow(
+		"SELECT `name`, `show_name`, `alive` FROM `user` WHERE `name` = ?",
+		name,
+	).Scan(&user.Name, &user.ShowName, &user.Alive)
+	if err != nil {
+		fmt.Printf("error by db.Auth:: %v\n", err)
+	}
+	result["user"] = user
+	return
+}
+
 func Categories() (result map[string]interface{}) {
 	result = make(map[string]interface{})
 
