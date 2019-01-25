@@ -9,3 +9,7 @@ import (
 func GetCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.Categories()))
 }
+
+func GetGalleries(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H(db.Galleries()))
+}

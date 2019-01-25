@@ -38,6 +38,7 @@ CREATE TABLE `gallery` (
     `user`      INTEGER,
     `id`        INTEGER,
     `image`     VARCHAR(128)    NOT NULL,
+    `timestamp` TIMESTAMP,
     PRIMARY KEY(`user`, `id`),
 
     FOREIGN KEY(`user`) REFERENCES `user`(`id`)

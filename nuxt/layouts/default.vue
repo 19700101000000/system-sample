@@ -26,7 +26,7 @@ import axios from "axios"
 @Component
 export default class extends Vue {
   public get isSignin(): boolean {
-    return this.$store.state.name !== ""? true : false;
+    return this.$store.state.name !== "";
   }
 
   public signout(): void {
