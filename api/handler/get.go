@@ -17,3 +17,7 @@ func GetGalleries(c *gin.Context) {
 func GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"))))
 }
+
+func GetWorksWantedlies(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H(db.WorksWantedlies(c.Param("name"))))
+}

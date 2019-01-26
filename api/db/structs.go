@@ -21,3 +21,11 @@ type StructUser struct {
 	ShowName string `json:"showname"`
 	Alive    bool   `json:"alive"`
 }
+
+type StructWanted struct {
+	Username    string `json:"username"`
+	Number      int    `json:"number"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Price       int    `json:"price"`
+}

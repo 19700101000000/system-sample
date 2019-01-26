@@ -35,6 +35,37 @@ func User(name string) (result map[string]interface{}) {
 	return
 }
 
+func WorksWantedlies(name string) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	wantedlies := make([]StructWanted, 0)
+
+	rows, err := db.Query(
+		"SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ?",
+		name,
+	)
+	if err != nil {
+		fmt.Printf("error by db.WorksWantedlies:: %v\n", err)
+		return
+	}
+
+	for rows.Next() {
+		wanted := StructWanted{}
+		if err := rows.Scan(
+			&wanted.Username,
+			&wanted.Number,
+			&wanted.Title,
+			&wanted.Description,
+			&wanted.Price,
+		); err != nil {
+			fmt.Printf("error by db.WorksWantedlies:: %v\n", err)
+			continue
+		}
+		wantedlies = append(wantedlies, wanted)
+	}
+	result["wantedlies"] = wantedlies
+	return
+}
+
 func Categories() (result map[string]interface{}) {
 	result = make(map[string]interface{})
 
