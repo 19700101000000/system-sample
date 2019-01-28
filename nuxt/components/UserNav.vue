@@ -1,6 +1,7 @@
 <template lang="pug">
   b-card(no-body)
-    h4(slot="header") {{ $route.params.id }}
+    h4(slot="header")
+      b-link(:href="'/user/' + $route.params.id") {{ $route.params.id }}
     b-card-body(v-if="userExist")
       template Rate: ...
     b-card-body(v-else) Not exist.

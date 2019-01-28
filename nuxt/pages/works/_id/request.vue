@@ -3,7 +3,10 @@ b-container
   b-row
     b-col(sm="4")
       user-nav.mt-2
-    b-col(sm="8") request
+    b-col(sm="8")
+      b-card.mt-2(no-body)
+        b-card-body
+          h4 REQUEST
 </template>
 
 <script lang="ts">
