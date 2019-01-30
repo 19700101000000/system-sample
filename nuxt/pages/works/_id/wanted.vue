@@ -15,7 +15,7 @@ b-container
     ref="newWanted")
     b-form
       b-form-group(
-        label="Title:"
+        :label="'Title ('+ countTitle  +'):'"
         label-for="inputTitle")
         b-form-input#inputTitle(
           v-model="title"
@@ -23,21 +23,23 @@ b-container
           placeholder="Please input) title."
           :disabled="modalDisabled")
       b-form-group(
-        label="Price(JPY):"
-        label-for="inputPrice")
-        b-form-input#inputPrice(
-          v-model="price"
-          type="number"
-          placeholder="Please input price."
-          :disabled="modalDisabled")
-      b-form-group(
-        label="Description:"
+        :label="'Description ('+ countDescription +'):'"
         label-for=inputDescription)
         b-form-textarea#inputDescription(
           v-model="description"
           :state="stateDescription"
           placeholder="Please input description."
           :rows="6"
+          :disabled="modalDisabled")
+      b-form-group(
+        label="Price(JPY):"
+        label-for="inputPrice")
+        b-form-input#inputPrice(
+          :class="[price.length > 0 ? 'text-right' : '']"
+          v-model="price"
+          :state="statePrice"
+          :formatter="priceFormat"
+          placeholder="Please input price."
           :disabled="modalDisabled")
     div(slot="modal-footer")
       b-button(
@@ -48,7 +50,7 @@ b-container
         slot="modal-ok"
         variant="outline-primary"
         v-on:click="modalOK"
-        :disabled="!stateTitle || !stateDescription") Send
+        :disabled="!stateTitle || !stateDescription || !statePrice") Send
 </template>
 
 <script lang="ts">
@@ -67,14 +69,35 @@ export default class extends Vue {
   public modalDisabled = false;
   
   public title       = "";
-  public price       = 10000;
+  public price       = "10,000";
+  public priceTrue   = 0;
   public description = "";
 
+  public get countTitle(): number {
+    return 100 - this.title.length;
+  }
+  public get countDescription(): number {
+    return 500 - this.description.length;
+  }
+  public priceFormat(value: string, event): string {
+    const match = value.replace(/,/g, '').match(/\d+/);
+    if (match) {
+      const price = match[0].replace(/(^0+)(\d+)/, '$2');
+      this.priceTrue = parseInt(price);
+
+      return price.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
+    return "";
+  }
+
   public get stateTitle(): boolean {
-    return this.title.length > 0 && this.title.length < 100;
+    return this.title.length > 0 && this.title.length <= 100;
   }
   public get stateDescription(): boolean {
-    return this.description.length > 0 && this.description.length < 500;
+    return this.description.length > 0 && this.description.length <= 500;
+  }
+  public get statePrice(): boolean {
+    return this.price.length > 0;    
   }
 
   public modalOK() {
