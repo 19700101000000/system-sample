@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+/* upload image */
 func UploadImage(c *gin.Context) {
 	name, ok := getAuth(c)
 	if !ok {
@@ -45,4 +46,34 @@ func UploadImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
 	})
+}
+
+/* upload wanted */
+func UploadWanted(c *gin.Context) {
+	// auth check
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+
+	// get wanted
+	var reqData struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		Price       int    `json:"price"`
+	}
+	err := c.Bind(&reqData)
+	if err != nil {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+
+	ok = db.InsertWanted(UserList[name].ID, db.StructWanted{
+		Title:       reqData.Title,
+		Description: reqData.Description,
+		Price:       reqData.Price,
+	})
+
+	c.JSON(http.StatusOK, gin.H{})
 }

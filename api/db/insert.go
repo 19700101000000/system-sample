@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+/* insert gallery */
 func InsertGallery(userid int, filename string, categories []string) (ok bool) {
 	tx, err := db.Begin()
 	if err != nil {
@@ -44,6 +45,32 @@ func InsertGallery(userid int, filename string, categories []string) (ok bool) {
 		}
 	}
 
+	tx.Commit()
+	ok = true
+	return
+}
+
+/* insert wanted */
+func InsertWanted(userid int, data StructWanted) (ok bool) {
+	tx, err := db.Begin()
+	if err != nil {
+		ok = false
+		fmt.Printf("error db.InsertWanted:: %v\n", err)
+		return
+	}
+	_, err = tx.Exec(
+		"INSERT INTO `work_wanted`(`user`, `title`, `description`, `price`) VALUES (?, ?, ?, ?)",
+		userid,
+		data.Title,
+		data.Description,
+		data.Price,
+	)
+	if err != nil {
+		ok = false
+		fmt.Printf("error db.InsertWanted:: %v\n", err)
+		tx.Rollback()
+		return
+	}
 	tx.Commit()
 	ok = true
 	return

@@ -3,7 +3,7 @@ b-container
   b-row
     b-col(sm="4")
       user-nav.mt-2
-    b-col(sm="8")
+    b-col(sm="8" v-if="$store.state.name !== ''")
       b-card.mt-2(no-body)
         b-card-body
           h4 WANTED
@@ -41,6 +41,7 @@ b-container
           :formatter="priceFormat"
           placeholder="Please input price."
           :disabled="modalDisabled")
+    div.text-danger(v-if="error") {{ errorMsg }}
     div(slot="modal-footer")
       b-button(
         slot="modal-cancel"
@@ -50,15 +51,16 @@ b-container
         slot="modal-ok"
         variant="outline-primary"
         v-on:click="modalOK"
-        :disabled="!stateTitle || !stateDescription || !statePrice") Send
+        :disabled="!stateTitle || !stateDescription || !statePrice || modalDisabled") Send
 </template>
 
 <script lang="ts">
 import {
   Component,
   Vue
-} from 'nuxt-property-decorator'
+} from "nuxt-property-decorator"
 import UserNav from "~/components/UserNav.vue"
+import axios from "axios"
 
 @Component({
   components: {
@@ -67,6 +69,9 @@ import UserNav from "~/components/UserNav.vue"
 })
 export default class extends Vue {
   public modalDisabled = false;
+  
+  public error = false;
+  public errorMsg = "Fail Uploaded.";
   
   public title       = "";
   public price       = "10,000";
@@ -97,12 +102,28 @@ export default class extends Vue {
     return this.description.length > 0 && this.description.length <= 500;
   }
   public get statePrice(): boolean {
-    return this.price.length > 0;    
+    return this.price.length > 0;
   }
 
   public modalOK() {
-    let modal: any = this.$refs.newWanted;
-    modal.hide();
+    this.modalDisabled = true;
+    axios.post("/api/upload/wanted", {
+      title: this.title,
+      description: this.description,
+      price: this.priceTrue,
+    }).then((result) => {
+      this.modalDisabled = false;
+      this.title = "";
+      this.description = "";
+      this.price = "10000";
+      this.priceTrue = 10000;
+      this.error = false;
+      let modal: any = this.$refs.newWanted;
+      modal.hide();
+    }).catch((result) => {
+      this.error = true;
+      this.modalDisabled = false;
+    });
   }
 }
 </script>
