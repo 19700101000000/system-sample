@@ -35,12 +35,16 @@ func User(name string) (result map[string]interface{}) {
 	return
 }
 
-func WorksWantedlies(name string) (result map[string]interface{}) {
+func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
 	result = make(map[string]interface{})
 	wantedlies := make([]StructWanted, 0)
 
+	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ?"
+	if !auth {
+		sql += " AND  `w`.`alive` = true"
+	}
 	rows, err := db.Query(
-		"SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ?",
+		sql,
 		name,
 	)
 	if err != nil {
@@ -62,7 +66,7 @@ func WorksWantedlies(name string) (result map[string]interface{}) {
 		}
 		wantedlies = append(wantedlies, wanted)
 	}
-	result["wantedlies"] = wantedlies
+	result["wanteds"] = wantedlies
 	return
 }
 

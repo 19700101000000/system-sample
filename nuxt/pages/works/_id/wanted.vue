@@ -6,9 +6,13 @@ b-container
     b-col(sm="8" v-if="$store.state.name !== ''")
       b-card.mt-2(no-body)
         b-card-body
-          h4 WANTED
+          h4 MY WANTEDS
           p.card-text.text-right
             b-button(variant="outline-primary" v-b-modal.newWanted) new wanted
+      wanted-list-item.mt-2(
+        v-for="wanted in wanteds"
+        :value="wanted")
+
   b-modal#newWanted(
     title="New Wanted"
     size="lg"
@@ -20,7 +24,7 @@ b-container
         b-form-input#inputTitle(
           v-model="title"
           :state="stateTitle"
-          placeholder="Please input) title."
+          placeholder="Please input title."
           :disabled="modalDisabled")
       b-form-group(
         :label="'Description ('+ countDescription +'):'"
@@ -59,12 +63,14 @@ import {
   Component,
   Vue
 } from "nuxt-property-decorator"
-import UserNav from "~/components/UserNav.vue"
 import axios from "axios"
+import UserNav from "~/components/UserNav.vue"
+import WantedListItem from "~/components/WantedListItem.vue"
 
 @Component({
   components: {
     UserNav,
+    WantedListItem,
   }
 })
 export default class extends Vue {
@@ -77,6 +83,8 @@ export default class extends Vue {
   public price       = "10,000";
   public priceTrue   = 0;
   public description = "";
+
+  public wanteds = [];
 
   public get countTitle(): number {
     return 100 - this.title.length;
@@ -123,6 +131,12 @@ export default class extends Vue {
     }).catch((result) => {
       this.error = true;
       this.modalDisabled = false;
+    });
+  }
+
+  public mounted() {
+    axios.get("/api/get/works/wanteds").then(({ data }) => {
+      this.wanteds = data.wanteds;
     });
   }
 }

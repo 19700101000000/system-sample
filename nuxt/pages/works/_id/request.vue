@@ -6,7 +6,7 @@ b-container
     b-col(sm="8")
       b-card.mt-2(no-body)
         b-card-body
-          h4 REQUEST
+          h4 MY REQUESTS
 </template>
 
 <script lang="ts">

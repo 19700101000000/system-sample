@@ -7,9 +7,9 @@
     b-card-body(v-else) Not exist.
     b-list-group(v-if="signin" flush)
       b-list-group-item
-        b-link(:href="'/works/' + $store.state.name + '/wanted'") 仕事募集
+        b-link(:href="'/works/' + $store.state.name + '/wanted'") My Wanteds
       b-list-group-item
-        b-link(:href="'/works/' + $store.state.name + '/request'") 仕事依頼
+        b-link(:href="'/works/' + $store.state.name + '/request'") My Requests
 </template>
 
 <script lang="ts">

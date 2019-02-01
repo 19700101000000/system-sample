@@ -3,8 +3,14 @@
     b-card-body
       h4 {{ value.title }}
       p {{ value.description }}
-      p.card-text JPY {{ value.price }}
-        b-button.ml-2(variant="outline-primary" size="sm") new request
+      p.card-text
+        b-button.ml-2(
+          v-if="$store.state.name !== value.username"
+          :disabled="$store.state.name === ''"
+          variant="outline-primary"
+          size="sm"
+          v-on:click="$emit('showmodal', value)") new request
+        span.ml-2 JPY {{ value.price }}
 </template>
 
 <script lang="ts">
