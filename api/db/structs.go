@@ -28,4 +28,17 @@ type StructWanted struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Price       int    `json:"price"`
+	Alive       bool   `json:"alive"`
+}
+
+type StructRequest struct {
+	OwnerName   string `json:"ownername"`
+	WantedID    int    `json:"wanted"`
+	Number      int    `json:"number"`
+	UserName    string `json:"username"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Price       int    `json:"price"`
+	Establish   bool   `json:"establish"`
+	Alive       bool   `json:"alive"`
 }

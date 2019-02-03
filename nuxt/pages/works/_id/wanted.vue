@@ -19,15 +19,16 @@ b-container
     ref="newWanted")
     b-form
       b-form-group(
-        :label="'Title ('+ countTitle  +'):'"
+        label="Title:"
         label-for="inputTitle")
         b-form-input#inputTitle(
           v-model="title"
           :state="stateTitle"
           placeholder="Please input title."
           :disabled="modalDisabled")
+        p.text-right {{ title.length }}/100
       b-form-group(
-        :label="'Description ('+ countDescription +'):'"
+        label="Description:"
         label-for=inputDescription)
         b-form-textarea#inputDescription(
           v-model="description"
@@ -35,6 +36,7 @@ b-container
           placeholder="Please input description."
           :rows="6"
           :disabled="modalDisabled")
+        p.text-right {{ description.length }}/500
       b-form-group(
         label="Price(JPY):"
         label-for="inputPrice")
@@ -86,12 +88,6 @@ export default class extends Vue {
 
   public wanteds = [];
 
-  public get countTitle(): number {
-    return 100 - this.title.length;
-  }
-  public get countDescription(): number {
-    return 500 - this.description.length;
-  }
   public priceFormat(value: string, event): string {
     const match = value.replace(/,/g, '').match(/\d+/);
     if (match) {

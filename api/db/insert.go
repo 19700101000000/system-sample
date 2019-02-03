@@ -75,3 +75,43 @@ func InsertWanted(userid int, data StructWanted) (ok bool) {
 	ok = true
 	return
 }
+
+/* insert request */
+func InsertRequest(userid int, data StructRequest) (ok bool) {
+	tx, err := db.Begin()
+	if err != nil {
+		ok = false
+		fmt.Printf("error db.InsertRequest:: %v\n", err)
+		return
+	}
+	var ownerID int
+	err = tx.QueryRow(
+		"SELECT `w`.`user` AS `user` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ? AND `w`.`id` = ?",
+		data.OwnerName,
+		data.WantedID,
+	).Scan(&ownerID)
+	if err != nil {
+		ok = false
+		fmt.Printf("error db.InsertRequest:: %v\n", err)
+		tx.Rollback()
+		return
+	}
+	_, err = tx.Exec(
+		"INSERT INTO `work_request`(`user`, `wanted`, `requester`, `title`, `description`, `price`) VALUES (?, ?, ?, ?, ?, ?)",
+		ownerID,
+		data.WantedID,
+		userid,
+		data.Title,
+		data.Description,
+		data.Price,
+	)
+	if err != nil {
+		ok = false
+		fmt.Printf("error db.InsertRequest:: %v\n", err)
+		tx.Rollback()
+		return
+	}
+	tx.Commit()
+	ok = true
+	return
+}

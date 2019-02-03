@@ -101,6 +101,7 @@ CREATE TABLE `work_wanted` (
     `description`   VARCHAR(512) NOT NULL,
     `price`         INTEGER NOT NULL,
     `alive`         BOOLEAN NOT NULL DEFAULT TRUE,
+    `create_at`     TIMESTAMP,
     PRIMARY KEY(`user`, `id`),
 
     FOREIGN KEY(`user`) REFERENCES `user`(`id`)
@@ -127,6 +128,7 @@ CREATE TABLE `work_request` (
     `price`         INTEGER NOT NULL,
     `establish`     BOOLEAN NOT NULL DEFAULT FALSE,
     `alive`         BOOLEAN NOT NULL DEFAULT TRUE,
+    `create_at`     TIMESTAMP,
     PRIMARY KEY(`user`, `wanted`, `id`),
 
     FOREIGN KEY(`user`, `wanted`)      REFERENCES `work_wanted`(`user`, `id`),

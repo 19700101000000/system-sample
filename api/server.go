@@ -25,18 +25,20 @@ func (s *server) serverInit() {
 	s.router.GET("/get/user/:name", handler.GetUser)
 	s.router.GET("/get/works/wanteds", handler.GetMyWanteds)
 	s.router.GET("/get/works/wanteds/:name", handler.GetWorksWanteds)
+	s.router.GET("/get/works/requests", handler.GetMyRequests)
 
 	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
 
-	/* images */
+	/* galleries */
 	s.router.Static("/images", "./public/images")
 	s.router.POST("/upload/image", handler.UploadImage)
 
-	/* wanted */
+	/* wanted and requests */
 	s.router.POST("/upload/wanted", handler.UploadWanted)
+	s.router.POST("/upload/request", handler.UploadRequest)
 
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)

@@ -7,6 +7,7 @@ b-container
       b-card.mt-2(no-body)
         b-card-body
           h4 MY REQUESTS
+      request-list-item.mt-2(v-for="request in requests" :value="request")
 </template>
 
 <script lang="ts">
@@ -14,14 +15,23 @@ import {
   Component,
   Vue
 } from 'nuxt-property-decorator'
+import axios from "axios"
 import UserNav from "~/components/UserNav.vue"
+import RequestListItem from "~/components/RequestListItem.vue"
 
 @Component({
   components: {
     UserNav,
+    RequestListItem,
   }
 })
 export default class extends Vue {
+  public requests = []
+  public mounted() {
+    axios.get("/api/get/works/requests").then(({ data }) => {
+      this.requests = data.requests;
+    });
+  }
 }
 </script>
 

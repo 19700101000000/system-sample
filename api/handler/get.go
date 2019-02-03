@@ -18,6 +18,7 @@ func GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"))))
 }
 
+/* get wanteds */
 func GetWorksWanteds(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.WorksWanteds(c.Param("name"), false)))
 }
@@ -29,4 +30,18 @@ func GetMyWanteds(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, db.WorksWanteds(name, ok))
+}
+
+/* get requests */
+func GetWorksRequests(c *gin.Context) {
+	c.String(http.StatusOK, "ok")
+}
+
+func GetMyRequests(c *gin.Context) {
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+	c.JSON(http.StatusOK, db.WorksRequests(name, ok))
 }

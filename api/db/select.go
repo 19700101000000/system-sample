@@ -35,14 +35,54 @@ func User(name string) (result map[string]interface{}) {
 	return
 }
 
+/* works requests */
+func WorksRequests(name string, auth bool) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	requests := make([]StructRequest, 0)
+
+	sql := "SELECT `u1`.`name` AS `owner`, `r`.`wanted` AS `wanted_id`, `r`.`id` AS `request_id`, `u2`.`name` AS `requester`, `r`.`title` AS `title`, `r`.`description` AS `description`, `r`.`price` AS `price`, `r`.`establish` AS `establish`, `r`.`alive` AS `alive` FROM `work_request` `r` INNER JOIN `user` `u1` ON `r`.`user` = `u1`.`id` INNER JOIN `user` `u2` ON `r`.`requester` =	`u2`.`id` WHERE `u2`.`name` = ?"
+	if !auth {
+		sql += " AND `r`.`alive` = true"
+	}
+	sql += " ORDER BY `r`.`create_at` DESC, `r`.`alive` DESC, `r`.`establish` ASC"
+	rows, err := db.Query(sql, name)
+	if err != nil {
+		fmt.Printf("error by db.WorksReqests:: %v\n", err)
+		return
+	}
+
+	for rows.Next() {
+		request := StructRequest{}
+		if err := rows.Scan(
+			&request.OwnerName,
+			&request.WantedID,
+			&request.Number,
+			&request.UserName,
+			&request.Title,
+			&request.Description,
+			&request.Price,
+			&request.Establish,
+			&request.Alive,
+		); err != nil {
+			fmt.Printf("error by db.WorksReqests:: %v\n", err)
+			continue
+		}
+		requests = append(requests, request)
+	}
+	result["requests"] = requests
+	return
+}
+
+/* works wanteds */
 func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
 	result = make(map[string]interface{})
-	wantedlies := make([]StructWanted, 0)
+	wanteds := make([]StructWanted, 0)
 
-	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ?"
+	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price`, `w`.`alive` AS `alive` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ?"
 	if !auth {
 		sql += " AND  `w`.`alive` = true"
 	}
+	sql += " ORDER BY `w`.`create_at` DESC, `w`.`alive` DESC"
 	rows, err := db.Query(
 		sql,
 		name,
@@ -60,16 +100,18 @@ func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
 			&wanted.Title,
 			&wanted.Description,
 			&wanted.Price,
+			&wanted.Alive,
 		); err != nil {
 			fmt.Printf("error by db.WorksWantedlies:: %v\n", err)
 			continue
 		}
-		wantedlies = append(wantedlies, wanted)
+		wanteds = append(wanteds, wanted)
 	}
-	result["wanteds"] = wantedlies
+	result["wanteds"] = wanteds
 	return
 }
 
+/* categories */
 func Categories() (result map[string]interface{}) {
 	result = make(map[string]interface{})
 

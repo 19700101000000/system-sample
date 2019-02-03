@@ -77,3 +77,41 @@ func UploadWanted(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{})
 }
+
+/* upload request */
+func UploadRequest(c *gin.Context) {
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+
+	// get request
+	var reqData struct {
+		OwnerName   string `json:"ownername"`
+		WantedID    int    `json:"wanted"`
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		Price       int    `json:"price"`
+	}
+	err := c.Bind(&reqData)
+	if err != nil {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+
+	// insert
+	ok = db.InsertRequest(UserList[name].ID, db.StructRequest{
+		OwnerName:   reqData.OwnerName,
+		WantedID:    reqData.WantedID,
+		Title:       reqData.Title,
+		Description: reqData.Description,
+		Price:       reqData.Price,
+	})
+	if !ok {
+		c.String(http.StatusInternalServerError, "internal server error")
+		return
+	}
+
+	c.String(http.StatusOK, "ok")
+}
