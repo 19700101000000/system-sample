@@ -102,8 +102,10 @@ func UploadRequest(c *gin.Context) {
 
 	// insert
 	ok = db.InsertRequest(UserList[name].ID, db.StructRequest{
-		OwnerName:   reqData.OwnerName,
-		WantedID:    reqData.WantedID,
+		Wanted: db.StructWanted{
+			Username: reqData.OwnerName,
+			Number:   reqData.WantedID,
+		},
 		Title:       reqData.Title,
 		Description: reqData.Description,
 		Price:       reqData.Price,

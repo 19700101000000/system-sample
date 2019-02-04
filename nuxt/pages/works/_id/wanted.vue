@@ -11,7 +11,20 @@ b-container
             b-button(variant="outline-primary" v-b-modal.newWanted) new wanted
       wanted-list-item.mt-2(
         v-for="wanted in wanteds"
-        :value="wanted")
+        :value="wanted"
+        v-on:showmodalRequests="showmodalRequests"
+        v-on:showmodalEdit="showmodalEdit")
+
+  b-modal(
+    title="Requests"
+    ref="modalRequests"
+    size="lg")
+    p(v-if="requests.length === 0") No Requests.
+    request-list-item.mt-2(v-for="request in requests" :value="request")
+  b-modal(
+    title="Edit"
+    ref="modalEdit"
+    size="lg")
 
   b-modal#newWanted(
     title="New Wanted"
@@ -68,11 +81,13 @@ import {
 import axios from "axios"
 import UserNav from "~/components/UserNav.vue"
 import WantedListItem from "~/components/WantedListItem.vue"
+import RequestListItem from "~/components/RequestListItem.vue"
 
 @Component({
   components: {
     UserNav,
     WantedListItem,
+    RequestListItem,
   }
 })
 export default class extends Vue {
@@ -87,6 +102,16 @@ export default class extends Vue {
   public description = "";
 
   public wanteds = [];
+  public requests = [];
+  public wantedValue = {
+    username:    "",
+    number:      0,
+    title:       "",
+    description: "",
+    price:       0,
+    alive:       true,
+    requests:    0,
+  };
 
   public priceFormat(value: string, event): string {
     const match = value.replace(/,/g, '').match(/\d+/);
@@ -130,6 +155,19 @@ export default class extends Vue {
     });
   }
 
+  public showmodalRequests(value) {
+    this.wantedValue = value;
+    axios.get("/api/get/works/requests/" + this.wantedValue.number).then(({ data }) => {
+      this.requests = data.requests;
+    });
+    let modal: any = this.$refs.modalRequests;
+    modal.show();
+  }
+  public showmodalEdit(value) {
+    this.wantedValue = value;
+    let modal: any = this.$refs.modalEdit;
+    modal.show();
+  }
   public mounted() {
     axios.get("/api/get/works/wanteds").then(({ data }) => {
       this.wanteds = data.wanteds;

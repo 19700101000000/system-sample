@@ -128,6 +128,7 @@ CREATE TABLE `work_request` (
     `price`         INTEGER NOT NULL,
     `establish`     BOOLEAN NOT NULL DEFAULT FALSE,
     `alive`         BOOLEAN NOT NULL DEFAULT TRUE,
+    `check`         BOOLEAN NOT NULL DEFAULT FALSE,
     `create_at`     TIMESTAMP,
     PRIMARY KEY(`user`, `wanted`, `id`),
 

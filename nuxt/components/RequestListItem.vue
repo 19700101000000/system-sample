@@ -8,7 +8,27 @@
     b-card-body
       h4 {{ value.title }}
       p.card-text {{ value.description }}
+      b-card(
+        v-if="wanted"
+        title="wanted")
+        b-row
+          b-col.text-secondary(sm="3") Owner:
+          b-col(sm="9") {{ value.wanted.username }}
+        b-row
+          b-col.text-secondary(sm="3") Title:
+          b-col(sm="9") {{ value.wanted.title }}
+        b-row
+          b-col.text-secondary(sm="3") Description:
+          b-col(sm="9") {{ value.wanted.description }}
+        b-row
+          b-col.text-secondary(sm="3") Price:
+          b-col(sm="9") JPY {{ value.wanted.price }}
     div(slot="footer") JPY {{ value.price }}
+      div.text-right
+        b-button.ml-2(variant="outline-secondary") 保留
+        b-button.ml-2(variant="outline-primary") 交渉
+        b-button.ml-2(variant="outline-success") 承諾
+        b-button.ml-2(variant="outline-danger") 破棄
 </template>
 
 <script lang="ts">
@@ -19,8 +39,14 @@ import {
 } from "nuxt-property-decorator"
 
 interface RequestValue {
-  ownername:   string,
-  wanted:      number,
+  wanted: {
+    username:    string,
+    number:      number,
+    title:       string,
+    description: string,
+    price:       number,
+    alive:       boolean,
+  },
   number:      number,
   username:    string,
   title:       string,
@@ -32,7 +58,9 @@ interface RequestValue {
 @Component
 export default class RequestListItem extends Vue {
   @Prop() value: RequestValue;
-  public get borderVariant():string {
+  @Prop() wanted: boolean;
+
+public get borderVariant():string {
     if (!this.value.establish && this.value.alive) {
       return "primary";
     } else if (this.value.establish && this.value.alive) {

@@ -7,7 +7,7 @@ b-container
       b-card.mt-2(no-body)
         b-card-body
           h4 MY REQUESTS
-      request-list-item.mt-2(v-for="request in requests" :value="request")
+      request-list-item.mt-2(v-for="request in requests" :value="request" :wanted="true")
 </template>
 
 <script lang="ts">

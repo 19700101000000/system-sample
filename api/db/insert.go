@@ -87,8 +87,8 @@ func InsertRequest(userid int, data StructRequest) (ok bool) {
 	var ownerID int
 	err = tx.QueryRow(
 		"SELECT `w`.`user` AS `user` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` WHERE `u`.`name` = ? AND `w`.`id` = ?",
-		data.OwnerName,
-		data.WantedID,
+		data.Wanted.Username,
+		data.Wanted.Number,
 	).Scan(&ownerID)
 	if err != nil {
 		ok = false
@@ -99,7 +99,7 @@ func InsertRequest(userid int, data StructRequest) (ok bool) {
 	_, err = tx.Exec(
 		"INSERT INTO `work_request`(`user`, `wanted`, `requester`, `title`, `description`, `price`) VALUES (?, ?, ?, ?, ?, ?)",
 		ownerID,
-		data.WantedID,
+		data.Wanted.Number,
 		userid,
 		data.Title,
 		data.Description,

@@ -126,7 +126,7 @@ export default class extends Vue {
   }
   public modalOK(event: Event) {
     this.disabled = true;
-    axios.post("/api/upload/wanted", {
+    axios.post("/api/upload/request", {
       ownername: this.value.username,
       wanted: this.value.number,
       title: this.title,

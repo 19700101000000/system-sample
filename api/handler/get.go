@@ -4,6 +4,7 @@ import (
 	"github.com/19700101000000/system-sample/api/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func GetCategories(c *gin.Context) {
@@ -33,10 +34,6 @@ func GetMyWanteds(c *gin.Context) {
 }
 
 /* get requests */
-func GetWorksRequests(c *gin.Context) {
-	c.String(http.StatusOK, "ok")
-}
-
 func GetMyRequests(c *gin.Context) {
 	name, ok := getAuth(c)
 	if !ok {
@@ -44,4 +41,23 @@ func GetMyRequests(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, db.WorksRequests(name, ok))
+}
+func GetWorksRequests(c *gin.Context) {
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+	wanted, _ := strconv.Atoi(c.Param("wanted"))
+	c.JSON(http.StatusOK, db.WorksRequests2Wanted(name, wanted))
+}
+
+/* get info */
+func GetWorksInfo(c *gin.Context) {
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+	c.JSON(http.StatusOK, db.WorksInfo(name))
 }

@@ -26,6 +26,8 @@ func (s *server) serverInit() {
 	s.router.GET("/get/works/wanteds", handler.GetMyWanteds)
 	s.router.GET("/get/works/wanteds/:name", handler.GetWorksWanteds)
 	s.router.GET("/get/works/requests", handler.GetMyRequests)
+	s.router.GET("/get/works/requests/:wanted", handler.GetWorksRequests)
+	s.router.GET("/get/works/info", handler.GetWorksInfo)
 
 	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)
