@@ -79,7 +79,7 @@ func WorksRequests2Wanted(name string, wantedid int) (result map[string]interfac
 	result = make(map[string]interface{})
 	requests := make([]StructRequest, 0)
 
-	sql := "SELECT `r`.`id` AS `id`, `u`.`name` AS `user`, `r`.`title` AS `title`, `r`.`description` AS `description`, `r`.`price` AS `price`, `r`.`establish` AS `establish`, `r`.`alive` AS `alive`, `r`.`check` AS `check` FROM `work_request` `r` INNER JOIN `user` `u` ON `r`.`user` = `u`.`id` WHERE `u`.`name` = ? AND `r`.`wanted` = ? ORDER BY `r`.`alive` DESC, `r`.`establish` ASC, `r`.`check` ASC"
+	sql := "SELECT `r`.`wanted` AS `wanted`, `u1`.`name` AS `user`, `r`.`id` AS `id`, `u2`.`name` AS `requester`, `r`.`title` AS `title`, `r`.`description` AS `description`, `r`.`price` AS `price`, `r`.`establish` AS `establish`, `r`.`alive` AS `alive`, `r`.`check` AS `check` FROM `work_request` `r` INNER JOIN `user` `u1` ON `r`.`user` = `u1`.`id` INNER JOIN `user` `u2` ON `r`.`requester` = `u2`.`id` WHERE `u1`.`name` = ? AND `r`.`wanted` = ? ORDER BY `r`.`alive` DESC, `r`.`establish` DESC, `r`.`check` ASC"
 	rows, err := db.Query(
 		sql,
 		name,
@@ -93,6 +93,8 @@ func WorksRequests2Wanted(name string, wantedid int) (result map[string]interfac
 	for rows.Next() {
 		request := StructRequest{}
 		if err = rows.Scan(
+			&request.Wanted.Number,
+			&request.Wanted.Username,
 			&request.Number,
 			&request.UserName,
 			&request.Title,

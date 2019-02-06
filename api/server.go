@@ -42,6 +42,9 @@ func (s *server) serverInit() {
 	s.router.POST("/upload/wanted", handler.UploadWanted)
 	s.router.POST("/upload/request", handler.UploadRequest)
 
+	s.router.POST("/update/request/checked", handler.UpdateRequestChecked)
+	s.router.POST("/update/request/status", handler.UpdateRequestStatus)
+
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)
 	// s.router.GET("/auth/google/callback", handler.AuthGoogleCallback)

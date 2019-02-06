@@ -24,11 +24,15 @@
           b-col.text-secondary(sm="3") Price:
           b-col(sm="9") JPY {{ value.wanted.price }}
     div(slot="footer") JPY {{ value.price }}
-      div.text-right
-        b-button.ml-2(variant="outline-secondary") 保留
-        b-button.ml-2(variant="outline-primary") 交渉
-        b-button.ml-2(variant="outline-success") 承諾
-        b-button.ml-2(variant="outline-danger") 破棄
+      div.text-right(v-if="$store.state.name === value.wanted.username")
+        b-button.ml-2(variant="outline-secondary" v-if="!value.check" v-on:click="onClickChecked") 保留
+        template(v-if="value.alive")
+          b-button.ml-2(variant="outline-primary" disabled) 交渉
+          template(v-if="value.establish")
+            b-button.ml-2(variant="outline-secondary" v-on:click="onClickFinish") 終了
+          template(v-else)
+            b-button.ml-2(variant="outline-success" v-on:click="onClickSuccess") 承諾
+            b-button.ml-2(variant="outline-danger" v-on:click="onClickDanger") 破棄
 </template>
 
 <script lang="ts">
@@ -37,6 +41,7 @@ import {
   Prop,
   Vue
 } from "nuxt-property-decorator"
+import axios from "axios"
 
 interface RequestValue {
   wanted: {
@@ -54,13 +59,14 @@ interface RequestValue {
   price:       number,
   establish:   boolean,
   alive:       boolean,
+  check:       boolean,
 }
 @Component
 export default class RequestListItem extends Vue {
   @Prop() value: RequestValue;
   @Prop() wanted: boolean;
 
-public get borderVariant():string {
+  public get borderVariant():string {
     if (!this.value.establish && this.value.alive) {
       return "primary";
     } else if (this.value.establish && this.value.alive) {
@@ -69,6 +75,44 @@ public get borderVariant():string {
       return "secondary"
     }
     return "danger";
+  }
+
+  public onClickChecked(event: Event) {
+    this.value.check = true;
+    axios.post("/api/update/request/checked", {
+      wanted: this.value.wanted.number,
+      request: this.value.number,
+    }).then((result) => {
+      // this.value.check = true;
+    }).catch((result) => {
+      this.value.check = false;
+    })
+  }
+  public onClickSuccess(event: Event) {
+    this.postStatus(true, true);
+  }
+  public onClickDanger(event: Event) {
+    this.postStatus(false, false);
+  }
+  public onClickFinish(event: Event) {
+    this.postStatus(true, false);
+  }
+  private postStatus(establish: boolean, alive: boolean) {
+    let establishBack = this.value.establish;
+    let aliveBack     = this.value.alive;
+    this.value.establish = establish;
+    this.value.alive = alive;
+    axios.post("/api/update/request/status", {
+      wanted:    this.value.wanted.number,
+      request:   this.value.number,
+      establish: this.value.establish,
+      alive:     this.value.alive,
+    }).then((result) => {
+      // ok
+    }).catch((result) => {
+      this.value.establish = establishBack;
+      this.value.alive = aliveBack;
+    });
   }
 }
 </script>

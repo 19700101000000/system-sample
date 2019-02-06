@@ -82,6 +82,8 @@ import axios from "axios"
 import UserNav from "~/components/UserNav.vue"
 import WantedListItem from "~/components/WantedListItem.vue"
 import RequestListItem from "~/components/RequestListItem.vue"
+import requestVue from "./request.vue";
+
 
 @Component({
   components: {
@@ -159,6 +161,8 @@ export default class extends Vue {
     this.wantedValue = value;
     axios.get("/api/get/works/requests/" + this.wantedValue.number).then(({ data }) => {
       this.requests = data.requests;
+    }).catch((result) => {
+      this.requests = [];
     });
     let modal: any = this.$refs.modalRequests;
     modal.show();
