@@ -80,3 +80,33 @@ func UpdateRequestStatus(c *gin.Context) {
 	}
 	c.String(http.StatusOK, "ok")
 }
+
+/* update evaluate */
+func UpdateEvaluate(c *gin.Context) {
+	// check auth
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+
+	// get data
+	var reqData db.StructEvaluate
+	err := c.Bind(&reqData)
+	if err != nil {
+		fmt.Printf("error handler.UpdateEvaluate:: %v\n", err)
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+
+	// query
+	ok = db.UpdateEvaluate(
+		UserList[name].ID,
+		reqData,
+	)
+	if !ok {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+	c.String(http.StatusOK, "ok")
+}

@@ -16,7 +16,8 @@ func GetGalleries(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"))))
+	observer, _ := getAuth(c)
+	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"), UserList[observer].ID)))
 }
 
 /* get wanteds */

@@ -5,7 +5,12 @@
     b-card-body
       h4 {{ value.title }}
       p {{ value.description }}
-      p.card-text
+      p.card-text JPY {{ value.price }}
+    div(slot="footer")
+      div(v-if="$store.state.name === value.username")
+        template(v-if="value.allrequests") All requests: {{ value.allrequests }}
+        template(v-else) No Requests.
+      div.text-right
         b-button(
           v-if="$store.state.name !== value.username"
           :disabled="$store.state.name === ''"
@@ -23,7 +28,6 @@
           size="sm"
           v-on:click="$emit('showmodalRequests', value)") requests
           template(v-if="value.requests > 0") ({{ value.requests }})
-        span.ml-2 JPY {{ value.price }}
 </template>
 
 <script lang="ts">
@@ -41,6 +45,7 @@ interface WantedValue {
   price:       number,
   alive:       boolean,
   requests:    number,
+  allrequests: number,
 }
 
 @Component({})

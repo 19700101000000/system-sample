@@ -45,6 +45,9 @@ func (s *server) serverInit() {
 	s.router.POST("/update/request/checked", handler.UpdateRequestChecked)
 	s.router.POST("/update/request/status", handler.UpdateRequestStatus)
 
+	/* evaluation */
+	s.router.POST("/update/evaluate", handler.UpdateEvaluate)
+
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)
 	// s.router.GET("/auth/google/callback", handler.AuthGoogleCallback)

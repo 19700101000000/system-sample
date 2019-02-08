@@ -1,38 +1,37 @@
 <template lang="pug">
-  b-card(no-body :border-variant="borderVariant")
-    div(slot="header")
-      template(v-if="!value.establish && value.alive") 承認待ち
-      template(v-else-if="value.establish && value.alive") 成立
-      template(v-else-if="value.establish && !value.alive") 終了
-      template(v-else) 破談
-    b-card-body
-      h4 {{ value.title }}
-      p.card-text {{ value.description }}
-      b-card(
-        v-if="wanted"
-        title="wanted")
-        b-row
-          b-col.text-secondary(sm="3") Owner:
-          b-col(sm="9") {{ value.wanted.username }}
-        b-row
-          b-col.text-secondary(sm="3") Title:
-          b-col(sm="9") {{ value.wanted.title }}
-        b-row
-          b-col.text-secondary(sm="3") Description:
-          b-col(sm="9") {{ value.wanted.description }}
-        b-row
-          b-col.text-secondary(sm="3") Price:
-          b-col(sm="9") JPY {{ value.wanted.price }}
-    div(slot="footer") JPY {{ value.price }}
-      div.text-right(v-if="$store.state.name === value.wanted.username")
-        b-button.ml-2(variant="outline-secondary" v-if="!value.check" v-on:click="onClickChecked") 保留
-        template(v-if="value.alive")
-          b-button.ml-2(variant="outline-primary" disabled) 交渉
-          template(v-if="value.establish")
-            b-button.ml-2(variant="outline-secondary" v-on:click="onClickFinish") 終了
-          template(v-else)
-            b-button.ml-2(variant="outline-success" v-on:click="onClickSuccess") 承諾
-            b-button.ml-2(variant="outline-danger" v-on:click="onClickDanger") 破棄
+b-card(no-body :border-variant="borderVariant")
+  div(slot="header")
+    template(v-if="!value.establish && value.alive") 承認待ち
+    template(v-else-if="value.establish && value.alive") 成立
+    template(v-else-if="value.establish && !value.alive") 終了
+    template(v-else) 破談
+  b-card-body
+    h4 {{ value.title }}
+    p.card-text {{ value.description }}
+    p.card-text JPY {{ value.price }}
+    b-card(
+      v-if="wanted"
+      title="wanted")
+      b-row
+        b-col.text-secondary(sm="3") Owner:
+        b-col(sm="9") {{ value.wanted.username }}
+      b-row
+        b-col.text-secondary(sm="3") Title:
+        b-col(sm="9") {{ value.wanted.title }}
+      b-row
+        b-col.text-secondary(sm="3") Description:
+        b-col(sm="9") {{ value.wanted.description }}
+      b-row
+        b-col.text-secondary(sm="3") Price:
+        b-col(sm="9") JPY {{ value.wanted.price }}
+  div.text-right(v-if="$store.state.name === value.wanted.username && value.alive" slot="footer")
+    b-button.ml-2(variant="outline-secondary" v-if="!value.check" v-on:click="onClickChecked") 保留
+    b-button.ml-2(variant="outline-primary" disabled) 交渉
+    template(v-if="value.establish")
+      b-button.ml-2(variant="outline-secondary" v-on:click="onClickFinish") 終了
+    template(v-else)
+      b-button.ml-2(variant="outline-success" v-on:click="onClickSuccess") 承諾
+      b-button.ml-2(variant="outline-danger" v-on:click="onClickDanger") 破棄
 </template>
 
 <script lang="ts">

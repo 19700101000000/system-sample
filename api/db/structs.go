@@ -16,10 +16,24 @@ type Gallery struct {
 	Datetime  string `json:"datetime"`
 }
 
+type StructMonitor struct {
+	Rate   *int    `json:"rate"`
+	Review *string `json:"review"`
+}
+
 type StructUser struct {
-	Name     string `json:"name"`
-	ShowName string `json:"showname"`
-	Alive    bool   `json:"alive"`
+	Name     string        `json:"name"`
+	ShowName string        `json:"showname"`
+	Alive    bool          `json:"alive"`
+	Rate     *int          `json:"rate"`
+	Base     *int          `json:"base"`
+	Monitor  StructMonitor `json:"monitor"`
+	Requests int           `json:"requests"`
+}
+type StructEvaluate struct {
+	TargetName string `json:"user"`
+	Rate       int    `json:"rate"`
+	Review     string `json:"review"`
 }
 
 type StructWanted struct {
@@ -30,6 +44,7 @@ type StructWanted struct {
 	Price       int    `json:"price"`
 	Alive       bool   `json:"alive"`
 	RequestNum  *int   `json:"requests"`
+	RequestAll  *int   `json:"allrequests"`
 }
 
 type StructRequest struct {

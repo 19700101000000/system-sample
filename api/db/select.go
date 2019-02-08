@@ -20,14 +20,25 @@ func Auth(user, pass string) (id int, name string, ok bool) {
 	return
 }
 
-func User(name string) (result map[string]interface{}) {
+func User(name string, observerid int) (result map[string]interface{}) {
 	result = make(map[string]interface{})
 	user := StructUser{}
 
 	err := db.QueryRow(
-		"SELECT `name`, `show_name`, `alive` FROM `user` WHERE `name` = ?",
+		"SELECT `u`.`name` AS `name`, `u`.`show_name` AS `show_name`, `u`.`alive` AS `alive`, `r`.`rate` AS `rate`, `b`.`base` AS `base`, `m`.`rate` AS `my_rate`, `m`.`review` AS `my_review`, `o`.`requests` AS `my_requests` FROM `user` `u` LEFT OUTER JOIN (SELECT `user`, COUNT(*) AS `requests` FROM `work_request` WHERE `alive` = FALSE AND `requester` = ? GROUP BY `user`) `o` ON `o`.`user` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, SUM(`rate`) AS `rate` FROM `monitor` GROUP BY `target`) `r` ON `r`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, COUNT(*) AS `base` FROM `monitor` ORDER BY `target`) `b` ON `b`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, `rate`, `review` FROM `monitor` WHERE `observer` = ?) `m` ON `m`.`target` = `u`.`id` WHERE `name` = ?",
+		observerid,
+		observerid,
 		name,
-	).Scan(&user.Name, &user.ShowName, &user.Alive)
+	).Scan(
+		&user.Name,
+		&user.ShowName,
+		&user.Alive,
+		&user.Rate,
+		&user.Base,
+		&user.Monitor.Rate,
+		&user.Monitor.Review,
+		&user.Requests,
+	)
 	if err != nil {
 		fmt.Printf("error by db.Auth:: %v\n", err)
 	}
@@ -44,7 +55,7 @@ func WorksRequests(name string, auth bool) (result map[string]interface{}) {
 	if !auth {
 		sql += " AND `r`.`alive` = true"
 	}
-	sql += " ORDER BY `r`.`create_at` DESC, `r`.`alive` DESC, `r`.`establish` ASC"
+	sql += " ORDER BY `r`.`alive` DESC, `r`.`establish` DESC, `r`.`create_at` DESC"
 	rows, err := db.Query(sql, name)
 	if err != nil {
 		fmt.Printf("error by db.WorksReqests:: %v\n", err)
@@ -118,7 +129,7 @@ func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
 	result = make(map[string]interface{})
 	wanteds := make([]StructWanted, 0)
 
-	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price`, `w`.`alive` AS `alive`, `r`.`requests` AS `requests` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` LEFT OUTER JOIN (SELECT `user`, `wanted`, COUNT(*) AS `requests` FROM `work_request` WHERE `check` = false GROUP BY `user`, `wanted`) `r` ON `r`.`user` = `w`.`user` AND `r`.`wanted` = `w`.`id` WHERE `u`.`name` = ?"
+	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price`, `w`.`alive` AS `alive`, `r`.`requests` AS `requests`, `a`.`requests` AS `requests_all` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` LEFT OUTER JOIN (SELECT `user`, `wanted`, COUNT(*) AS `requests` FROM `work_request` WHERE `check` = false GROUP BY `user`, `wanted`) `r` ON `r`.`user` = `w`.`user` AND `r`.`wanted` = `w`.`id` LEFT OUTER JOIN (SELECT `user`, `wanted`, COUNT(*) AS `requests` FROM `work_request` GROUP BY `user`, `wanted`) `a` ON `a`.`user` = `w`.`user` AND `a`.`wanted` = `w`.`id` WHERE `u`.`name` = ?"
 	if !auth {
 		sql += " AND  `w`.`alive` = true"
 	}
@@ -142,6 +153,7 @@ func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
 			&wanted.Price,
 			&wanted.Alive,
 			&wanted.RequestNum,
+			&wanted.RequestAll,
 		); err != nil {
 			fmt.Printf("error by db.WorksWanteds:: %v\n", err)
 			continue
