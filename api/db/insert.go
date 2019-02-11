@@ -5,6 +5,37 @@ import (
 	"strconv"
 )
 
+/* insert user */
+func InsertUser(name, password string) (id int, ok bool) {
+	tx, err := db.Begin()
+	if err != nil {
+		fmt.Printf("error db.InsertUser:: %v\n", err)
+		ok = false
+		return
+	}
+	_, err = tx.Exec(
+		"INSERT INTO `user`(`name`, `password`) VALUES (?, ?)",
+		name,
+		password,
+	)
+	if err != nil {
+		fmt.Printf("error db.InsertUser:: %v\n", err)
+		ok = false
+		tx.Rollback()
+		return
+	}
+	err = tx.QueryRow("SELECT `id` FROM `user` WHERE `name` = ?", name).Scan(&id)
+	if err != nil {
+		fmt.Printf("error db.InsertUser:: %v\n", err)
+		ok = false
+		tx.Rollback()
+		return
+	}
+	ok = true
+	tx.Commit()
+	return
+}
+
 /* insert gallery */
 func InsertGallery(userid int, filename string, categories []string) (ok bool) {
 	tx, err := db.Begin()

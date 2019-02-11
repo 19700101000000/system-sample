@@ -2,18 +2,20 @@
 b-card(no-body)
   h4(slot="header")
     b-link(:href="'/user/' + $route.params.id") {{ $route.params.id }}
-  b-card-body(v-if="userExist") Rate:
-    template(v-if="user.rate && user.base && user.base > 0") {{ user.rate / user.base }}
-    template(v-else) 0
+  b-card-body(v-if="userExist") Rate: {{ userRate }}
     b-link.ml-2(v-if="user.name !== $store.state.name && user.requests > 0" v-b-modal.evaluateModal) evalutate to {{ user.name }}
   b-card-body(v-else) Not exist.
-  b-list-group(v-if="signin" flush)
+  b-list-group(flush)
     b-list-group-item
-      b-link(:href="'/works/' + $store.state.name + '/wanted'") My Wanteds
-        template(v-if="newWanteds > 0") ({{ newWanteds }})
-    b-list-group-item
-      b-link(:href="'/works/' + $store.state.name + '/request'") My Requests
-        template(v-if="newRequests > 0") ({{ newRequests }})
+      b-link My Galleries
+    template(v-if="signin")
+      b-list-group-item
+        b-link(:href="'/works/' + $store.state.name + '/wanted'") My Wanteds
+          template(v-if="newWanteds > 0") ({{ newWanteds }})
+      b-list-group-item
+        b-link(:href="'/works/' + $store.state.name + '/request'") My Requests
+          template(v-if="newRequests > 0") ({{ newRequests }})
+  b-card-body
   b-modal#evaluateModal(
     :title="'Evaluate to ' + $store.state.name"
     ref="modalEval"
@@ -36,6 +38,7 @@ b-card(no-body)
           :rows="6"
           placeholder="Please input Review.")
         p.text-right {{ evaluate.review.length}} / 500
+    p.text-danger(v-if="error") Fail connection.
     div(slot="modal-footer")
       b-button.mr-2(variant="outline-secondary" v-on:click="$refs.modalEval.hide()") Cancel
       b-button(variant="outline-primary" :disabled="!stateRate || !stateReview" v-on:click="onSendEval") Send
@@ -67,6 +70,8 @@ export default class extends Vue {
   public newRequests = 0;
   public newWanteds  = 0;
 
+  public error =false;
+
   public user: user;
 
   public evaluate = {
@@ -74,6 +79,13 @@ export default class extends Vue {
     rateTrue: 0,
     review: "foo",
   };
+
+  public get userRate(): number {
+    if (this.user.rate && this.user.base && this.user.base > 0) {
+      return Math.round(this.user.rate / this.user.base * 10) / 10
+    }
+    return 0
+  }
 
   public get stateRate(): boolean {
     return this.evaluate.rateTrue > 0 && this.evaluate.rateTrue <= 5 && this.evaluate.rate.length === 1;
@@ -102,8 +114,10 @@ export default class extends Vue {
       rate: this.evaluate.rateTrue,
       review: this.evaluate.review,
     }).then(({ data }) => {
+      this.error = false;
       modal.hide()
     }).catch((result) => {
+      this.error = true;
     });
   }
 

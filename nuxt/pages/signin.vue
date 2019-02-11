@@ -1,6 +1,6 @@
 <template lang="pug">
   b-container
-    b-card.my-1.mx-auto(
+    b-card.my-2.mx-auto(
       bg-variant="light"
       style="max-width: 30rem"
       no-body)

@@ -4,7 +4,11 @@ b-container
     b-col(sm="4")
       user-nav.mt-2
     b-col(sm="8")
+      b-card.mt-2(
+        v-if="$store.state.name === $route.params.id"
+        title="My Page")
       wanted-list-item.mt-2(
+        v-else
         v-for="wanted in wanteds"
         :value="wanted"
         v-on:showmodal="showmodal")

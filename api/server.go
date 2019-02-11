@@ -33,6 +33,7 @@ func (s *server) serverInit() {
 	s.router.GET("/auth/check", handler.AuthCheck)
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
+	s.router.POST("/auth/signup", handler.AuthSignup)
 
 	/* galleries */
 	s.router.Static("/images", "./public/images")
