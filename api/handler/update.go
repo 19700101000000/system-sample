@@ -7,6 +7,40 @@ import (
 	"net/http"
 )
 
+/* update wanted */
+func UpdateWantedStatus(c *gin.Context) {
+	// check auth
+	name, ok := getAuth(c)
+	if !ok {
+		c.String(http.StatusForbidden, "forbidden")
+		return
+	}
+
+	// get data
+	var reqData struct {
+		WantedID int  `json:"wanted"`
+		Alive    bool `json:"alive"`
+	}
+	err := c.Bind(&reqData)
+	if err != nil {
+		fmt.Printf("error handler.UpdateWanted:: %v\n", err)
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+
+	// query
+	ok = db.UpdateWantedStatus(
+		UserList[name].ID,
+		reqData.WantedID,
+		reqData.Alive,
+	)
+	if !ok {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+	c.String(http.StatusOK, "ok")
+}
+
 /* update request */
 func UpdateRequestChecked(c *gin.Context) {
 	// check auth

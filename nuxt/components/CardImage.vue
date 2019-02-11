@@ -22,14 +22,14 @@ import {
 } from "nuxt-property-decorator"
 
 interface CardValue {
-  username:   string,
-  evalparam:  number | null,
-  evalsum:    number,
-  favorite:   number,
-  comment:    number,
-  number:     number,
-  imagepath:  string,
-  datetime:   string,
+  username:  string,
+  evalparam: number | null,
+  evalsum:   number,
+  favorite:  number,
+  comment:   number,
+  number:    number,
+  imagepath: string,
+  datetime:  string,
 }
 
 @Component({})

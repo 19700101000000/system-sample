@@ -82,7 +82,7 @@ export default class RequestListItem extends Vue {
       wanted: this.value.wanted.number,
       request: this.value.number,
     }).then((result) => {
-      // this.value.check = true;
+      this.$emit("checked");
     }).catch((result) => {
       this.value.check = false;
     })
@@ -107,7 +107,9 @@ export default class RequestListItem extends Vue {
       establish: this.value.establish,
       alive:     this.value.alive,
     }).then((result) => {
-      // ok
+      if(!this.value.check) {
+        this.$emit("checked");
+      }
     }).catch((result) => {
       this.value.establish = establishBack;
       this.value.alive = aliveBack;

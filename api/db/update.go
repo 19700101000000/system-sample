@@ -4,6 +4,22 @@ import (
 	"fmt"
 )
 
+/* update wanted */
+func UpdateWantedStatus(userid, wantedid int, alive bool) (ok bool) {
+	_, err := db.Exec(
+		"UPDATE `work_wanted` SET `alive` = ? WHERE `user` = ? AND `id` = ?",
+		alive,
+		userid,
+		wantedid,
+	)
+	if err != nil {
+		ok = false
+		return
+	}
+	ok = true
+	return
+}
+
 /* update request */
 func UpdateRequestChecked(userid, wantedid, requestid int) (ok bool) {
 	_, err := db.Exec(

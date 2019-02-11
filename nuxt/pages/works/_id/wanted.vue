@@ -20,11 +20,23 @@ b-container
     ref="modalRequests"
     size="lg")
     p(v-if="requests.length === 0") No Requests.
-    request-list-item.mt-2(v-for="request in requests" :value="request")
+    request-list-item.mt-2(v-for="request in requests" :value="request" v-on:checked="onCheckedRequest")
+
   b-modal(
     title="Edit"
     ref="modalEdit"
     size="lg")
+    b-card(
+      :border-variant="editBorderVariant"
+      no-body)
+      b-card-body
+        h4 {{ wantedValue.title }}
+        p.card-text {{ wantedValue.description }}
+        p.card-text JPY {{ wantedValue.price }}
+    b-form-group(label="Active:")
+      b-form-radio-group(v-model="wantedValue.alive" name="active")
+        b-form-radio(:value="true") Yes
+        b-form-radio(:value="false") No
 
   b-modal#newWanted(
     title="New Wanted"
@@ -126,6 +138,12 @@ export default class extends Vue {
     return "";
   }
 
+  public get editBorderVariant(): string {
+    if (this.wantedValue.alive) {
+      return "success";
+    }
+    return "danger";
+  }
   public get stateTitle(): boolean {
     return this.title.length > 0 && this.title.length <= 100;
   }
@@ -155,6 +173,10 @@ export default class extends Vue {
       this.error = true;
       this.modalDisabled = false;
     });
+  }
+
+  public onCheckedRequest() {
+    this.wantedValue.requests -= 1;
   }
 
   public showmodalRequests(value) {

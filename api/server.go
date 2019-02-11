@@ -43,6 +43,7 @@ func (s *server) serverInit() {
 	s.router.POST("/upload/wanted", handler.UploadWanted)
 	s.router.POST("/upload/request", handler.UploadRequest)
 
+	s.router.POST("/update/wanted/status", handler.UpdateWantedStatus)
 	s.router.POST("/update/request/checked", handler.UpdateRequestChecked)
 	s.router.POST("/update/request/status", handler.UpdateRequestStatus)
 
