@@ -1,12 +1,9 @@
 package handler
 
 import (
-	"crypto/sha256"
-	"fmt"
 	"github.com/19700101000000/system-sample/api/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"time"
 )
 
 func AuthCheck(c *gin.Context) {
@@ -56,16 +53,30 @@ func AuthSignin(c *gin.Context) {
 
 	if ok {
 		resData["status"] = "ok"
-		token := fmt.Sprintf("%x", sha256.Sum256([]byte(name+time.Now().String())))
-		setCookie(c, "name", name)
-		setCookie(c, "token", token)
-		UserList[name] = UserInfo{
-			ID:    id,
-			Name:  name,
-			Token: token,
-		}
+		addUserList(c, id, name)
 	} else {
 		resData["status"] = "no-user"
 	}
 	c.JSON(http.StatusOK, gin.H(resData))
+}
+
+/* sign up */
+func AuthSignup(c *gin.Context) {
+	var reqData struct {
+		Name string `json:"name"`
+		Pass string `json:"password"`
+	}
+	err := c.Bind(&reqData)
+	if err != nil || len(reqData.Name) == 0 || len(reqData.Pass) == 0 {
+		c.String(http.StatusBadRequest, "bad request")
+		return
+	}
+
+	id, ok := db.InsertUser(reqData.Name, reqData.Pass)
+	if ok {
+		addUserList(c, id, reqData.Name)
+		c.String(http.StatusOK, "ok")
+	} else {
+		c.String(http.StatusBadRequest, "bad request")
+	}
 }

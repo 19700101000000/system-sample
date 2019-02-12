@@ -23,15 +23,32 @@ func (s *server) serverInit() {
 	s.router.GET("/get/categories", handler.GetCategories)
 	s.router.GET("/get/galleries", handler.GetGalleries)
 	s.router.GET("/get/user/:name", handler.GetUser)
+	s.router.GET("/get/works/wanteds", handler.GetMyWanteds)
+	s.router.GET("/get/works/wanteds/:name", handler.GetWorksWanteds)
+	s.router.GET("/get/works/requests", handler.GetMyRequests)
+	s.router.GET("/get/works/requests/:wanted", handler.GetWorksRequests)
+	s.router.GET("/get/works/info", handler.GetWorksInfo)
 
 	/* auth */
 	s.router.GET("/auth/check", handler.AuthCheck)
 	s.router.GET("/auth/signout", handler.AuthSignout)
 	s.router.POST("/auth/signin", handler.AuthSignin)
+	s.router.POST("/auth/signup", handler.AuthSignup)
 
-	/* images */
+	/* galleries */
 	s.router.Static("/images", "./public/images")
 	s.router.POST("/upload/image", handler.UploadImage)
+
+	/* wanted and requests */
+	s.router.POST("/upload/wanted", handler.UploadWanted)
+	s.router.POST("/upload/request", handler.UploadRequest)
+
+	s.router.POST("/update/wanted/status", handler.UpdateWantedStatus)
+	s.router.POST("/update/request/checked", handler.UpdateRequestChecked)
+	s.router.POST("/update/request/status", handler.UpdateRequestStatus)
+
+	/* evaluation */
+	s.router.POST("/update/evaluate", handler.UpdateEvaluate)
 
 	/* OAuth2 from GOOGLE */
 	// s.router.GET("/auth/google/signin", handler.AuthGoogleSignin)

@@ -92,3 +92,57 @@ CREATE TABLE `gallery_join_category` (
     FOREIGN KEY(`creator`, `gallery`)   REFERENCES `gallery`(`user`, `id`),
     FOREIGN KEY(`category`)             REFERENCES `category`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/* Create work_wanted */
+CREATE TABLE `work_wanted` (
+    `user`          INTEGER,
+    `id`            INTEGER,
+    `title`         VARCHAR(128) NOT NULL,
+    `description`   VARCHAR(512) NOT NULL,
+    `price`         INTEGER NOT NULL,
+    `alive`         BOOLEAN NOT NULL DEFAULT TRUE,
+    `create_at`     TIMESTAMP,
+    PRIMARY KEY(`user`, `id`),
+
+    FOREIGN KEY(`user`) REFERENCES `user`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DELIMITER $$
+CREATE DEFINER='server'@'%' TRIGGER `insert_work_wanted`
+    BEFORE INSERT ON `work_wanted` FOR EACH ROW
+        BEGIN
+            DECLARE `id` TYPE OF `work_wanted`.`id`;
+            SELECT COUNT(*) FROM `work_wanted` WHERE `user` = NEW.`user` INTO `id`;
+            SET NEW.`id` = `id` + 1;
+        END$$
+DELIMITER ;
+
+/* Create work_request */
+CREATE TABLE `work_request` (
+    `user`          INTEGER,
+    `wanted`        INTEGER,
+    `id`            INTEGER,
+    `requester`     INTEGER,
+    `title`         VARCHAR(128) NOT NULL,
+    `description`   VARCHAR(512) NOT NULL,
+    `price`         INTEGER NOT NULL,
+    `establish`     BOOLEAN NOT NULL DEFAULT FALSE,
+    `alive`         BOOLEAN NOT NULL DEFAULT TRUE,
+    `check`         BOOLEAN NOT NULL DEFAULT FALSE,
+    `create_at`     TIMESTAMP,
+    PRIMARY KEY(`user`, `wanted`, `id`),
+
+    FOREIGN KEY(`user`, `wanted`)      REFERENCES `work_wanted`(`user`, `id`),
+    FOREIGN KEY(`requester`) REFERENCES `user`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DELIMITER $$
+CREATE DEFINER='server'@'%' TRIGGER `insert_work_request`
+    BEFORE INSERT ON `work_request` FOR EACH ROW
+        BEGIN
+            DECLARE `id` TYPE OF `work_request`.`id`;
+            SELECT COUNT(*) FROM `work_request` WHERE `user` =  NEW.`user` AND `wanted` = NEW.`wanted`  INTO `id`;
+            SET NEW.`id` = `id` + 1;
+        END$$
+DELIMITER ;
+

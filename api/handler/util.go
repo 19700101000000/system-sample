@@ -2,7 +2,10 @@ package handler
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/labstack/echo"
@@ -47,4 +50,16 @@ func getAuth(c *gin.Context) (string, bool) {
 /* set cookie */
 func setCookie(c *gin.Context, name, value string) {
 	c.SetCookie(name, value, 86400, "/", "localhost", false, true)
+}
+
+/* add UserList (signin) */
+func addUserList(c *gin.Context, id int, name string) {
+	token := fmt.Sprintf("%x", sha256.Sum256([]byte(name+time.Now().String())))
+	setCookie(c, "name", name)
+	setCookie(c, "token", token)
+	UserList[name] = UserInfo{
+		ID:    id,
+		Name:  name,
+		Token: token,
+	}
 }

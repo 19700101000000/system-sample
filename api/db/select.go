@@ -20,14 +20,25 @@ func Auth(user, pass string) (id int, name string, ok bool) {
 	return
 }
 
-func User(name string) (result map[string]interface{}) {
+func User(name string, observerid int) (result map[string]interface{}) {
 	result = make(map[string]interface{})
 	user := StructUser{}
 
 	err := db.QueryRow(
-		"SELECT `name`, `show_name`, `alive` FROM `user` WHERE `name` = ?",
+		"SELECT `u`.`name` AS `name`, `u`.`show_name` AS `show_name`, `u`.`alive` AS `alive`, `r`.`rate` AS `rate`, `b`.`base` AS `base`, `m`.`rate` AS `my_rate`, `m`.`review` AS `my_review`, `o`.`requests` AS `my_requests` FROM `user` `u` LEFT OUTER JOIN (SELECT `user`, COUNT(*) AS `requests` FROM `work_request` WHERE `alive` = FALSE AND `requester` = ? GROUP BY `user`) `o` ON `o`.`user` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, SUM(`rate`) AS `rate` FROM `monitor` GROUP BY `target`) `r` ON `r`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, COUNT(*) AS `base` FROM `monitor` ORDER BY `target`) `b` ON `b`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, `rate`, `review` FROM `monitor` WHERE `observer` = ?) `m` ON `m`.`target` = `u`.`id` WHERE `name` = ?",
+		observerid,
+		observerid,
 		name,
-	).Scan(&user.Name, &user.ShowName, &user.Alive)
+	).Scan(
+		&user.Name,
+		&user.ShowName,
+		&user.Alive,
+		&user.Rate,
+		&user.Base,
+		&user.Monitor.Rate,
+		&user.Monitor.Review,
+		&user.Requests,
+	)
 	if err != nil {
 		fmt.Printf("error by db.Auth:: %v\n", err)
 	}
@@ -35,6 +46,145 @@ func User(name string) (result map[string]interface{}) {
 	return
 }
 
+/* works requests */
+func WorksRequests(name string, auth bool) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	requests := make([]StructRequest, 0)
+
+	sql := "SELECT `u1`.`name` AS `owner`, `r`.`wanted` AS `wanted_id`, `w`.`title` AS `wanted_title`, `w`.`description` AS `wanted_description`, `w`.`price` AS `wanted_price`, `r`.`id` AS `request_id`, `u2`.`name` AS `requester`, `r`.`title` AS `title`, `r`.`description` AS `description`, `r`.`price` AS `price`, `r`.`establish` AS `establish`, `r`.`alive` AS `alive` FROM `work_request` `r` INNER JOIN `work_wanted` `w` ON `r`.`wanted` = `w`.`id` AND `r`.`user` = `w`.`user` INNER JOIN `user` `u1` ON `r`.`user` = `u1`.`id` INNER JOIN `user` `u2` ON `r`.`requester` =	`u2`.`id` WHERE `u2`.`name` = ?"
+	if !auth {
+		sql += " AND `r`.`alive` = true"
+	}
+	sql += " ORDER BY `r`.`alive` DESC, `r`.`establish` DESC, `r`.`create_at` DESC"
+	rows, err := db.Query(sql, name)
+	if err != nil {
+		fmt.Printf("error by db.WorksReqests:: %v\n", err)
+		return
+	}
+
+	for rows.Next() {
+		request := StructRequest{}
+		if err := rows.Scan(
+			&request.Wanted.Username,
+			&request.Wanted.Number,
+			&request.Wanted.Title,
+			&request.Wanted.Description,
+			&request.Wanted.Price,
+			&request.Number,
+			&request.UserName,
+			&request.Title,
+			&request.Description,
+			&request.Price,
+			&request.Establish,
+			&request.Alive,
+		); err != nil {
+			fmt.Printf("error by db.WorksReqests:: %v\n", err)
+			continue
+		}
+		requests = append(requests, request)
+	}
+	result["requests"] = requests
+	return
+}
+func WorksRequests2Wanted(name string, wantedid int) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	requests := make([]StructRequest, 0)
+
+	sql := "SELECT `r`.`wanted` AS `wanted`, `u1`.`name` AS `user`, `r`.`id` AS `id`, `u2`.`name` AS `requester`, `r`.`title` AS `title`, `r`.`description` AS `description`, `r`.`price` AS `price`, `r`.`establish` AS `establish`, `r`.`alive` AS `alive`, `r`.`check` AS `check` FROM `work_request` `r` INNER JOIN `user` `u1` ON `r`.`user` = `u1`.`id` INNER JOIN `user` `u2` ON `r`.`requester` = `u2`.`id` WHERE `u1`.`name` = ? AND `r`.`wanted` = ? ORDER BY `r`.`alive` DESC, `r`.`establish` DESC, `r`.`check` ASC"
+	rows, err := db.Query(
+		sql,
+		name,
+		wantedid,
+	)
+	if err != nil {
+		fmt.Printf("error by db.WorksRequests2Wanted:: %v\n", err)
+		return
+	}
+
+	for rows.Next() {
+		request := StructRequest{}
+		if err = rows.Scan(
+			&request.Wanted.Number,
+			&request.Wanted.Username,
+			&request.Number,
+			&request.UserName,
+			&request.Title,
+			&request.Description,
+			&request.Price,
+			&request.Establish,
+			&request.Alive,
+			&request.Check,
+		); err != nil {
+			fmt.Printf("error by db.WorksRequests2Wanted:: %v\n", err)
+			continue
+		}
+		requests = append(requests, request)
+	}
+	result["requests"] = requests
+	return
+}
+
+/* works wanteds */
+func WorksWanteds(name string, auth bool) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	wanteds := make([]StructWanted, 0)
+
+	sql := "SELECT `u`.`name` AS `name`, `w`.`id` AS `id`, `w`.`title` AS `title`, `w`.`description` AS `description`, `w`.`price` AS `price`, `w`.`alive` AS `alive`, `r`.`requests` AS `requests`, `a`.`requests` AS `requests_all` FROM `work_wanted` `w` INNER JOIN `user` `u` ON `u`.`id` = `w`.`user` LEFT OUTER JOIN (SELECT `user`, `wanted`, COUNT(*) AS `requests` FROM `work_request` WHERE `check` = false GROUP BY `user`, `wanted`) `r` ON `r`.`user` = `w`.`user` AND `r`.`wanted` = `w`.`id` LEFT OUTER JOIN (SELECT `user`, `wanted`, COUNT(*) AS `requests` FROM `work_request` GROUP BY `user`, `wanted`) `a` ON `a`.`user` = `w`.`user` AND `a`.`wanted` = `w`.`id` WHERE `u`.`name` = ?"
+	if !auth {
+		sql += " AND  `w`.`alive` = true"
+	}
+	sql += " ORDER BY `w`.`create_at` DESC, `w`.`alive` DESC"
+	rows, err := db.Query(
+		sql,
+		name,
+	)
+	if err != nil {
+		fmt.Printf("error by db.WorksWanteds:: %v\n", err)
+		return
+	}
+
+	for rows.Next() {
+		wanted := StructWanted{}
+		if err := rows.Scan(
+			&wanted.Username,
+			&wanted.Number,
+			&wanted.Title,
+			&wanted.Description,
+			&wanted.Price,
+			&wanted.Alive,
+			&wanted.RequestNum,
+			&wanted.RequestAll,
+		); err != nil {
+			fmt.Printf("error by db.WorksWanteds:: %v\n", err)
+			continue
+		}
+		if !auth {
+			wanted.RequestNum = nil
+		}
+		wanteds = append(wanteds, wanted)
+	}
+	result["wanteds"] = wanteds
+	return
+}
+
+/* works info */
+func WorksInfo(name string) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+	info := StructInfo{}
+
+	err := db.QueryRow(
+		"SELECT COUNT(`r`.`user`) AS `requests` FROM `work_request` `r` INNER JOIN `user` `u` ON `r`.`user` = `u`.`id` WHERE `u`.`name` = ? AND `r`.`check` = false",
+		name,
+	).Scan(&info.WantedNum)
+	if err != nil {
+		fmt.Printf("error by db.WorksInfo:: %v\n", err)
+		return
+	}
+	result["info"] = info
+	return
+}
+
+/* categories */
 func Categories() (result map[string]interface{}) {
 	result = make(map[string]interface{})
 
