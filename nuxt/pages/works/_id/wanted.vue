@@ -25,6 +25,12 @@ b-container
   b-modal(
     title="Edit"
     ref="modalEdit"
+    v-on:ok="editOK"
+    v-on:hide="editHide"
+    ok-variant="outline-primary"
+    ok-title="Apply"
+    cancel-variant="outline-secondary"
+    cancel-title="Cancel"
     size="lg")
     b-card(
       :border-variant="editBorderVariant"
@@ -33,10 +39,14 @@ b-container
         h4 {{ wantedValue.title }}
         p.card-text {{ wantedValue.description }}
         p.card-text JPY {{ wantedValue.price }}
-    b-form-group(label="Active:")
-      b-form-radio-group(v-model="wantedValue.alive" name="active")
-        b-form-radio(:value="true") Yes
-        b-form-radio(:value="false") No
+    b-form
+      b-form-group(label="Active:")
+        b-form-radio-group(
+          buttons
+          :button-variant="[wantedValue.alive? 'outline-success' : 'outline-danger']"
+          v-model="wantedValue.alive" name="active")
+          b-form-radio(:value="true") Yes
+          b-form-radio(:value="false") No
 
   b-modal#newWanted(
     title="New Wanted"
@@ -51,7 +61,7 @@ b-container
           :state="stateTitle"
           placeholder="Please input title."
           :disabled="modalDisabled")
-        p.text-right {{ title.length }}/100
+        p.text-right {{ title.length }} / 100
       b-form-group(
         label="Description:"
         label-for=inputDescription)
@@ -61,7 +71,7 @@ b-container
           placeholder="Please input description."
           :rows="6"
           :disabled="modalDisabled")
-        p.text-right {{ description.length }}/500
+        p.text-right {{ description.length }} / 500
       b-form-group(
         label="Price(JPY):"
         label-for="inputPrice")
@@ -106,7 +116,7 @@ import requestVue from "./request.vue";
 })
 export default class extends Vue {
   public modalDisabled = false;
-  
+
   public error = false;
   public errorMsg = "Fail Uploaded.";
   
@@ -125,6 +135,9 @@ export default class extends Vue {
     price:       0,
     alive:       true,
     requests:    0,
+  };
+  public edit = {
+    alive: false,
   };
 
   public priceFormat(value: string, event): string {
@@ -154,6 +167,12 @@ export default class extends Vue {
     return this.price.length > 0;
   }
 
+  public editOK() {
+    this.edit.alive = this.wantedValue.alive;
+  }
+  public editHide() {
+    this.wantedValue.alive = this.edit.alive;
+  }
   public modalOK() {
     this.modalDisabled = true;
     axios.post("/api/upload/wanted", {
@@ -191,6 +210,7 @@ export default class extends Vue {
   }
   public showmodalEdit(value) {
     this.wantedValue = value;
+    this.edit.alive = this.wantedValue.alive;
     let modal: any = this.$refs.modalEdit;
     modal.show();
   }
