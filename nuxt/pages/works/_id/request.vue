@@ -28,6 +28,9 @@ import RequestListItem from "~/components/RequestListItem.vue"
 export default class extends Vue {
   public requests = []
   public mounted() {
+    this.getRequests();
+  }
+  public getRequests() {
     axios.get("/api/get/works/requests").then(({ data }) => {
       this.requests = data.requests;
     });

@@ -4,7 +4,7 @@
       b-col(sm="4")
         b-card.my-2 Categories's checkbox.
       b-col(sm="8")
-        form-image
+        form-image(v-on:send="getGalleries")
         card-image(v-for="value in values" :value="value" v-on:showmodal="showModal($event);$refs.modal.show()")
         p.text-center.mt-2(v-if="values.length === 0") Images is not uploaded yet.
     b-modal(ref="modal" size="lg" :title="value.username + '(' + value.datetime + ')'")
@@ -44,6 +44,9 @@ export default class extends Vue {
   };
 
   public mounted() {
+    this.getGalleries();
+  }
+  public getGalleries() {
     axios.get("/api/get/galleries").then(({ data }) => {
       if (data.galleries) {
         this.values = data.galleries;

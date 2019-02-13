@@ -203,6 +203,7 @@ export default class extends Vue {
       this.error = false;
       let modal: any = this.$refs.newWanted;
       modal.hide();
+      this.getWanteds();
     }).catch((result) => {
       this.error = true;
       this.modalDisabled = false;
@@ -230,6 +231,9 @@ export default class extends Vue {
     modal.show();
   }
   public mounted() {
+    this.getWanteds();
+  }
+  public getWanteds() {
     axios.get("/api/get/works/wanteds").then(({ data }) => {
       this.wanteds = data.wanteds;
     });

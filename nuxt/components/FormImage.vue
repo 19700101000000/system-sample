@@ -65,6 +65,7 @@ export default class FormImage extends Vue {
       axios.post(url, params).then((result) => {
         if (result.data.status === "ok") {
           this.reset();
+          this.$emit("send");
         }
         this.submitting = false;
       }).catch(() => {
