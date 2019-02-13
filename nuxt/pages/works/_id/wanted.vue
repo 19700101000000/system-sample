@@ -47,6 +47,7 @@ b-container
           v-model="wantedValue.alive" name="active")
           b-form-radio(:value="true") Yes
           b-form-radio(:value="false") No
+    p.text-danger(v-if="edit.error") Fail Apply.
 
   b-modal#newWanted(
     title="New Wanted"
@@ -138,6 +139,7 @@ export default class extends Vue {
   };
   public edit = {
     alive: false,
+    error: false,
   };
 
   public priceFormat(value: string, event): string {
@@ -167,11 +169,24 @@ export default class extends Vue {
     return this.price.length > 0;
   }
 
-  public editOK() {
+  public editOK(event: Event) {
+    event.preventDefault();
+    const alive = this.edit.alive;
     this.edit.alive = this.wantedValue.alive;
+    axios.post("/api/update/wanted/status", {
+      wanted: this.wantedValue.number,
+      alive: this.wantedValue.alive,
+    }).then((result) => {
+      let modal: any = this.$refs.modalEdit;
+      modal.hide();
+    }).catch((result) => {
+      this.edit.alive = alive;
+      this.edit.error = true;
+    });
   }
   public editHide() {
     this.wantedValue.alive = this.edit.alive;
+    this.edit.error = false;
   }
   public modalOK() {
     this.modalDisabled = true;
