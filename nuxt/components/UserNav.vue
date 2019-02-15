@@ -7,7 +7,9 @@ b-card(no-body)
   b-card-body(v-else) Not exist.
   b-list-group(flush)
     b-list-group-item
-      b-link My Galleries
+      b-link(:href="'/gallery/' + $route.params.id")
+        template(v-if="signin") My Galleries
+        template(v-else) {{ $route.params.id }}'s Galleries
     template(v-if="signin")
       b-list-group-item
         b-link(:href="'/works/' + $store.state.name + '/wanted'") My Wanteds

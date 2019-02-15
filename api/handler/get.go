@@ -11,13 +11,26 @@ func GetCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H(db.Categories()))
 }
 
-func GetGalleries(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H(db.Galleries()))
-}
-
 func GetUser(c *gin.Context) {
 	observer, _ := getAuth(c)
 	c.JSON(http.StatusOK, gin.H(db.User(c.Param("name"), UserList[observer].ID)))
+}
+
+/* get Galleries */
+func GetMyGalleries(c *gin.Context) {
+	var isSelf bool
+	name := c.Param("name")
+
+	if n, ok := getAuth(c); ok && name == n {
+		isSelf = true
+	} else {
+		isSelf = false
+	}
+
+	c.JSON(http.StatusOK, db.MyGalleries(name, isSelf))
+}
+func GetGalleries(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H(db.Galleries()))
 }
 
 /* get wanteds */

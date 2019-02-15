@@ -1,6 +1,6 @@
 <template lang="pug">
   b-card.my-2
-    div(slot="header")
+    h4(v-if="!headerDisabled")
       b-link(:href="'/user/' + value.username") {{ value.username }} 
       template(v-if="value.evalparam") (Rate : {{ userRate }} / 5)
       template(v-else) (No rating.)
@@ -9,10 +9,12 @@
       span.ml-2(v-else) favorites({{ value.favorite }})
       b-button.ml-2(v-if="isSignin" variant="outline-secondary" size="sm") comments({{ value.comment }})
       span.ml-2(v-else) comments({{ value.comment }})
-    div(style="height: 512px; overflow: hidden;" v-on:click="showModal")
-      b-img(
-        fluid
-        :src="value.imagepath")
+    div.text-center
+      div(style="height: 512px; overflow: hidden;" v-on:click="showModal")
+        b-img(
+          fluid
+          style="cursor:pointer;"
+          :src="value.imagepath")
 </template>
 <script lang="ts">
 import {
@@ -35,6 +37,7 @@ interface CardValue {
 @Component({})
 export default class CardImage extends Vue {
   @Prop() value!: CardValue;
+  @Prop() headerDisabled!: boolean;
 
   public get isSignin(): boolean {
     return this.$store.state.name !== "";

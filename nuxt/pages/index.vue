@@ -5,13 +5,12 @@
         b-card.my-2 Categories's checkbox.
       b-col(sm="8")
         form-image(v-on:send="getGalleries")
-        card-image(v-for="value in values" :value="value" v-on:showmodal="showModal($event);$refs.modal.show()")
+        card-image(v-for="value in values" :value="value" v-on:showmodal="showModal")
         p.text-center.mt-2(v-if="values.length === 0") Images is not uploaded yet.
-    b-modal(ref="modal" size="lg" :title="value.username + '(' + value.datetime + ')'")
-      b-img(
-        thumnail
-        fluid
-        :src="value.imagepath")
+        modal-image(
+          :title="gallery.title"
+          :src="gallery.imagepath"
+          ref="modal")
 </template>
 
 <script lang="ts">
@@ -22,12 +21,13 @@ import {
 import FormImage from "~/components/FormImage.vue"
 import CardImage from "~/components/CardImage.vue"
 import axios from "axios"
-
+import ModalImage from "~/components/ModalImage.vue"
 
 @Component({
   components: {
     FormImage,
-    CardImage
+    CardImage,
+    ModalImage,
   }
 })
 export default class extends Vue {
@@ -42,6 +42,10 @@ export default class extends Vue {
     imagepath: "",
     datetime:  "",
   };
+  public gallery = {
+    title: "",
+    imagepath: "",
+  }
 
   public mounted() {
     this.getGalleries();
@@ -56,6 +60,11 @@ export default class extends Vue {
 
   public showModal(value) {
     this.value = value;
+    this.gallery.imagepath = this.value.imagepath;
+    this.gallery.title = `${this.value.username}(${this.value.datetime})`;
+
+    const modal: any = this.$refs.modal;
+    modal.showModal();
   }
 }
 </script>

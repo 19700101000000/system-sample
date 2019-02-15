@@ -43,7 +43,7 @@ b-container
       b-form-group(label="Active:")
         b-form-radio-group(
           buttons
-          :button-variant="[wantedValue.alive? 'outline-success' : 'outline-danger']"
+          :button-variant="buttonVariant"
           v-model="wantedValue.alive" name="active")
           b-form-radio(:value="true") Yes
           b-form-radio(:value="false") No
@@ -153,6 +153,9 @@ export default class extends Vue {
     return "";
   }
 
+  public get buttonVariant(): string {
+    return this.wantedValue.alive? "outline-success" : "outline-danger";
+  }
   public get editBorderVariant(): string {
     if (this.wantedValue.alive) {
       return "success";
