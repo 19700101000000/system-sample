@@ -81,7 +81,7 @@ export default class extends Vue {
         window.console.log(result);
         let status: string = result.data.status;
         if(status === "ok") {
-          window.document.location.href = "/";
+          window.document.location.href = `/user/${this.name}`;
         } else {
           this.showErrorMsg("Name or pass is wrong.");
         }
