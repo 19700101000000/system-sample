@@ -25,6 +25,12 @@ b-container
   b-modal(
     title="Edit"
     ref="modalEdit"
+    v-on:ok="editOK"
+    v-on:hide="editHide"
+    ok-variant="outline-primary"
+    ok-title="Apply"
+    cancel-variant="outline-secondary"
+    cancel-title="Cancel"
     size="lg")
     b-card(
       :border-variant="editBorderVariant"
@@ -33,10 +39,15 @@ b-container
         h4 {{ wantedValue.title }}
         p.card-text {{ wantedValue.description }}
         p.card-text JPY {{ wantedValue.price }}
-    b-form-group(label="Active:")
-      b-form-radio-group(v-model="wantedValue.alive" name="active")
-        b-form-radio(:value="true") Yes
-        b-form-radio(:value="false") No
+    b-form
+      b-form-group(label="Active:")
+        b-form-radio-group(
+          buttons
+          :button-variant="buttonVariant"
+          v-model="wantedValue.alive" name="active")
+          b-form-radio(:value="true") Yes
+          b-form-radio(:value="false") No
+    p.text-danger(v-if="edit.error") Fail Apply.
 
   b-modal#newWanted(
     title="New Wanted"
@@ -51,7 +62,7 @@ b-container
           :state="stateTitle"
           placeholder="Please input title."
           :disabled="modalDisabled")
-        p.text-right {{ title.length }}/100
+        p.text-right {{ title.length }} / 100
       b-form-group(
         label="Description:"
         label-for=inputDescription)
@@ -61,7 +72,7 @@ b-container
           placeholder="Please input description."
           :rows="6"
           :disabled="modalDisabled")
-        p.text-right {{ description.length }}/500
+        p.text-right {{ description.length }} / 500
       b-form-group(
         label="Price(JPY):"
         label-for="inputPrice")
@@ -106,7 +117,7 @@ import requestVue from "./request.vue";
 })
 export default class extends Vue {
   public modalDisabled = false;
-  
+
   public error = false;
   public errorMsg = "Fail Uploaded.";
   
@@ -126,6 +137,10 @@ export default class extends Vue {
     alive:       true,
     requests:    0,
   };
+  public edit = {
+    alive: false,
+    error: false,
+  };
 
   public priceFormat(value: string, event): string {
     const match = value.replace(/,/g, '').match(/\d+/);
@@ -138,6 +153,9 @@ export default class extends Vue {
     return "";
   }
 
+  public get buttonVariant(): string {
+    return this.wantedValue.alive? "outline-success" : "outline-danger";
+  }
   public get editBorderVariant(): string {
     if (this.wantedValue.alive) {
       return "success";
@@ -154,6 +172,25 @@ export default class extends Vue {
     return this.price.length > 0;
   }
 
+  public editOK(event: Event) {
+    event.preventDefault();
+    const alive = this.edit.alive;
+    this.edit.alive = this.wantedValue.alive;
+    axios.post("/api/update/wanted/status", {
+      wanted: this.wantedValue.number,
+      alive: this.wantedValue.alive,
+    }).then((result) => {
+      let modal: any = this.$refs.modalEdit;
+      modal.hide();
+    }).catch((result) => {
+      this.edit.alive = alive;
+      this.edit.error = true;
+    });
+  }
+  public editHide() {
+    this.wantedValue.alive = this.edit.alive;
+    this.edit.error = false;
+  }
   public modalOK() {
     this.modalDisabled = true;
     axios.post("/api/upload/wanted", {
@@ -169,6 +206,7 @@ export default class extends Vue {
       this.error = false;
       let modal: any = this.$refs.newWanted;
       modal.hide();
+      this.getWanteds();
     }).catch((result) => {
       this.error = true;
       this.modalDisabled = false;
@@ -191,10 +229,14 @@ export default class extends Vue {
   }
   public showmodalEdit(value) {
     this.wantedValue = value;
+    this.edit.alive = this.wantedValue.alive;
     let modal: any = this.$refs.modalEdit;
     modal.show();
   }
   public mounted() {
+    this.getWanteds();
+  }
+  public getWanteds() {
     axios.get("/api/get/works/wanteds").then(({ data }) => {
       this.wanteds = data.wanteds;
     });

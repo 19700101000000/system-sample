@@ -6,7 +6,7 @@ b-container
     b-col(sm="8")
       b-card.mt-2(
         v-if="$store.state.name === $route.params.id"
-        title="My Page")
+        title="My Page") Please select from left nav.
       wanted-list-item.mt-2(
         v-else
         v-for="wanted in wanteds"
