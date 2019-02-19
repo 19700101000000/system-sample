@@ -25,7 +25,7 @@ func User(name string, observerid int) (result map[string]interface{}) {
 	user := StructUser{}
 
 	err := db.QueryRow(
-		"SELECT `u`.`name` AS `name`, `u`.`show_name` AS `show_name`, `u`.`alive` AS `alive`, `r`.`rate` AS `rate`, `b`.`base` AS `base`, `m`.`rate` AS `my_rate`, `m`.`review` AS `my_review`, `o`.`requests` AS `my_requests` FROM `user` `u` LEFT OUTER JOIN (SELECT `user`, COUNT(*) AS `requests` FROM `work_request` WHERE `alive` = FALSE AND `requester` = ? GROUP BY `user`) `o` ON `o`.`user` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, SUM(`rate`) AS `rate` FROM `monitor` GROUP BY `target`) `r` ON `r`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, COUNT(*) AS `base` FROM `monitor` ORDER BY `target`) `b` ON `b`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, `rate`, `review` FROM `monitor` WHERE `observer` = ?) `m` ON `m`.`target` = `u`.`id` WHERE `name` = ?",
+		"SELECT `u`.`name` AS `name`, `u`.`show_name` AS `show_name`, `u`.`alive` AS `alive`, `r`.`rate` AS `rate`, `b`.`base` AS `base`, `m`.`rate` AS `my_rate`, `m`.`review` AS `my_review`, `o`.`requests` AS `my_requests` FROM `user` `u` LEFT OUTER JOIN (SELECT `user`, COUNT(*) AS `requests` FROM `work_request` WHERE `alive` = FALSE AND `requester` = ? GROUP BY `user`) `o` ON `o`.`user` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, SUM(`rate`) AS `rate` FROM `monitor` GROUP BY `target`) `r` ON `r`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, COUNT(*) AS `base` FROM `monitor` GROUP BY `target`) `b` ON `b`.`target` = `u`.`id` LEFT OUTER JOIN (SELECT `target`, `rate`, `review` FROM `monitor` WHERE `observer` = ?) `m` ON `m`.`target` = `u`.`id` WHERE `name` = ?",
 		observerid,
 		observerid,
 		name,
@@ -296,5 +296,39 @@ func Galleries() (result map[string]interface{}) {
 		galleries = append(galleries, gallery)
 	}
 	result["galleries"] = galleries
+	return
+}
+
+/* monitors */
+func MonitorsWithName(name string) (result map[string]interface{}) {
+	result = make(map[string]interface{})
+
+	rows, err := db.Query(
+		"SELECT `o`.`name` AS `name`, `m`.`rate` AS `rate`, `m`.`review` AS `review` FROM `monitor` `m` INNER JOIN `user` `o` ON `o`.`id` = `m`.`observer` INNER JOIN `user` `t` ON `t`.`id` = `m`.`target` WHERE `t`.`name` = ? ORDER BY `m`.`rate` DESC",
+		name,
+	)
+	if err != nil {
+		fmt.Printf("error by db.Rates:: %v\n", err)
+		return
+	}
+
+	monitors := make([]StructMonitor, 0)
+	for rows.Next() {
+		var monitor StructMonitor
+		var rate int
+		var review string
+		monitor.Rate = &rate
+		monitor.Review = &review
+		if err := rows.Scan(
+			&monitor.Observer,
+			&rate,
+			&review,
+		); err != nil {
+			fmt.Printf("error by db.Rates:: %v\n", err)
+			continue
+		}
+		monitors = append(monitors, monitor)
+	}
+	result["rates"] = monitors
 	return
 }
