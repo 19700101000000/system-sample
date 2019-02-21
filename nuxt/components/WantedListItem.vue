@@ -5,7 +5,7 @@
     b-card-body
       h4 {{ value.title }}
       p {{ value.description }}
-      p.card-text JPY {{ value.price }}
+      p.card-text JPY {{ getPrice }}
     div(slot="footer")
       div(v-if="$store.state.name === value.username")
         template(v-if="value.allrequests") All requests: {{ value.allrequests }}
@@ -50,6 +50,10 @@ interface WantedValue {
 @Component({})
 export default class WantedListItem extends Vue {
   @Prop() value: WantedValue;
+
+  public get getPrice(): string {
+    return this.value.price.toString().replace( /(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
 
   public get cardVariant(): string {
     if (this.value.alive) {

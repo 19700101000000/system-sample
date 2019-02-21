@@ -4,7 +4,7 @@ b-card(no-body)
     b-link(:href="'/user/' + $route.params.id") {{ $route.params.id }}
   b-card-body(v-if="userExist")
     b-link(v-on:click="showRateModal") Rate: {{ userRate }}
-    b-link.ml-2(v-if="user.name !== $store.state.name && user.requests > 0" v-b-modal.evaluateModal) evalutate to {{ user.name }}
+    b-link.ml-2(v-if="user.name !== $store.state.name && (user.requests > 0 || user.requester)" v-b-modal.evaluateModal) evalutate to {{ user.name }}
   b-card-body(v-else) Not exist.
   b-list-group(flush)
     b-list-group-item
@@ -67,6 +67,7 @@ interface user {
     review: string | null,
   },
   requests: number,
+  requester: boolean,
 }
 
 @Component({
