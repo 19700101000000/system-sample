@@ -75,3 +75,10 @@ func GetWorksInfo(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, db.WorksInfo(name))
 }
+
+/* get ranks */
+func GetRates(c *gin.Context) {
+	name := c.Param("name")
+
+	c.JSON(http.StatusOK, db.MonitorsWithName(name))
+}

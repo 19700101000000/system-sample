@@ -2,8 +2,9 @@
 b-card(no-body)
   h4(slot="header")
     b-link(:href="'/user/' + $route.params.id") {{ $route.params.id }}
-  b-card-body(v-if="userExist") Rate: {{ userRate }}
-    b-link.ml-2(v-if="user.name !== $store.state.name && user.requests > 0" v-b-modal.evaluateModal) evalutate to {{ user.name }}
+  b-card-body(v-if="userExist")
+    b-link(v-on:click="showRateModal") Rate: {{ userRate }}
+    b-link.ml-2(v-if="user.name !== $store.state.name && (user.requests > 0 || user.requester)" v-b-modal.evaluateModal) evalutate to {{ user.name }}
   b-card-body(v-else) Not exist.
   b-list-group(flush)
     b-list-group-item
@@ -44,6 +45,7 @@ b-card(no-body)
     div(slot="modal-footer")
       b-button.mr-2(variant="outline-secondary" v-on:click="$refs.modalEval.hide()") Cancel
       b-button(variant="outline-primary" :disabled="!stateRate || !stateReview" v-on:click="onSendEval") Send
+  modal-rank(ref="modalRank" :userName="$route.params.id")
 </template>
 
 <script lang="ts">
@@ -52,6 +54,7 @@ import {
   Vue
 } from "nuxt-property-decorator"
 import axios from "axios"
+import ModalRank from "~/components/ModalRank.vue"
 
 interface user {
   name: string,
@@ -64,9 +67,14 @@ interface user {
     review: string | null,
   },
   requests: number,
+  requester: boolean,
 }
 
-@Component
+@Component({
+  components: {
+    ModalRank,
+  }
+})
 export default class extends Vue {
   public userExist = false;
   public newRequests = 0;
@@ -121,6 +129,11 @@ export default class extends Vue {
     }).catch((result) => {
       this.error = true;
     });
+  }
+
+  public showRateModal() {
+    const modal: any = this.$refs.modalRank;
+    modal.showModal();
   }
 
   private mounted() {

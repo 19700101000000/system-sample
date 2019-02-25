@@ -6,15 +6,26 @@ b-card(no-body :border-variant="borderVariant")
     template(v-else-if="value.establish && !value.alive") 終了
     template(v-else) 破談
   b-card-body
-    h4 {{ value.title }}
-    p.card-text {{ value.description }}
-    p.card-text JPY {{ value.price }}
+    b-row
+      b-col(sm="3") Requester:
+      b-col(sm="9")
+        b-link(:href="`/user/${value.username}`") {{ value.username }}
+    b-row
+      b-col(sm="3") Title:
+      b-col(sm="9") {{ value.title }}
+    b-row
+      b-col(sm="3") Description:
+      b-col(sm="9") {{ value.description }}
+    b-row
+      b-col(sm="3") Price:
+      b-col(sm="9") {{ getPrice }}
     b-card(
       v-if="wanted"
       title="wanted")
       b-row
         b-col.text-secondary(sm="3") Owner:
-        b-col(sm="9") {{ value.wanted.username }}
+        b-col(sm="9")
+          b-link(:href="`/user/${value.wanted.username}`") {{ value.wanted.username }}
       b-row
         b-col.text-secondary(sm="3") Title:
         b-col(sm="9") {{ value.wanted.title }}
@@ -23,7 +34,7 @@ b-card(no-body :border-variant="borderVariant")
         b-col(sm="9") {{ value.wanted.description }}
       b-row
         b-col.text-secondary(sm="3") Price:
-        b-col(sm="9") JPY {{ value.wanted.price }}
+        b-col(sm="9") JPY {{ getWantedPrice }}
   div.text-right(v-if="$store.state.name === value.wanted.username && value.alive" slot="footer")
     b-button.ml-2(variant="outline-secondary" v-if="!value.check" v-on:click="onClickChecked") 保留
     b-button.ml-2(variant="outline-primary" disabled) 交渉
@@ -74,6 +85,13 @@ export default class RequestListItem extends Vue {
       return "secondary"
     }
     return "danger";
+  }
+
+  public get getPrice(): string {
+    return this.value.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
+  public get getWantedPrice(): string {
+    return this.value.wanted.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
   }
 
   public onClickChecked(event: Event) {

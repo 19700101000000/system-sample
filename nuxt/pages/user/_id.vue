@@ -58,6 +58,10 @@ b-container
     p.text-danger(v-if="error") {{ errorMsg }}
     div(slot="modal-footer")
       b-button(
+        variant="danger"
+        v-on:click="onClickCheat"
+      ) プレゼン用チートボタン
+      b-button.ml-2(
         variant="outline-secondary"
         v-on:click="modalCancel"
         :disabled="disabled") Cancel
@@ -122,6 +126,12 @@ export default class extends Vue {
   }
   public price2Text(price: number): string {
     return price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
+
+  public onClickCheat(event: Event) {
+    this.title = "Twitter用アイコンを描いてほしいです";
+    this.description = "アイコン画像を描いてほしいです\nお願いします";
+    this.price = "1000000";
   }
 
   public modalCancel(event: Event) {

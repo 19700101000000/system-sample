@@ -38,7 +38,7 @@ b-container
       b-card-body
         h4 {{ wantedValue.title }}
         p.card-text {{ wantedValue.description }}
-        p.card-text JPY {{ wantedValue.price }}
+        p.card-text JPY {{ getPrice }}
     b-form
       b-form-group(label="Active:")
         b-form-radio-group(
@@ -153,6 +153,9 @@ export default class extends Vue {
     return "";
   }
 
+  public get getPrice(): string {
+    return this.wantedValue.price.toString().replace( /(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
   public get buttonVariant(): string {
     return this.wantedValue.alive? "outline-success" : "outline-danger";
   }

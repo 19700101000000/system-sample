@@ -17,8 +17,9 @@ type Gallery struct {
 }
 
 type StructMonitor struct {
-	Rate   *int    `json:"rate"`
-	Review *string `json:"review"`
+	Rate     *int    `json:"rate"`
+	Review   *string `json:"review"`
+	Observer string  `json:"observer"`
 }
 
 type StructUser struct {
